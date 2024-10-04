@@ -23,9 +23,8 @@ class _HalamanAwalState extends State<HalamanAwal> {
           ),
           // Full yellow background for the top part including the wave
           Container(
-            color: Color(0xFFFEC827), // Yellow background
-            height: MediaQuery.of(context).size.height -
-                180, // Exclude the bottom part
+            color: Color(0xFFFFD858), // Yellow background
+            height: MediaQuery.of(context).size.height - 180, // Exclude the bottom part
           ),
           // The wave between the yellow top and the white bottom
           Align(
