@@ -1,8 +1,387 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Daftar extends StatelessWidget {
+class Daftar extends StatefulWidget {
   const Daftar({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _DaftarState createState() => _DaftarState();
+}
+
+class _DaftarState extends State<Daftar> {
+  var _selectedRole = "internal";
+
+  // Card
+  Widget _cardForm(double height) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 50),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        width: 320,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: Offset(0, 8)),
+          ],
+        ),
+        child: Column(children: [
+          Row(
+            children: [
+              // Button Internal
+              Expanded(
+                  child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedRole = 'internal';
+                  });
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: _selectedRole == 'internal'
+                      ? Color(0xFFFEC827)
+                      : Colors.grey[200],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                ),
+                child: Text(
+                  'Internal',
+                  style: GoogleFonts.inter(
+                      color: _selectedRole == 'internal'
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                ),
+              )),
+              SizedBox(width: 30),
+              // Button Eksternal
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedRole = 'eksternal';
+                    });
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: _selectedRole == 'eksternal'
+                        ? Color(0xFFFEC827)
+                        : Colors.grey[200],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                  child: Text(
+                    'Eksternal',
+                    style: GoogleFonts.inter(
+                        color: _selectedRole == 'eksternal'
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Form Fields
+          if (_selectedRole == 'internal') _buildInternalForm(),
+          if (_selectedRole == 'eksternal') _buildEksternalForm(),
+          // Submit Button
+          SizedBox(height: 25),
+          SizedBox(
+            height: 50,
+            width: 500,
+            child: TextButton(
+              onPressed: () {
+                // Handle submit action
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Color(0xFFFEC827),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+              child: Text(
+                'Daftar',
+                style: GoogleFonts.inter(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Text('Sudah punya akun?',
+              style: GoogleFonts.inter(
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold)),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/login');
+            },
+            child: Text('Login',
+                style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline)),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  // Form Internal
+  Widget _buildInternalForm() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 25),
+          SizedBox(
+            height: 50,
+            child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Nama",
+                  labelStyle: GoogleFonts.inter(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )),
+            ),
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            height: 50,
+            child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Username",
+                  labelStyle: GoogleFonts.inter(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )),
+            ),
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            height: 50,
+            child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "NIM/NIK/NIDN",
+                  labelStyle: GoogleFonts.inter(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )),
+            ),
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Email",
+                  labelStyle: GoogleFonts.inter(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )),
+            ),
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            height: 50,
+            child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Password",
+                  labelStyle: GoogleFonts.inter(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Form Eksternal
+  Widget _buildEksternalForm() {
+    return Column(
+      children: [
+        SizedBox(height: 25),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Nama",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Username",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "No KTP/NIK",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Instansi/Perusahaan",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Jabatan",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Email",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+        SizedBox(height: 15),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Password",
+                labelStyle: GoogleFonts.inter(color: Colors.black),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                )),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,26 +389,29 @@ class Daftar extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // Curved Background
           ClipPath(
             clipper: RoundedClipper(),
             child: Container(
               height: 500,
-              decoration: BoxDecoration(color: Color(0xFFFFD858)),
+              decoration: BoxDecoration(color: Color(0xFFFEC827)),
             ),
           ),
+          // Main Content
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
-                  const SizedBox(height: 50),
+                  SizedBox(height: 50),
                   Row(
                     children: [
-                      // Gambar Registrasi
+                      // Image Registrasi
                       Padding(padding: EdgeInsets.only(left: 25)),
                       Image.asset(
                         "assets/img/register.png",
-                        height: 181,
+                        height: 180,
+                        width: 85,
                       ),
                       // Text Registrasi
                       Padding(padding: EdgeInsets.only(left: 10)),
@@ -42,223 +424,20 @@ class Daftar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Card
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    width: 320,
-                    height: 580,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 5,
-                            blurRadius: 5,
-                            offset: const Offset(0, 5)),
-                      ],
-                    ),
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          // Internal
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFFFD858),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                ),
-                              child: Text(
-                                'Internal',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          // Eksternal
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {
-                                // Eksternal
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.grey[200],
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                              ),
-                              child: const Text(
-                                'Eksternal',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Form Fields
-                      SizedBox(height: 30),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Nama",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Username",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "NIM/NIK/NIDN",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Email",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Password",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      // Submit Button
-                      SizedBox(height: 30),
-                      SizedBox(
-                        height: 50,
-                        width: 500,
-                        child: TextButton(
-                          onPressed: () {
-                            // Handle submit action
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFD858),
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
-                          child: const Text(
-                            'Daftar',
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text('Sudah punya akun?',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold)
-                        ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/login');
-                        },
-                        child: Text(
-                          'Login',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline)),
-                      )
-                    ]),
-                  )
+                  // Memanggil Card
+                  if (_selectedRole == 'internal') _cardForm(580),
+                  if (_selectedRole == 'eksternal') _cardForm(720),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
 
-// Custom clipper for the curved background
+// Custom clipper untuk curved background
 class RoundedClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
