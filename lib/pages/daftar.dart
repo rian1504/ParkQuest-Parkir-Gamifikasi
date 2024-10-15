@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:show_hide_password/show_hide_password.dart';
 
 class Daftar extends StatefulWidget {
   const Daftar({super.key});
@@ -222,20 +224,29 @@ class _DaftarState extends State<Daftar> {
           SizedBox(height: 15),
           SizedBox(
             height: 50,
-            child: TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Password",
-                  labelStyle: GoogleFonts.inter(color: Colors.black),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  )),
+            child: ShowHidePassword(
+              hidePassword: true,
+              passwordField: (hidePassword) {
+                return TextField(
+                  obscureText: hidePassword,
+                  decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: GoogleFonts.inter(color: Colors.black),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      )),
+                );
+              },
+              iconSize: 20,
+              visibleOffIcon: Iconsax.eye_slash,
+              visibleOnIcon: Iconsax.eye,
             ),
           ),
         ],
@@ -363,20 +374,29 @@ class _DaftarState extends State<Daftar> {
         SizedBox(height: 15),
         SizedBox(
           height: 50,
-          child: TextFormField(
-            decoration: InputDecoration(
-                labelText: "Password",
-                labelStyle: GoogleFonts.inter(color: Colors.black),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                )),
+          child: ShowHidePassword(
+            hidePassword: true,
+            passwordField: (hidePassword) {
+              return TextField(
+                obscureText: hidePassword,
+                decoration: InputDecoration(
+                    labelText: "Password",
+                    labelStyle: GoogleFonts.inter(color: Colors.black),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    )),
+              );
+            },
+            iconSize: 20,
+            visibleOffIcon: Iconsax.eye_slash,
+            visibleOnIcon: Iconsax.eye,
           ),
         ),
       ],
