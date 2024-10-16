@@ -14,6 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'ParkQuest',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFFFEC827),
+          primary: Colors.black,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: HalamanAwal(),
       routes: {
