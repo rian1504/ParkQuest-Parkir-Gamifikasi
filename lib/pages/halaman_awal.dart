@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HalamanAwal extends StatefulWidget {
   const HalamanAwal({super.key});
@@ -11,80 +12,61 @@ class _HalamanAwalState extends State<HalamanAwal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFEC827),
       body: Stack(
         children: [
-          // Bottom white background
+          // Wave Background
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              color: Colors.white, // Bottom part is white
-              height: 180, // Match the height of the wave section
-            ),
+            child: Image.asset('assets/img/wave_background.png'),
           ),
-          // Full yellow background for the top part including the wave
-          Container(
-            color: Color(0xFFFFD858), // Yellow background
-            height: MediaQuery.of(context).size.height -
-                180, // Exclude the bottom part
-          ),
-          // The wave between the yellow top and the white bottom
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ClipPath(
-              clipper: WaveClipper(), // Wave Clipper for the wave shape
-              child: Container(
-                height: 180, // Adjust the height as needed for the wave
-                color: Color(
-                    0xFFFFD858), // Wave color should match the yellow background
-              ),
-            ),
-          ),
-          // Main content (Text, Image, Buttons)
+          // Main Content
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'ParkQuest',
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 48,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20), // Spacing between title and image
                 Image.asset(
                   "assets/img/halaman_awal.png",
-                  height: 200, // Adjust image size
-                  fit: BoxFit.contain,
+                  height: 275,
                 ),
-                SizedBox(height: 40), // Adjusted height for alignment
+                SizedBox(height: 40),
                 Text(
                   'Siap jadi King Parkir?',
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(height: 10),
                 Text(
-                  'Login dan kumpulkan reward-mu sekarang',
-                  style: TextStyle(color: Colors.white),
+                  'Login dan kumpulkan reward-mu sekarang!',
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
-                // Daftar Button
-                Container(
-                  width: 174,
-                  height: 51,
+                SizedBox(height: 30),
+                // Button Daftar
+                SizedBox(
+                  width: 175,
+                  height: 50,
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(50),
                       ),
                     ),
                     onPressed: () {
@@ -92,7 +74,7 @@ class _HalamanAwalState extends State<HalamanAwal> {
                     },
                     child: Text(
                       'Daftar',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -100,16 +82,16 @@ class _HalamanAwalState extends State<HalamanAwal> {
                     ),
                   ),
                 ),
-                SizedBox(height: 14),
-                // Login Button
-                Container(
-                  width: 174,
-                  height: 51,
+                SizedBox(height: 15),
+                // Button Login
+                SizedBox(
+                  width: 175,
+                  height: 50,
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(50),
                       ),
                     ),
                     onPressed: () {
@@ -117,7 +99,7 @@ class _HalamanAwalState extends State<HalamanAwal> {
                     },
                     child: Text(
                       'Login',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -125,7 +107,6 @@ class _HalamanAwalState extends State<HalamanAwal> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
               ],
             ),
           ),
@@ -133,31 +114,4 @@ class _HalamanAwalState extends State<HalamanAwal> {
       ),
     );
   }
-}
-
-// Custom Clipper for creating the wave effect
-class WaveClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0.0, size.height - 40);
-
-    var firstControlPoint = Offset(size.width / 4, size.height);
-    var firstEndPoint = Offset(size.width / 2, size.height - 30.0);
-
-    var secondControlPoint = Offset(size.width * 3 / 4, size.height - 90);
-    var secondEndPoint = Offset(size.width, size.height - 50);
-
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
-
-    path.lineTo(size.width, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
