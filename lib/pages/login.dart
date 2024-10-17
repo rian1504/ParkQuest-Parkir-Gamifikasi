@@ -23,7 +23,7 @@ class Login extends StatelessWidget {
               children: [
                 // Image at the top
                 Image.asset(
-                  "assets/img/image 16.png", // Replace with your image asset
+                  "assets/img/login.png", // Replace with your image asset
                   height: 160, // Adjust image size as needed
                 ),
                 const SizedBox(height: 20), // Spacing
@@ -57,7 +57,7 @@ class Login extends StatelessWidget {
                       const SizedBox(height: 20),
                       // Role Dropdown
                       DropdownButtonFormField<String>(
-                        items: ['User', 'Admin', 'Guest']
+                        items: ['User', 'Internal', 'External']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -92,7 +92,7 @@ class Login extends StatelessWidget {
                       // Login Button
                       ElevatedButton(
                         onPressed: () {
-                          // Handle login action
+                          Navigator.pushNamed(context, '/dashboard');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(

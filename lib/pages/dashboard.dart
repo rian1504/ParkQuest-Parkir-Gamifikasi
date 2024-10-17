@@ -79,7 +79,7 @@ class Dashboard extends StatelessWidget {
           const SizedBox(height: 20),
           // Main Content: Search and Recommendations
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -95,10 +95,22 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Wrap(
               alignment: WrapAlignment.center,
-              spacing: 20,
+              spacing: 69,
               runSpacing: 20,
               children: [
-                _buildCircularIconButton(Icons.assignment, 'Survey'),
+                InkWell(
+                  onTap: () {
+                    // Ganti dengan logika navigasi Anda ke halaman survey
+                    Navigator.pushNamed(context, '/survey');
+                  },
+                  child: Column(
+                    children: [
+                      _buildCircularIconButton(Icons.assignment, 'Survey'),
+                      const Text('Go to Survey',
+                          style: TextStyle(fontSize: 12)), // Teks tautan
+                    ],
+                  ),
+                ),
                 _buildCircularIconButton(Icons.shopping_cart, 'Shop'),
                 _buildCircularIconButton(Icons.gamepad, 'Misi'),
                 _buildCircularIconButton(Icons.storage, 'Inventory'),
@@ -107,6 +119,7 @@ class Dashboard extends StatelessWidget {
               ],
             ),
           ),
+
           const SizedBox(height: 20),
           // Leaderboard Section
           Padding(
@@ -131,6 +144,9 @@ class Dashboard extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFFFEC827),
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black.withOpacity(0.5),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: ''),
@@ -148,8 +164,8 @@ class Dashboard extends StatelessWidget {
 
   Widget _buildFeatureCard(IconData icon, String label, int colorHex) {
     return Container(
-      width: 140,
-      height: 160,
+      width: 160, // Increase width to provide more space
+      height: 170, // Increase height if necessary
       decoration: BoxDecoration(
         color: Color(colorHex),
         borderRadius: BorderRadius.circular(20),
@@ -159,8 +175,18 @@ class Dashboard extends StatelessWidget {
         children: [
           Icon(icon, size: 40, color: Colors.white),
           const SizedBox(height: 10),
-          Text(label,
-              style: const TextStyle(fontSize: 16, color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8.0), // Add padding if needed
+            child: Text(
+              label,
+              textAlign: TextAlign.center, // Ensure text is centered
+              style: const TextStyle(
+                fontSize: 14, // Reduce font size slightly
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

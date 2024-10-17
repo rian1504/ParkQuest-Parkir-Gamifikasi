@@ -61,7 +61,6 @@ class Daftar extends StatelessWidget {
                     child: Column(children: [
                       Row(
                         children: [
-                          // Internal
                           Expanded(
                             child: TextButton(
                               onPressed: () {},
@@ -70,8 +69,8 @@ class Daftar extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
-                                  ),
                                 ),
+                              ),
                               child: Text(
                                 'Internal',
                                 style: TextStyle(color: Colors.black),
@@ -79,11 +78,10 @@ class Daftar extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 20),
-                          // Eksternal
                           Expanded(
                             child: TextButton(
                               onPressed: () {
-                                // Eksternal
+                                Navigator.pushNamed(context, '/daftar2');
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor: Colors.grey[200],
@@ -100,119 +98,23 @@ class Daftar extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // Form Fields
                       SizedBox(height: 30),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Nama",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
+                      _buildTextFormField('Nama'),
                       SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Username",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
+                      _buildTextFormField('Username'),
                       SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "NIM/NIK/NIDN",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
+                      _buildTextFormField('NIM/NIK/NIDN'),
                       SizedBox(height: 10),
-                      SizedBox(
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Email",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
+                      _buildTextFormField('Email'),
                       SizedBox(height: 10),
-                      SizedBox(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(                              
-                              labelText: "Password",
-                              labelStyle: TextStyle(color: Colors.black),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 20),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              )),
-                        ),
-                      ),
-                      // Submit Button
+                      _buildTextFormField('Password'),
                       SizedBox(height: 30),
                       SizedBox(
                         height: 50,
                         width: 500,
                         child: TextButton(
                           onPressed: () {
-                            // Handle submit action
+                            _showSuccessDialog(context);
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: const Color(0xFFFFD858),
@@ -232,14 +134,12 @@ class Daftar extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
-                              fontWeight: FontWeight.bold)
-                        ),
+                              fontWeight: FontWeight.bold)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
                         },
-                        child: Text(
-                          'Login',
+                        child: Text('Login',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,
@@ -256,9 +156,66 @@ class Daftar extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildTextFormField(String label) {
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.black),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          contentPadding: EdgeInsets.all(20),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/img/sukses.png', height: 100),
+              SizedBox(height: 20),
+              Text(
+                'Registrasi Berhasil!',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: Icon(Icons.close, color: Colors.red),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the pop-up
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
-// Custom clipper for the curved background
 class RoundedClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
