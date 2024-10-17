@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:show_hide_password/show_hide_password.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -6,143 +9,219 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Curved yellow background
+          // Curved Background
           ClipPath(
-            clipper: CurveClipper(), // Use a custom clipper for the curve
+            clipper: RoundedClipper(),
             child: Container(
-              color: const Color(0xFFFEC827),
-              height: MediaQuery.of(context).size.height * 0.6,
+              height: 500,
+              decoration: BoxDecoration(color: Color(0xFFFEC827)),
             ),
           ),
-          // The main content of the login page
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Image at the top
-                Image.asset(
-                  "assets/img/login.png", // Replace with your image asset
-                  height: 160, // Adjust image size as needed
-                ),
-                const SizedBox(height: 20), // Spacing
-                // Login Box
-                Container(
-                  height: 450,
-                  width: 300, // Set a width for the login box
-                  padding: const EdgeInsets.all(20), // Padding inside the box
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+          // Main Content
+          SingleChildScrollView(
+            child: Center(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Card
+                  Container(
+                    margin: EdgeInsets.only(top: 220),
+                    height: 560,
+                    width: 320,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 3,
+                          blurRadius: 5,
+                          offset: Offset(0, 5),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      // Role Dropdown
-                      DropdownButtonFormField<String>(
-                        items: ['User', 'Internal', 'External']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        hint: const Text("Select Role"),
-                        onChanged: (String? newValue) {
-                          // Handle role selection logic
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      // Username Field
-                      const TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Username',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // Password Field
-                      const TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Password',
-                          suffixIcon: Icon(
-                              Icons.visibility), // Optional visibility toggle
-                        ),
-                        obscureText: true, // Hide password input
-                      ),
-                      const SizedBox(height: 20),
-                      // Login Button
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/dashboard');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                              0xFFFEC827), // Yellow background for button
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 50),
+                        Text(
+                          'Login',
+                          style: GoogleFonts.inter(
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        SizedBox(height: 30),
+                        // Form
+                        SizedBox(
+                          height: 50,
+                          child: DropdownButtonFormField<String>(
+                            dropdownColor: Colors.white,
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 20),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                            items: ['Internal', 'Eksternal']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: GoogleFonts.inter(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Role",
+                              style: GoogleFonts.inter(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            onChanged: (String? newValue) {
+                              // Handle role selection logic
+                            },
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      // Registration prompt
-                      const Text(
-                        'Belum Punya Akun?',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      SizedBox(height: 20),
-                      // Daftar Button
-                      Container(
-                        width: 240,
-                        height: 20,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                        SizedBox(height: 15),
+                        SizedBox(
+                          height: 50,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Username",
+                              labelStyle: GoogleFonts.inter(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 20),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                              ),
                             ),
                           ),
+                        ),
+                        SizedBox(height: 15),
+                        SizedBox(
+                          height: 50,
+                          child: ShowHidePassword(
+                            hidePassword: true,
+                            passwordField: (hidePassword) {
+                              return TextField(
+                                obscureText: hidePassword,
+                                decoration: InputDecoration(
+                                  labelText: "Password",
+                                  labelStyle: GoogleFonts.inter(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(50),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                  ),
+                                ),
+                              );
+                            },
+                            iconSize: 20,
+                            visibleOffIcon: Iconsax.eye_slash,
+                            visibleOnIcon: Iconsax.eye,
+                          ),
+                        ),
+                        SizedBox(height: 25),
+                        // Login Button
+                        SizedBox(
+                          height: 50,
+                          width: 175,
+                          child: TextButton(
+                            onPressed: () {
+                              // Handle submit action
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Color(0xFFFEC827),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                            child: Text(
+                              'Login',
+                              style: GoogleFonts.inter(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 25),
+                        // Daftar Button
+                        Text(
+                          'Belum punya akun?',
+                          style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/daftar');
                           },
                           child: Text(
                             'Daftar',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.underline),
+                            style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  // Image login
+                  Positioned(
+                    top: 35,
+                    left: -30,
+                    child: Image.asset(
+                      "assets/img/login.png",
+                      height: 250,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -151,20 +230,23 @@ class Login extends StatelessWidget {
   }
 }
 
-// Custom clipper for the curved background
-class CurveClipper extends CustomClipper<Path> {
+// Custom clipper untuk curved background
+class RoundedClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var path = Path();
+    Path path = Path();
+
     path.lineTo(0.0, size.height - 100);
 
-    var firstControlPoint = Offset(size.width / 2, size.height);
+    var firstControlPoint = Offset(size.width / 2, size.height - 200);
     var firstEndPoint = Offset(size.width, size.height - 100);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
 
+    path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
+    path.lineTo(0.0, 0.0);
     path.close();
 
     return path;
