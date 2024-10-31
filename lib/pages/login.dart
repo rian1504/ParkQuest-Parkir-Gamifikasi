@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:show_hide_password/show_hide_password.dart';
 
 class Login extends StatelessWidget {
@@ -155,8 +155,8 @@ class Login extends StatelessWidget {
                               );
                             },
                             iconSize: 20,
-                            visibleOffIcon: Iconsax.eye_slash,
-                            visibleOnIcon: Iconsax.eye,
+                            visibleOffIcon: FluentIcons.eye_off_32_filled,
+                            visibleOnIcon: FluentIcons.eye_32_filled,
                           ),
                         ),
                         SizedBox(height: 25),
