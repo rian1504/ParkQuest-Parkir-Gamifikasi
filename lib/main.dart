@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/views/daftar.dart';
 import 'package:parkquest_parkir_gamifikasi/views/dashboard.dart';
 import 'package:parkquest_parkir_gamifikasi/views/halaman_awal.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'ParkQuest',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(

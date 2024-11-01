@@ -12,13 +12,12 @@ class Daftar extends StatefulWidget {
 class _DaftarState extends State<Daftar> {
   final _formKey = GlobalKey<FormState>();
   final _roleId = TextEditingController(text: '1');
-  final _nameController = TextEditingController();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _passwordConfirmationController = TextEditingController();
-  final AuthenticationController _authenticationController =
-      Get.put(AuthenticationController());
+  final _name = TextEditingController();
+  final _username = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _passwordConfirmation = TextEditingController();
+  final _authenticationController = Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,28 +38,28 @@ class _DaftarState extends State<Daftar> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextFormField(
-                    controller: _nameController,
+                    controller: _name,
                     obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Name',
                     ),
                   ),
                   TextFormField(
-                    controller: _usernameController,
+                    controller: _username,
                     obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Username',
                     ),
                   ),
                   TextFormField(
-                    controller: _emailController,
+                    controller: _email,
                     obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Email',
                     ),
                   ),
                   TextFormField(
-                    controller: _passwordController,
+                    controller: _password,
                     obscureText: true,
                     obscuringCharacter: '*',
                     decoration: InputDecoration(
@@ -68,7 +67,7 @@ class _DaftarState extends State<Daftar> {
                     ),
                   ),
                   TextFormField(
-                    controller: _passwordConfirmationController,
+                    controller: _passwordConfirmation,
                     obscureText: true,
                     obscuringCharacter: '*',
                     decoration: InputDecoration(
@@ -79,12 +78,11 @@ class _DaftarState extends State<Daftar> {
                     onPressed: () async {
                       await _authenticationController.register(
                         roleId: _roleId.text,
-                        name: _nameController.text,
-                        username: _usernameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        passwordConfirmation:
-                            _passwordConfirmationController.text,
+                        name: _name.text,
+                        username: _username.text,
+                        email: _email.text,
+                        password: _password.text,
+                        passwordConfirmation: _passwordConfirmation.text,
                       );
                     },
                     child: Obx(() {
