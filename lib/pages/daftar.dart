@@ -7,8 +7,7 @@ class Daftar extends StatefulWidget {
   const Daftar({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _DaftarState createState() => _DaftarState();
+  State<Daftar> createState() => _DaftarState();
 }
 
 class _DaftarState extends State<Daftar> {
