@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/form_rekomendasi.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/halaman_awal.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/daftar.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/login.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/dashboard.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
 
 void main() {
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
         '/daftar': (context) => Daftar(),
         '/dashboard': (context) => Dashboard(),
         '/survey': (context) => Survey(),
+        '/rekomendasi_parkir': (context) => RekomendasiParkir(),
+        '/form_rekomendasi': (context) => FormRekomendasi(),
       },
     );
   }
