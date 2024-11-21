@@ -8,55 +8,26 @@ class RekomendasiParkir extends StatefulWidget {
   const RekomendasiParkir({super.key});
 
   @override
-  State<RekomendasiParkir> createState() => _RekomendasiParkirState();
+  State<RekomendasiParkir> createState() => _RekomendasiParkir();
 }
 
-class _RekomendasiParkirState extends State<RekomendasiParkir> {
+class _RekomendasiParkir extends State<RekomendasiParkir> {
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
-  // Posisi Map
+  final ScrollController _scrollController = ScrollController();
+
+  // Camera Position
   static const CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(1.1187720779636503, 104.04845573789976),
     zoom: 18,
   );
 
-  // Lokasi Parkir
-  final List<Marker> _markers = [
-    // Parkiran GU
-    Marker(
-      markerId: MarkerId('parkir_gu'),
-      position: LatLng(1.119266192849427, 104.04884385456609),
-      infoWindow: InfoWindow(
-        title: 'Parkiran Gedung Utama',
-        onTap: () {},
-      ),
-    ),
-    // Parkiran Techno
-    Marker(
-      markerId: MarkerId('parkir_techno'),
-      position: LatLng(1.1191713857641197, 104.04810983744885),
-      infoWindow: InfoWindow(
-        title: 'Parkiran Technopreneur',
-      ),
-      onTap: () {},
-    ),
-    // Parkiran Mobil
-    Marker(
-      markerId: MarkerId('parkir_mobil'),
-      position: LatLng(1.1187655629258093, 104.04767799900829),
-      infoWindow: InfoWindow(
-        title: 'Parkiran Mobil',
-        onTap: () {},
-      ),
-    ),
-  ];
-
   // Card
-  Widget _buildCard(String title, String status) {
+  Widget _buildCard(String title, String status, String route) {
     return Container(
-      width: 203,
-      height: 63,
+      width: 200,
+      height: 60,
       margin: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -71,33 +42,44 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(padding: EdgeInsets.only(left: 16)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(padding: EdgeInsets.only(top: 8)),
-              Text(
-                title,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Nama Parkiran
+                Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              Text(
-                status,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
+                // Status
+                Text(
+                  status,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
+              ],
+            ),
+          ),
+          // Vertical Rule
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: VerticalDivider(
+                color: Colors.black,
+                thickness: 1,
               ),
-            ],
+            ),
           ),
-          SizedBox(width: 14),
-          VerticalDivider(
-            color: Colors.black,
-            thickness: 1,
-          ),
+          // Arrow Icon
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -105,7 +87,7 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
                 icon: Icon(CupertinoIcons.chevron_right),
                 iconSize: 32,
                 onPressed: () {
-                  Navigator.pushNamed(context, '/form_rekomendasi');
+                  Navigator.pushNamed(context, route);
                 },
               ),
             ],
@@ -115,17 +97,25 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
     );
   }
 
+  // Auto Scroll Card
+  void _scrollCard(int index) {
+    double cardOffset = 250.0 * index;
+    _scrollController.animateTo(
+      cardOffset,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 78,
         backgroundColor: Color(0xFFFFD858),
         title: Text(
           'Lokasi',
           style: GoogleFonts.inter(
             color: Colors.white,
-            fontSize: 32,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -133,7 +123,6 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(
             CupertinoIcons.chevron_left,
-            size: 32,
             color: Colors.white,
           ),
         ),
@@ -147,7 +136,41 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
             child: GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: _initialCameraPosition,
-              markers: Set<Marker>.of(_markers),
+              markers: {
+                // Parkiran GU
+                Marker(
+                  markerId: MarkerId('parkir_gu'),
+                  position: LatLng(1.119266192849427, 104.04884385456609),
+                  infoWindow: InfoWindow(
+                    title: 'Parkiran Gedung Utama',
+                  ),
+                  onTap: () {
+                    _scrollCard(0);
+                  },
+                ),
+                // Parkiran Techno
+                Marker(
+                  markerId: MarkerId('parkir_techno'),
+                  position: LatLng(1.1191713857641197, 104.04810983744885),
+                  infoWindow: InfoWindow(
+                    title: 'Parkiran Technopreneur',
+                  ),
+                  onTap: () {
+                    _scrollCard(1);
+                  },
+                ),
+                // Parkiran TA
+                Marker(
+                  markerId: MarkerId('parkir_ta'),
+                  position: LatLng(1.1187655629258093, 104.04767799900829),
+                  infoWindow: InfoWindow(
+                    title: 'Parkiran Tower A',
+                  ),
+                  onTap: () {
+                    _scrollCard(2);
+                  },
+                ),
+              },
               onMapCreated: (GoogleMapController controller) {
                 _mapController.complete(controller);
               },
@@ -161,16 +184,37 @@ class _RekomendasiParkirState extends State<RekomendasiParkir> {
           ),
           // Memanggil Card
           Expanded(
-            child: SingleChildScrollView(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 80),
-              child: Row(
-                children: [
-                  _buildCard("Gedung Utama", "Available"),
-                  _buildCard("Techopreneur", "Available"),
-                  _buildCard("Parkiran Mobil", "Available"),
-                ],
-              ),
+              controller: _scrollController,
+              itemCount: 1,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? 80 : 0,
+                    right: index == 2 ? 0 : 80,
+                  ),
+                  child: Row(
+                    children: [
+                      _buildCard(
+                        "Gedung Utama",
+                        "Available",
+                        "/form_rekomendasi",
+                      ),
+                      _buildCard(
+                        "Technopreneur",
+                        "Available",
+                        "/form_rekomendasi",
+                      ),
+                      _buildCard(
+                        "Tower A",
+                        "Available",
+                        "/form_rekomendasi",
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ],

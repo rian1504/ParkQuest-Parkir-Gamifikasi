@@ -30,29 +30,42 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
   // Image Picker Options
   void _showPickerOptions() {
     showModalBottomSheet(
+      backgroundColor: Colors.white,
+      enableDrag: true,
+      isDismissible: true,
       context: context,
       builder: (BuildContext context) {
         return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text("Galeri"),
-                onTap: () {
-                  _pickImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text("Kamera"),
-                onTap: () {
-                  _pickImage(ImageSource.camera);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Pilih Gambar Dari',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(CupertinoIcons.photo_fill_on_rectangle_fill),
+                  title: Text("Galeri"),
+                  onTap: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(CupertinoIcons.photo_camera_solid),
+                  title: Text("Kamera"),
+                  onTap: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -73,7 +86,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
     );
   }
 
-  // Alert Dialog
+  // Success Dialog
   Future<void> _showAlertDialog() async {
     return showDialog<void>(
       context: context,
@@ -90,7 +103,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/img/alert.png',
+                      'assets/img/success_clap.png',
                       width: 200,
                     ),
                     SizedBox(height: 20),
@@ -158,7 +171,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
           child: Padding(
             padding: const EdgeInsets.all(50),
             child: Column(
-              children: <Widget>[
+              children: [
                 // Field Kapasitas
                 _buildFormLabel("Kapasitas"),
                 SizedBox(height: 5),
@@ -243,6 +256,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                   ),
                 ),
                 SizedBox(height: 50),
+                // Submit Button
                 SizedBox(
                   width: 148,
                   child: TextButton(
