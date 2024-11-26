@@ -144,7 +144,7 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
       appBar: AppBar(
         backgroundColor: Color(0xFFFFD858),
         title: Text(
-          'Parkiran Gedung Utama',
+          'Gedung Utama',
           style: GoogleFonts.inter(
             fontWeight: FontWeight.w500,
             color: Colors.white,

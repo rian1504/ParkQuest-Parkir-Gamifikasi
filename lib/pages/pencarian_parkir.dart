@@ -199,17 +199,17 @@ class _PencarianParkir extends State<PencarianParkir> {
                       _buildCard(
                         "Gedung Utama",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                       _buildCard(
                         "Technopreneur",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                       _buildCard(
                         "Tower A",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                     ],
                   ),
