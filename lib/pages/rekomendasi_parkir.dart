@@ -99,11 +99,11 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
 
   // Auto Scroll Card
   void _scrollCard(int index) {
-    double cardOffset = 250.0 * index;
+    double cardOffset = 240.0 * index;
     _scrollController.animateTo(
       cardOffset,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.ease,
     );
   }
 
