@@ -111,7 +111,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
+        backgroundColor: Color(0xFFFEC827),
         title: Text(
           'Lokasi',
           style: GoogleFonts.inter(

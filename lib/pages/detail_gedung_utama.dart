@@ -142,7 +142,7 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
+        backgroundColor: Color(0xFFFEC827),
         title: Text(
           'Gedung Utama',
           style: GoogleFonts.inter(
@@ -172,7 +172,7 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
             ),
             // Tab Bar
             TabBar(
-              indicatorColor: Color(0xFFFFD858),
+              indicatorColor: Color(0xFFFEC827),
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 4,
               tabs: [

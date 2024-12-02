@@ -170,7 +170,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
+        backgroundColor: Color(0xFFFEC827),
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(
