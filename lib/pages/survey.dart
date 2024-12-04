@@ -1,31 +1,68 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(Survey());
-}
+import 'package:google_fonts/google_fonts.dart';
 
 class Survey extends StatelessWidget {
+  const Survey({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.yellow[700],
-          title: Text('Survey', style: TextStyle(color: Colors.white)),
+          backgroundColor: Color(0xFFFEC827),
+          title: Text(
+            'Survey',
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pushNamed(context, '/dashboard');
-            },
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(
+              CupertinoIcons.chevron_left,
+              color: Colors.white,
+            ),
           ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              buildSurveyCard('Gedung Utama', 'assets/img/login.png'),
-              buildSurveyCard('Technopreneur', 'assets/img/login.png'),
-              buildSurveyCard('Tower A', 'assets/img/login.png'),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/gedungutama');
+                },
+                child: Column(
+                  children: [
+                    buildSurveyCard('Gedung Utama', 'assets/img/login.png'),
+                    const Text('Go to Survey', style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/technopreneur');
+                },
+                child: Column(
+                  children: [
+                    buildSurveyCard('Technopreneur', 'assets/img/login.png'),
+                    const Text('Go to Survey', style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/tower');
+                },
+                child: Column(
+                  children: [
+                    buildSurveyCard('Tower A', 'assets/img/login.png'),
+                    const Text('Go to Survey', style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
