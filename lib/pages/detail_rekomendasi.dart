@@ -170,14 +170,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
-        title: Text(
-          'Detail Rekomendasi',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
+        backgroundColor: Color(0xFFFEC827),
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(

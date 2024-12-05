@@ -99,11 +99,11 @@ class _PencarianParkir extends State<PencarianParkir> {
 
   // Auto Scroll Card
   void _scrollCard(int index) {
-    double cardOffset = 250.0 * index;
+    double cardOffset = 240.0 * index;
     _scrollController.animateTo(
       cardOffset,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.ease,
     );
   }
 
@@ -111,7 +111,7 @@ class _PencarianParkir extends State<PencarianParkir> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
+        backgroundColor: Color(0xFFFEC827),
         title: Text(
           'Lokasi',
           style: GoogleFonts.inter(
@@ -199,17 +199,17 @@ class _PencarianParkir extends State<PencarianParkir> {
                       _buildCard(
                         "Gedung Utama",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                       _buildCard(
                         "Technopreneur",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                       _buildCard(
                         "Tower A",
                         "Available",
-                        "/parkiran_gedung_utama",
+                        "/detail_gedung_utama",
                       ),
                     ],
                   ),

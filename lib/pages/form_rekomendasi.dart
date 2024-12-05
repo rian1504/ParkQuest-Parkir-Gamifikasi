@@ -146,21 +146,11 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 78,
-        backgroundColor: Color(0xFFFFD858),
-        title: Text(
-          'Rekomendasi',
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        backgroundColor: Color(0xFFFEC827),
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(
             CupertinoIcons.chevron_left,
-            size: 24,
             color: Colors.white,
           ),
         ),

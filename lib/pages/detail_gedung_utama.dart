@@ -57,7 +57,10 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
       child: Container(
         height: 75,
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.only(bottom: 24),
+        margin: EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 20,
+        ),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -142,9 +145,9 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFD858),
+        backgroundColor: Color(0xFFFEC827),
         title: Text(
-          'Parkiran Gedung Utama',
+          'Gedung Utama',
           style: GoogleFonts.inter(
             fontWeight: FontWeight.w500,
             color: Colors.white,
@@ -172,9 +175,9 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
             ),
             // Tab Bar
             TabBar(
-              indicatorColor: Color(0xFFFFD858),
+              indicatorColor: Color(0xFFFEC827),
               indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 4,
+              indicatorWeight: 3,
               tabs: [
                 Tab(text: 'Informasi'),
                 Tab(text: 'Rekomendasi'),
@@ -274,32 +277,28 @@ class _DetailGedungUtama extends State<DetailGedungUtama> {
                     ),
                   ),
                   // Tab Rekomendasi
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          _buildCard(
-                            'assets/img/profile_picture.png',
-                            'Rian',
-                            '1H',
-                            'Saya mendapat parkir di bawah kanopi dekat pamdal',
-                          ),
-                          _buildCard(
-                            'assets/img/profile_picture.png',
-                            'Rian',
-                            '1H',
-                            'Saya mendapat parkir di bawah kanopi dekat pamdal',
-                          ),
-                          _buildCard(
-                            'assets/img/profile_picture.png',
-                            'Rian',
-                            '1H',
-                            'Saya mendapat parkir di bawah kanopi dekat pamdal',
-                          ),
-                        ],
+                  ListView(
+                    scrollDirection: Axis.vertical,
+                    children: [
+                      _buildCard(
+                        'assets/img/profile_picture.png',
+                        'Rian',
+                        '1H',
+                        'Saya mendapat parkir di bawah kanopi dekat pamdal',
                       ),
-                    ),
+                      _buildCard(
+                        'assets/img/profile_picture.png',
+                        'Rian',
+                        '1H',
+                        'Saya mendapat parkir di bawah kanopi dekat pamdal',
+                      ),
+                      _buildCard(
+                        'assets/img/profile_picture.png',
+                        'Rian',
+                        '1H',
+                        'Saya mendapat parkir di bawah kanopi dekat pamdal',
+                      ),
+                    ],
                   ),
                 ],
               ),

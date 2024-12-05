@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HalamanAwal extends StatefulWidget {
-  const HalamanAwal({super.key});
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
 
   @override
-  State<HalamanAwal> createState() => _HalamanAwalState();
+  State<LandingPage> createState() => _LandingPage();
 }
 
-class _HalamanAwalState extends State<HalamanAwal> {
+class _LandingPage extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +33,14 @@ class _HalamanAwalState extends State<HalamanAwal> {
                     color: Colors.white,
                   ),
                 ),
-                Image.asset(
-                  "assets/img/halaman_awal.png",
+                SizedBox(height: 20),
+                SizedBox(
                   height: 275,
+                  child: Image.asset(
+                    "assets/img/parkquest_logo.png",
+                  ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 10),
                 Text(
                   'Siap jadi King Parkir?',
                   style: GoogleFonts.inter(
