@@ -5,8 +5,7 @@ class DetailAvatar extends StatelessWidget {
   final String imagePath;
   final String title;
 
-  const DetailAvatar({Key? key, required this.imagePath, required this.title})
-      : super(key: key);
+  const DetailAvatar({super.key, required this.imagePath, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +44,7 @@ class DetailAvatar extends StatelessWidget {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
+                // ignore: avoid_print
                 print(rating);
               },
             ),
@@ -80,6 +80,7 @@ class DetailAvatar extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
+                // ignore: avoid_print
                 print("Buy $title");
               },
               style: ElevatedButton.styleFrom(

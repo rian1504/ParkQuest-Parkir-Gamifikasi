@@ -100,20 +100,40 @@ class Dashboard extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    // Ganti dengan logika navigasi Anda ke halaman survey
+                    // Survey
                     Navigator.pushNamed(context, '/survey');
                   },
                   child: Column(
                     children: [
                       _buildCircularIconButton(Icons.assignment, 'Survey'),
                       const Text('Go to Survey',
-                          style: TextStyle(fontSize: 12)), // Teks tautan
+                          style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 ),
-                _buildCircularIconButton(Icons.shopping_cart, 'Shop'),
+                InkWell(
+                  onTap: () {
+                    // Shop
+                    Navigator.pushNamed(context, '/shop');
+                  },
+                  child: Column(
+                    children: [
+                      _buildCircularIconButton(Icons.shopping_cart, 'Shop'),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Inventory
+                    Navigator.pushNamed(context, '/inventory');
+                  },
+                  child: Column(
+                    children: [
+                      _buildCircularIconButton(Icons.storage, 'inventory'),
+                    ],
+                  ),
+                ),
                 _buildCircularIconButton(Icons.gamepad, 'Misi'),
-                _buildCircularIconButton(Icons.storage, 'Inventory'),
                 _buildCircularIconButton(Icons.person_add, 'Kode Referral'),
                 _buildCircularIconButton(Icons.leaderboard, 'Leaderboard'),
               ],

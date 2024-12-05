@@ -4,7 +4,7 @@ import 'detail_avatar.dart';
 
 //Shop
 class Shop extends StatelessWidget {
-  const Shop({Key? key}) : super(key: key);
+  const Shop({super.key});
 
   @override
   Widget build(BuildContext context) {
