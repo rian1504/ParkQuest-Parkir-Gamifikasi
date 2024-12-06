@@ -136,9 +136,50 @@ class AuthenticationController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoading.value = false;
-        token.value = json.decode(response.body)['token'];
-        box.write('token', token.value);
+        final token = json.decode(response.body)['token'];
+        box.write('token', token);
         Get.offAllNamed('/dashboard');
+        debugPrint(json.decode(response.body).toString());
+        debugPrint(token);
+      } else {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        debugPrint(json.decode(response.body).toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint(e.toString());
+    }
+  }
+
+  Future logout({
+    required String token,
+  }) async {
+    try {
+      isLoading.value = true;
+      var data = {
+        'token': token,
+      };
+
+      var response = await http.post(
+        Uri.parse('${url}logout'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        box.remove('token');
+        Get.offAllNamed('/login');
         debugPrint(json.decode(response.body).toString());
       } else {
         isLoading.value = false;
