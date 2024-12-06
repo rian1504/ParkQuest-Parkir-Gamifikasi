@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/views/daftar.dart';
+import 'package:parkquest_parkir_gamifikasi/views/daftar_eksternal.dart';
+import 'package:parkquest_parkir_gamifikasi/views/daftar_internal.dart';
 import 'package:parkquest_parkir_gamifikasi/views/dashboard.dart';
 import 'package:parkquest_parkir_gamifikasi/views/halaman_awal.dart';
 import 'package:parkquest_parkir_gamifikasi/views/login.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       home: HalamanAwal(),
       routes: {
         '/login': (context) => Login(),
-        '/daftar': (context) => Daftar(),
+        '/daftarEksternal': (context) => DaftarEksternal(),
+        '/daftarInternal': (context) => DaftarInternal(),
         '/dashboard': (context) => Dashboard(),
         '/survey': (context) => Survey(),
       },

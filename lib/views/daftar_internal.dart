@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/authentication.dart';
 
-class Daftar extends StatefulWidget {
-  const Daftar({super.key});
+class DaftarInternal extends StatefulWidget {
+  const DaftarInternal({super.key});
 
   @override
-  State<Daftar> createState() => _DaftarState();
+  State<DaftarInternal> createState() => _DaftarInternalState();
 }
 
-class _DaftarState extends State<Daftar> {
+class _DaftarInternalState extends State<DaftarInternal> {
   final _formKey = GlobalKey<FormState>();
   final _roleId = TextEditingController(text: '1');
   final _name = TextEditingController();
   final _username = TextEditingController();
   final _email = TextEditingController();
+  final _identityNumber = TextEditingController();
   final _password = TextEditingController();
   final _passwordConfirmation = TextEditingController();
   final _authenticationController = Get.put(AuthenticationController());
@@ -31,6 +32,12 @@ class _DaftarState extends State<Daftar> {
                 Navigator.pushNamed(context, '/login');
               },
               child: Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/daftarEksternal');
+              },
+              child: Text('Daftar Eksternal'),
             ),
             Form(
               key: _formKey,
@@ -59,6 +66,13 @@ class _DaftarState extends State<Daftar> {
                     ),
                   ),
                   TextFormField(
+                    controller: _identityNumber,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      hintText: 'Nomor Identitas',
+                    ),
+                  ),
+                  TextFormField(
                     controller: _password,
                     obscureText: true,
                     obscuringCharacter: '*',
@@ -76,11 +90,12 @@ class _DaftarState extends State<Daftar> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await _authenticationController.register(
+                      await _authenticationController.registerInternal(
                         roleId: _roleId.text,
                         name: _name.text,
                         username: _username.text,
                         email: _email.text,
+                        identityNumber: _identityNumber.text,
                         password: _password.text,
                         passwordConfirmation: _passwordConfirmation.text,
                       );

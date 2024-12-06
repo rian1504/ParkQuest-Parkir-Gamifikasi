@@ -20,9 +20,15 @@ class Login extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/daftar');
+                Navigator.pushNamed(context, '/daftarEksternal');
               },
-              child: Text('Daftar'),
+              child: Text('Daftar Eksternal'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/daftarInternal');
+              },
+              child: Text('Daftar Internal'),
             ),
             Form(
               key: _formKey,
