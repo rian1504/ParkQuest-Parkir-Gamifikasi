@@ -73,7 +73,7 @@ class _LandingPage extends State<LandingPage> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/daftar');
+                      Navigator.pushNamed(context, '/register');
                     },
                     child: Text(
                       'Daftar',

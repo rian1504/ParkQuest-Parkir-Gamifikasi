@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:show_hide_password/show_hide_password.dart';
 
-class Daftar extends StatefulWidget {
-  const Daftar({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Daftar> createState() => _DaftarState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _DaftarState extends State<Daftar> {
+class _RegisterState extends State<Register> {
   var _selectedRole = "internal";
 
   // Card
@@ -234,8 +234,6 @@ class _DaftarState extends State<Daftar> {
           _buildTextFormField('Email'),
           SizedBox(height: 15),
           _buildPasswordField('Password'),
-          SizedBox(height: 15),
-          _buildPasswordField('Konfirmasi Password'),
         ],
       ),
     );
@@ -259,8 +257,6 @@ class _DaftarState extends State<Daftar> {
         _buildTextFormField('Email'),
         SizedBox(height: 15),
         _buildPasswordField('Password'),
-        SizedBox(height: 15),
-        _buildPasswordField('Konfirmasi Password'),
       ],
     );
   }
@@ -376,8 +372,8 @@ class _DaftarState extends State<Daftar> {
                     ],
                   ),
                   // Memanggil Card
-                  if (_selectedRole == 'internal') _buildCard(650),
-                  if (_selectedRole == 'eksternal') _buildCard(780),
+                  if (_selectedRole == 'internal') _buildCard(580),
+                  if (_selectedRole == 'eksternal') _buildCard(720),
                 ],
               ),
             ),
