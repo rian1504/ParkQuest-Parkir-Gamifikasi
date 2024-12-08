@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'detail_avatar.dart';
 
-//Shop
 class Shop extends StatelessWidget {
   const Shop({super.key});
 
@@ -25,49 +24,59 @@ class Shop extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ///Image 3 gambar
-              Image.asset(
-                'assets/img/shop.png',
-                width: double.infinity,
-                height: 150,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  //Text Kategori
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Text(
+              // Category Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildCategoryItem(
+                      context,
+                      'assets/img/basic_avatar.png',
                       'Basic',
-                      style: TextStyle(fontSize: 20),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Text(
+                    _buildCategoryItem(
+                      context,
+                      'assets/img/rare_avatar.png',
                       'Rare',
-                      style: TextStyle(fontSize: 20),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.5),
-                    child: Text(
+                    _buildCategoryItem(
+                      context,
+                      'assets/img/legendary_avatar.png',
                       'Legendary',
-                      style: TextStyle(fontSize: 20),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              buildShopCard(
-                  context, 'img/lizard.png', 'Lizard', 'assets/img/money.png'),
-              buildShopCard(
-                  context, 'img/dragon.png', 'Dragon', 'assets/img/money.png'),
-              buildShopCard(
-                  context, 'img/rabbit.png', 'Rabbit', 'assets/img/money.png'),
-              buildShopCard(
-                  context, 'img/monkey.png', 'Monkey', 'assets/img/money.png'),
+              // Shop Cards
+              _buildShopCard(
+                context,
+                'assets/img/basic_avatar.png',
+                'Old Car',
+                'assets/img/money.png',
+                const Color(0xFFD9D9D9),
+              ), // Basic
+              _buildShopCard(
+                context,
+                'assets/img/rare_avatar.png',
+                'Blue Sedan',
+                'assets/img/money.png',
+                const Color(0xFF176CC7),
+              ), // Rare
+              _buildShopCard(
+                context,
+                'assets/img/rare_bike_avatar.png',
+                'Army Bike',
+                'assets/img/money.png',
+                const Color(0xFF176CC7),
+              ), // Rare
+              _buildShopCard(
+                context,
+                'assets/img/legendary_avatar.png',
+                'White Sport',
+                'assets/img/money.png',
+                const Color(0xFFF71010),
+              ), // Legendary
               const Spacer(),
             ],
           ),
@@ -76,11 +85,30 @@ class Shop extends StatelessWidget {
     );
   }
 
-//Card Shop
-  Widget buildShopCard(BuildContext context, String imagePath, String title,
-      String descriptionImagePath) {
+  // Category Item
+  Widget _buildCategoryItem(
+      BuildContext context, String imagePath, String title) {
+    return Column(
+      children: [
+        Image.asset(
+          imagePath,
+          width: MediaQuery.of(context).size.width * 0.3,
+          height: MediaQuery.of(context).size.height * 0.15,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Shop Card
+  Widget _buildShopCard(BuildContext context, String imagePath, String title,
+      String descriptionImagePath, Color backgroundColor) {
     return GestureDetector(
-      //Hero untuk Detail Avatar
       onTap: () {
         Navigator.push(
           context,
@@ -93,10 +121,10 @@ class Shop extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 55.0),
         child: Container(
-          width: 309,
-          height: 88,
+          width: 320,
+          height: 95,
           decoration: BoxDecoration(
-            color: const Color(0xFFFA9279),
+            color: backgroundColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.25),
@@ -106,16 +134,15 @@ class Shop extends StatelessWidget {
             ],
             borderRadius: BorderRadius.circular(20),
           ),
-          //Image Card
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               Positioned(
-                left: 20,
+                left: 10,
                 top: -30,
                 child: Image.asset(
                   imagePath,
-                  width: 80,
+                  width: 130,
                   height: 130,
                   fit: BoxFit.cover,
                 ),
@@ -130,7 +157,6 @@ class Shop extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  //Text Card
                   child: ListTile(
                     title: Text(
                       title,
@@ -140,7 +166,6 @@ class Shop extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    //Rating Star Card
                     subtitle: Column(
                       children: [
                         RatingBar.builder(

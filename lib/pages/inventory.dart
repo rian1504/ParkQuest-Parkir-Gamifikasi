@@ -8,35 +8,34 @@ class Inventory extends StatefulWidget {
   State<Inventory> createState() => _InventoryState();
 }
 
+// Default avatar
 class _InventoryState extends State<Inventory> {
   String _selectedButton = "basic";
-  String _selectedAvatar = 'assets/img/monkey.png'; // Default avatar
-  String _selectedAvatarName = "Monkey"; // Default nama
+  String _selectedAvatar = 'assets/img/basic_avatar.png';
+  String _selectedAvatarName = "Old Car";
 
-  // Daftar kategori
+// List Categories
   final List<Category> categories = [
     Category("basic", const Color(0xFFD9D9D9), "Basic", [
-      "assets/img/bull.png",
-      "assets/img/lizard.png",
+      "assets/img/basic_avatar.png",
+      "assets/img/basic_bike_avatar.png",
     ], [
-      "Bull",
-      "Lizard",
+      "Old Car",
+      "Scooter",
     ]),
     Category("rare", const Color(0xFF2592E7), "Rare", [
-      "assets/img/mouse.png",
-      "assets/img/dragon.png",
+      "assets/img/rare_avatar.png",
+      "assets/img/rare_bike_avatar.png",
     ], [
-      "Mouse",
-      "Dragon",
+      "Blue Sedan",
+      "Army Bike",
     ]),
     Category("legendary", const Color(0xFFF71010), "Legendary", [
-      "assets/img/rabbit.png",
-      "assets/img/sheep.png",
-      "assets/img/mouse.png",
+      "assets/img/legendary_avatar.png",
+      "assets/img/legendary2_avatar.png",
     ], [
-      "Rabbit",
-      "Sheep",
-      "Mouse",
+      "White Sport",
+      "White Jeep",
     ]),
   ];
 
@@ -61,63 +60,15 @@ class _InventoryState extends State<Inventory> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 35),
-              // Container Avatar
-              Column(
-                children: [
-                  // Text "Avatar"
-                  const Text(
-                    "Avatar",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Img Avatar
-                  Image.asset(
-                    _selectedAvatar,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _selectedAvatarName, // Menampilkan nama avatar
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              // Rating Bar
-              RatingBar.builder(
-                initialRating: 3,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize: 30,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
-              ),
+              _buildAvatarSection(),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  // Handle Button
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 5,
+                  ),
                   backgroundColor: Colors.amber[300],
                 ),
                 child: const Text(
@@ -126,16 +77,16 @@ class _InventoryState extends State<Inventory> {
                 ),
               ),
               const SizedBox(height: 40),
-              buildButtons(),
+              _buildCategoryButtons(),
               const SizedBox(height: 16),
-              //Divider 1
+              // Divider 1
               const Divider(
                 thickness: 1,
                 color: Colors.black,
                 height: 25,
               ),
+              _buildSelectedCategoryLabel(),
               // Divider 2
-              buildSelectedCategoryLabel(),
               const Divider(
                 thickness: 1,
                 color: Colors.black,
@@ -155,23 +106,53 @@ class _InventoryState extends State<Inventory> {
     );
   }
 
- // 3 Kategori Button
-  Widget buildButtons() {
+  // Button Categories
+  Widget _buildAvatarSection() {
+    return Column(
+      children: [
+        const Text(
+          "Avatar",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Image.asset(
+          _selectedAvatar,
+          width: 200,
+          height: 200,
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          _selectedAvatarName,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (final category in categories)
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: buildCategoryButton(
+            child: _buildCategoryButton(
                 category.name, category.color, category.label),
           ),
       ],
     );
   }
 
-  // Inventory
-  Widget buildCategoryButton(String category, Color color, String label) {
+  Widget _buildCategoryButton(String category, Color color, String label) {
     return OutlinedButton(
       onPressed: () {
         setState(() {
@@ -179,7 +160,10 @@ class _InventoryState extends State<Inventory> {
         });
       },
       style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 12,
+        ),
         side: const BorderSide(color: Colors.black),
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
@@ -204,8 +188,7 @@ class _InventoryState extends State<Inventory> {
     );
   }
 
-  // Text and label category
-  Widget buildSelectedCategoryLabel() {
+  Widget _buildSelectedCategoryLabel() {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -226,10 +209,15 @@ class _InventoryState extends State<Inventory> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 15.0, bottom: 10.0),
+            padding: const EdgeInsets.only(
+              left: 15.0,
+              bottom: 10.0,
+            ),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 6.0,
+                horizontal: 20.0,
+              ),
               decoration: BoxDecoration(
                 color: categories
                     .firstWhere((c) => c.name == _selectedButton)
@@ -253,7 +241,6 @@ class _InventoryState extends State<Inventory> {
   }
 
   Widget _buildItemGrid() {
-    //Find category from categories list
     final category = categories.firstWhere((c) => c.name == _selectedButton);
 
     return GridView.builder(
@@ -276,7 +263,6 @@ class _InventoryState extends State<Inventory> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              // Avatar's Card
               Card(
                 elevation: 4,
                 color: category.color,
@@ -289,7 +275,6 @@ class _InventoryState extends State<Inventory> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Rating bar
                       RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
@@ -312,15 +297,17 @@ class _InventoryState extends State<Inventory> {
                 ),
               ),
               Positioned(
-                left: 16,
-                top: 15,
+                left: 2,
+                top: 2,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    category.assets[index],
-                    width: 80,
-                    height: 120,
-                    fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: 120,
+                    height: 160,
+                    child: Image.asset(
+                      category.assets[index],
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -332,7 +319,6 @@ class _InventoryState extends State<Inventory> {
   }
 }
 
-// Class Kategori
 class Category {
   final String name;
   final Color color;
@@ -340,5 +326,11 @@ class Category {
   final List<String> assets;
   final List<String> names;
 
-  Category(this.name, this.color, this.label, this.assets, this.names);
+  Category(
+    this.name,
+    this.color,
+    this.label,
+    this.assets,
+    this.names,
+  );
 }
