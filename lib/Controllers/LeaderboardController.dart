@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:parkquest_parkir_gamifikasi/Models/leaderboard_model.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class LeaderboardController extends GetxController {
@@ -23,7 +23,7 @@ class LeaderboardController extends GetxController {
       final token = box.read('token');
 
       final response = await http.get(
-        Uri.parse('${url}topThree'),
+        Uri.parse('${apiUrl}topThree'),
         headers: {
           ...headers,
           'Authorization': 'Bearer $token',

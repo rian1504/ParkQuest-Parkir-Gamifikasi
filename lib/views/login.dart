@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/authentication.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/leaderboard_model.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard.dart';
 
 class LeaderboardTopThree extends StatelessWidget {
   const LeaderboardTopThree({

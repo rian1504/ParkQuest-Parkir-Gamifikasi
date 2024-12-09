@@ -37,7 +37,7 @@ class AuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}register'),
+        Uri.parse('${apiUrl}register'),
         headers: headers,
         body: data,
       );
@@ -87,7 +87,7 @@ class AuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}register'),
+        Uri.parse('${apiUrl}register'),
         headers: headers,
         body: data,
       );
@@ -129,7 +129,7 @@ class AuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}login'),
+        Uri.parse('${apiUrl}login'),
         headers: headers,
         body: data,
       );
@@ -168,7 +168,7 @@ class AuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}logout'),
+        Uri.parse('${apiUrl}logout'),
         headers: {
           ...headers,
           'Authorization': 'Bearer $token',

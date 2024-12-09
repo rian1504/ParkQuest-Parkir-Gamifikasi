@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/authentication.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 
 class DaftarEksternal extends StatefulWidget {
   const DaftarEksternal({super.key});
