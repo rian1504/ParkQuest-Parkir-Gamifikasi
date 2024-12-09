@@ -10,7 +10,8 @@ class Dashboard extends StatelessWidget {
 
   // Logout
   final _formKey = GlobalKey<FormState>();
-  final _authenticationController = Get.put(AuthenticationController());
+  final AuthenticationController _authenticationController =
+      Get.put(AuthenticationController());
 
   // Leaderboard
   final LeaderboardController _leaderboardController =
