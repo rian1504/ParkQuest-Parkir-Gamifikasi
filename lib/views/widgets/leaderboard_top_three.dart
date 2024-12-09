@@ -12,12 +12,12 @@ class LeaderboardTopThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Colors.red,
       child: Center(
         child: Column(
           children: [
-            Text(data.name),
             Text(data.username),
+            Text(data.rank.rankName.toString()),
           ],
         ),
       ),

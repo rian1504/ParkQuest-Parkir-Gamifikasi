@@ -33,6 +33,54 @@ class Dashboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Dashboard'),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/pencarianParkir');
+              },
+              child: Text('Pencarian Parkir'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/rekomendasiParkir');
+              },
+              child: Text('Rekomendasi Parkir'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/survey');
+              },
+              child: Text('Survey'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/shop/basic');
+              },
+              child: Text('Shop'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/misi');
+              },
+              child: Text('Misi'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/inventory/basic');
+              },
+              child: Text('Inventory'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/referralBagikan');
+              },
+              child: Text('Kode Referral'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/leaderboard');
+              },
+              child: Text('Leaderboard'),
+            ),
             Obx(() {
               return _leaderboardController.isLoading.value
                   ? CircularProgressIndicator()
