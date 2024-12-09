@@ -54,9 +54,7 @@ class Dashboard extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      await _authenticationController.logout(
-                        token: token,
-                      );
+                      await _authenticationController.logout();
                     },
                     child: Obx(() {
                       return _authenticationController.isLoading.value

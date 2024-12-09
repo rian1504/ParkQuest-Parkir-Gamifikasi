@@ -34,6 +34,7 @@ class LeaderboardController extends GetxController {
         isLoading.value = false;
 
         final content = json.decode(response.body);
+
         for (var item in content['data']) {
           datas.value.add(LeaderboardModel.fromJson(item));
         }
@@ -41,6 +42,7 @@ class LeaderboardController extends GetxController {
         debugPrint(content.toString());
       } else {
         isLoading.value = false;
+
         Get.snackbar(
           'Error',
           json.decode(response.body)['message'],
@@ -48,10 +50,12 @@ class LeaderboardController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
+
         debugPrint(json.decode(response.body).toString());
       }
     } catch (e) {
       isLoading.value = false;
+
       debugPrint(e.toString());
     }
   }

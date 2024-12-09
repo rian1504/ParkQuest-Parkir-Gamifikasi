@@ -24,6 +24,7 @@ class AuthenticationController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+
       var data = {
         'role_id': roleId,
         'name': name,
@@ -42,25 +43,32 @@ class AuthenticationController extends GetxController {
         body: data,
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 201) {
         isLoading.value = false;
-        token.value = json.decode(response.body)['token'];
+
+        token.value = content['token'];
         box.write('token', token.value);
+
         Get.offAllNamed('/login');
-        debugPrint(json.decode(response.body).toString());
+        debugPrint(content.toString());
       } else {
         isLoading.value = false;
+
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-        debugPrint(json.decode(response.body).toString());
+
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
+
       debugPrint(e.toString());
     }
   }
@@ -76,6 +84,7 @@ class AuthenticationController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+
       var data = {
         'role_id': roleId,
         'name': name,
@@ -92,25 +101,32 @@ class AuthenticationController extends GetxController {
         body: data,
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 201) {
         isLoading.value = false;
-        token.value = json.decode(response.body)['token'];
+
+        token.value = content['token'];
         box.write('token', token.value);
+
         Get.offAllNamed('/login');
-        debugPrint(json.decode(response.body).toString());
+        debugPrint(content.toString());
       } else {
         isLoading.value = false;
+
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-        debugPrint(json.decode(response.body).toString());
+
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
+
       debugPrint(e.toString());
     }
   }
@@ -122,6 +138,7 @@ class AuthenticationController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+
       var data = {
         'role_id': roleId,
         'username': username,
@@ -134,38 +151,43 @@ class AuthenticationController extends GetxController {
         body: data,
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 200) {
         isLoading.value = false;
-        final token = json.decode(response.body)['token'];
+
+        final token = content['token'];
         box.write('token', token);
+
         Get.offAllNamed('/dashboard');
-        debugPrint(json.decode(response.body).toString());
-        debugPrint(token);
+        debugPrint(content.toString());
+
+        return content;
       } else {
         isLoading.value = false;
+
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-        debugPrint(json.decode(response.body).toString());
+
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
+
       debugPrint(e.toString());
     }
   }
 
-  Future logout({
-    required String token,
-  }) async {
+  Future logout() async {
     try {
       isLoading.value = true;
-      var data = {
-        'token': token,
-      };
+
+      final token = box.read('token');
 
       var response = await http.post(
         Uri.parse('${apiUrl}logout'),
@@ -173,27 +195,33 @@ class AuthenticationController extends GetxController {
           ...headers,
           'Authorization': 'Bearer $token',
         },
-        body: data,
       );
+
+      final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
         isLoading.value = false;
+
         box.remove('token');
         Get.offAllNamed('/login');
-        debugPrint(json.decode(response.body).toString());
+
+        debugPrint(content.toString());
       } else {
         isLoading.value = false;
+
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-        debugPrint(json.decode(response.body).toString());
+
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
+
       debugPrint(e.toString());
     }
   }
