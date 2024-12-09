@@ -15,9 +15,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
-    var token = box.read('token') ?? Null;
+    var token = box.read('token');
 
-    if (token != Null) {
+    if (token != null) {
       Future.microtask(() {
         Navigator.pushNamed(context, '/dashboard');
       });

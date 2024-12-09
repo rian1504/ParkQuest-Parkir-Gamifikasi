@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/views/daftar_eksternal.dart';
 import 'package:parkquest_parkir_gamifikasi/views/daftar_internal.dart';
 import 'package:parkquest_parkir_gamifikasi/views/dashboard.dart';
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    final token = box.read('token');
+
     return GetMaterialApp(
       title: 'ParkQuest',
       theme: ThemeData(
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: HalamanAwal(),
+      home: token == null ? HalamanAwal() : Dashboard(),
       routes: {
         '/login': (context) => Login(),
         '/daftarEksternal': (context) => DaftarEksternal(),
