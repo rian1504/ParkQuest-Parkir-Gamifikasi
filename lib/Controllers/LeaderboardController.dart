@@ -15,6 +15,7 @@ class LeaderboardController extends GetxController {
   void onInit() {
     super.onInit();
     topThree();
+    leaderboard();
   }
 
   Future topThree() async {
@@ -24,6 +25,49 @@ class LeaderboardController extends GetxController {
 
       final response = await http.get(
         Uri.parse('${apiUrl}topThree'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+
+        final content = json.decode(response.body);
+
+        for (var item in content['data']) {
+          datas.value.add(LeaderboardModel.fromJson(item));
+        }
+
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          json.decode(response.body)['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(json.decode(response.body).toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
+
+  Future leaderboard() async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      final response = await http.get(
+        Uri.parse('${apiUrl}leaderboard'),
         headers: {
           ...headers,
           'Authorization': 'Bearer $token',

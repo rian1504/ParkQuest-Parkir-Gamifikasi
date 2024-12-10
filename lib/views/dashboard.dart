@@ -10,11 +10,11 @@ class Dashboard extends StatelessWidget {
 
   // Logout
   final _formKey = GlobalKey<FormState>();
-  final AuthenticationController _authenticationController =
+  final AuthenticationController _authenticationcontroller =
       Get.put(AuthenticationController());
 
   // Leaderboard
-  final LeaderboardController _leaderboardController =
+  final LeaderboardController _leaderboardcontroller =
       Get.put(LeaderboardController());
 
   @override
@@ -83,15 +83,15 @@ class Dashboard extends StatelessWidget {
               child: Text('Leaderboard'),
             ),
             Obx(() {
-              return _leaderboardController.isLoading.value
+              return _leaderboardcontroller.isLoading.value
                   ? CircularProgressIndicator()
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _leaderboardController.datas.value.length,
+                      itemCount: _leaderboardcontroller.datas.value.length,
                       itemBuilder: (context, index) {
                         return LeaderboardTopThree(
-                          data: _leaderboardController.datas.value[index],
+                          data: _leaderboardcontroller.datas.value[index],
                         );
                       },
                     );
@@ -103,10 +103,10 @@ class Dashboard extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      await _authenticationController.logout();
+                      await _authenticationcontroller.logout();
                     },
                     child: Obx(() {
-                      return _authenticationController.isLoading.value
+                      return _authenticationcontroller.isLoading.value
                           ? CircularProgressIndicator()
                           : Text('Logout');
                     }),
