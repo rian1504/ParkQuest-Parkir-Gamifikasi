@@ -59,4 +59,56 @@ class ParkRecommendationController extends GetxController {
       debugPrint(e.toString());
     }
   }
+
+  Future storeRekomendasi({
+    required String parkAreaId,
+    required String capacity,
+    required String image,
+    required String description,
+  }) async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      var data = {
+        'capacity': capacity,
+        'image': image,
+        'description': description,
+      };
+
+      var response = await http.post(
+        Uri.parse('${apiUrl}parkRecommendation/$parkAreaId'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+        body: data,
+      );
+
+      final content = json.decode(response.body);
+
+      if (response.statusCode == 201) {
+        isLoading.value = false;
+
+        Get.offAllNamed('/dashboard');
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          content['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(content.toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
 }
