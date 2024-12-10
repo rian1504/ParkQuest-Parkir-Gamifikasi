@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 
-class DetailGedungUtama extends StatefulWidget {
-  const DetailGedungUtama({super.key});
+class DetailParkir extends StatefulWidget {
+  const DetailParkir({super.key});
 
   @override
-  State<DetailGedungUtama> createState() => _DetailGedungUtama();
+  State<DetailParkir> createState() => _DetailParkirState();
 }
 
-class _DetailGedungUtama extends State<DetailGedungUtama> {
+class _DetailParkirState extends State<DetailParkir> {
   // Title Text
   Widget _buildTitleText(String text) {
     return Row(
