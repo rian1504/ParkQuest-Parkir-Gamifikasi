@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
 import 'package:parkquest_parkir_gamifikasi/views/widgets/leaderboard_top_three.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
-
-  // Logout
-  final _formKey = GlobalKey<FormState>();
-  final AuthenticationController _authenticationcontroller =
-      Get.put(AuthenticationController());
 
   // Leaderboard
   final LeaderboardController _leaderboardcontroller =
@@ -82,6 +76,12 @@ class Dashboard extends StatelessWidget {
               },
               child: Text('Leaderboard'),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/setting');
+              },
+              child: Text('Setting'),
+            ),
             Obx(() {
               return _leaderboardcontroller.isLoading.value
                   ? CircularProgressIndicator()
@@ -96,24 +96,6 @@ class Dashboard extends StatelessWidget {
                       },
                     );
             }),
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      await _authenticationcontroller.logout();
-                    },
-                    child: Obx(() {
-                      return _authenticationcontroller.isLoading.value
-                          ? CircularProgressIndicator()
-                          : Text('Logout');
-                    }),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
