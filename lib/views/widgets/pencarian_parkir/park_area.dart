@@ -12,8 +12,8 @@ class ParkArea extends StatelessWidget {
   final ParkAreaModel data;
   final _formKey = GlobalKey<FormState>();
 
-  final Parksearchcontroller _parksearchcontroller =
-      Get.put(Parksearchcontroller());
+  final ParkSearchController _parksearchcontroller =
+      Get.put(ParkSearchController());
 
   @override
   Widget build(BuildContext context) {

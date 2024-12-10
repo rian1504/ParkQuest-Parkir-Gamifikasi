@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/ParkRecommendation/ParkArea.dart';
-// import 'package:parkquest_parkir_gamifikasi/Controllers/ParkRecommendationController.dart';
 // import 'package:get/get.dart';
+// import 'package:parkquest_parkir_gamifikasi/Controllers/SurveyController.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
 
-class ParkArea extends StatelessWidget {
-  ParkArea({
+class SurveyWidget extends StatelessWidget {
+  SurveyWidget({
     super.key,
     required this.data,
   });
 
-  final ParkAreaModel data;
+  final SurveyModel data;
   // final _formKey = GlobalKey<FormState>();
 
-  // final ParkRecommendationController _parkrecommendationcontroller =
-  //     Get.put(ParkRecommendationController());
+  // final SurveyController _surveycontroller =
+  //     Get.put(SurveyController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,11 @@ class ParkArea extends StatelessWidget {
             //     children: [
             //       ElevatedButton(
             //         onPressed: () async {
-            //           await _parkrecommendationcontroller.parkData(
+            //           await _surveycontroller.parkData(
             //               parkAreaId: data.id.toString());
             //         },
             //         child: Obx(() {
-            //           return _parkrecommendationcontroller.isLoading.value
+            //           return _surveycontroller.isLoading.value
             //               ? CircularProgressIndicator()
             //               : Text(data.parkName);
             //         }),
@@ -42,9 +42,8 @@ class ParkArea extends StatelessWidget {
             //   ),
             // ),
             Text(data.id.toString()),
-            Text(data.parkName),
-            Text(data.parkCoordinate),
-            Text(data.parkCapacity.toString()),
+            Text(data.surveyName),
+            Text(data.surveyImage),
           ],
         ),
       ),

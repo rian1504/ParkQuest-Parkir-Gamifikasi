@@ -8,8 +8,8 @@ class PencarianParkir extends StatelessWidget {
   PencarianParkir({super.key});
 
   // Park Area
-  final Parksearchcontroller _parksearchcontroller =
-      Get.put(Parksearchcontroller());
+  final ParkSearchController _parksearchcontroller =
+      Get.put(ParkSearchController());
 
   @override
   Widget build(BuildContext context) {

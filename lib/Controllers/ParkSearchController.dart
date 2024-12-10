@@ -7,7 +7,7 @@ import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkArea.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkData.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
-class Parksearchcontroller extends GetxController {
+class ParkSearchController extends GetxController {
   Rx<List> datas = Rx<List>([]);
   Rx<List> datas2 = Rx<List>([]);
   final isLoading = false.obs;
