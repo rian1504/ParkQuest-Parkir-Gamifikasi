@@ -11,6 +11,7 @@ class AuthenticationController extends GetxController {
   final isLoading = false.obs;
   final token = ''.obs;
   final box = GetStorage();
+  // Rx<UserModel> user = Rx<UserModel>();
   Rxn<UserModel> user = Rxn<UserModel>();
 
   Future registerEksternal({

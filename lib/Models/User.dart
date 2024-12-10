@@ -16,7 +16,7 @@ class UserModel {
   String username;
   String email;
   dynamic emailVerifiedAt;
-  String avatar;
+  dynamic avatar;
   String identityNumber;
   int totalExp;
   int coin;
