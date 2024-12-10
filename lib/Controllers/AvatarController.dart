@@ -34,10 +34,10 @@ class AvatarController extends GetxController {
         },
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 200) {
         isLoading.value = false;
-
-        final content = json.decode(response.body);
 
         for (var item in content['data']) {
           datasBasic.value.add(AvatarModel.fromJson(item));
@@ -49,13 +49,13 @@ class AvatarController extends GetxController {
 
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
 
-        debugPrint(json.decode(response.body).toString());
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
@@ -77,10 +77,10 @@ class AvatarController extends GetxController {
         },
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 200) {
         isLoading.value = false;
-
-        final content = json.decode(response.body);
 
         for (var item in content['data']) {
           datasRare.value.add(AvatarModel.fromJson(item));
@@ -92,13 +92,13 @@ class AvatarController extends GetxController {
 
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
 
-        debugPrint(json.decode(response.body).toString());
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;
@@ -120,10 +120,10 @@ class AvatarController extends GetxController {
         },
       );
 
+      final content = json.decode(response.body);
+
       if (response.statusCode == 200) {
         isLoading.value = false;
-
-        final content = json.decode(response.body);
 
         for (var item in content['data']) {
           datasLegendary.value.add(AvatarModel.fromJson(item));
@@ -135,13 +135,13 @@ class AvatarController extends GetxController {
 
         Get.snackbar(
           'Error',
-          json.decode(response.body)['message'],
+          content['message'],
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
 
-        debugPrint(json.decode(response.body).toString());
+        debugPrint(content.toString());
       }
     } catch (e) {
       isLoading.value = false;

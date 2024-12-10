@@ -26,7 +26,7 @@ class ShopBasic extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Survey'),
+            Text('Shop Basic'),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/shop/rare');

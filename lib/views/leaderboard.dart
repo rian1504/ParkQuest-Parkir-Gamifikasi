@@ -27,7 +27,7 @@ class Leaderboard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Survey'),
+            Text('Leaderboard'),
             Obx(() {
               return _leaderboardcontroller.isLoading.value
                   ? CircularProgressIndicator()
