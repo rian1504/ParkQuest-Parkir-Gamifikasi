@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class AuthenticationController extends GetxController {
   final isLoading = false.obs;
   final token = ''.obs;
   final box = GetStorage();
+  Rxn<UserModel> user = Rxn<UserModel>();
 
   Future registerEksternal({
     required String roleId,
@@ -156,13 +158,14 @@ class AuthenticationController extends GetxController {
       if (response.statusCode == 200) {
         isLoading.value = false;
 
+        final data = content['data'];
+        user.value = UserModel.fromJson(data);
+
         final token = content['token'];
         box.write('token', token);
 
         Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
-
-        return content;
       } else {
         isLoading.value = false;
 

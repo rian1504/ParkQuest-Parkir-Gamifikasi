@@ -24,9 +24,6 @@ class UserModel {
   int isAdmin;
   DateTime createdAt;
   DateTime updatedAt;
-  int userId;
-  String agencyCompany;
-  String position;
 
   UserModel({
     required this.id,
@@ -44,9 +41,6 @@ class UserModel {
     required this.isAdmin,
     required this.createdAt,
     required this.updatedAt,
-    required this.userId,
-    required this.agencyCompany,
-    required this.position,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -65,9 +59,6 @@ class UserModel {
         isAdmin: json["is_admin"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        userId: json["user_id"],
-        agencyCompany: json["agency/company"],
-        position: json["position"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,8 +77,5 @@ class UserModel {
         "is_admin": isAdmin,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "user_id": userId,
-        "agency/company": agencyCompany,
-        "position": position,
       };
 }

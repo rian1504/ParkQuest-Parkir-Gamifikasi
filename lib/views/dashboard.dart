@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
 import 'package:parkquest_parkir_gamifikasi/views/widgets/leaderboard_top_three.dart';
 
@@ -10,6 +11,10 @@ class Dashboard extends StatelessWidget {
   // Leaderboard
   final LeaderboardController _leaderboardcontroller =
       Get.put(LeaderboardController());
+
+  // Data user
+  final AuthenticationController _authenticationcontroller =
+      Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,18 @@ class Dashboard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Obx(() {
+              final user = _authenticationcontroller.user.value!;
+              return _authenticationcontroller.isLoading.value
+                  ? CircularProgressIndicator()
+                  : Column(
+                      children: [
+                        Text(user.name),
+                        Text('${user.totalExp.toString()} EXP'),
+                        Text('${user.coin.toString()} Coin'),
+                      ],
+                    );
+            }),
             Text('Dashboard'),
             TextButton(
               onPressed: () {
