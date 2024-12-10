@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/AvatarController.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/ShopController.dart';
 import 'package:parkquest_parkir_gamifikasi/views/widgets/shop/basic.dart';
 
 class ShopBasic extends StatelessWidget {
   ShopBasic({super.key});
 
-  // Avatar
-  final AvatarController _avatarcontroller = Get.put(AvatarController());
+  // Shop
+  final ShopController _shopcontroller = Get.put(ShopController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,15 @@ class ShopBasic extends StatelessWidget {
               child: Text('Legendary'),
             ),
             Obx(() {
-              return _avatarcontroller.isLoading.value
+              return _shopcontroller.isLoading.value
                   ? CircularProgressIndicator()
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _avatarcontroller.datasBasic.value.length,
+                      itemCount: _shopcontroller.datasBasic.value.length,
                       itemBuilder: (context, index) {
                         return ShopBasicWidget(
-                          data: _avatarcontroller.datasBasic.value[index],
+                          data: _shopcontroller.datasBasic.value[index],
                         );
                       },
                     );

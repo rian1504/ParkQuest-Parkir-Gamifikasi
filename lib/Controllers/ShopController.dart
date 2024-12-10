@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
-class AvatarController extends GetxController {
+class ShopController extends GetxController {
   Rx<List<AvatarModel>> datasBasic = Rx<List<AvatarModel>>([]);
   Rx<List<AvatarModel>> datasRare = Rx<List<AvatarModel>>([]);
   Rx<List<AvatarModel>> datasLegendary = Rx<List<AvatarModel>>([]);
