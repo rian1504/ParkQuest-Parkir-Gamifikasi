@@ -34,10 +34,12 @@ class PencarianParkir extends StatelessWidget {
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _parksearchcontroller.datas.value.length,
+                      itemCount:
+                          _parksearchcontroller.datasParkArea.value.length,
                       itemBuilder: (context, index) {
                         return ParkArea(
-                          data: _parksearchcontroller.datas.value[index],
+                          data:
+                              _parksearchcontroller.datasParkArea.value[index],
                         );
                       },
                     );

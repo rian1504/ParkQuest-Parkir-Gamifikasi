@@ -22,6 +22,8 @@ class DetailPencarianParkir extends StatelessWidget {
       });
     }
 
+    final parkAreaData = _parksearchcontroller.parkAreaData.value!;
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -31,13 +33,33 @@ class DetailPencarianParkir extends StatelessWidget {
             Obx(() {
               return _parksearchcontroller.isLoading.value
                   ? CircularProgressIndicator()
+                  : Column(
+                      children: [
+                        Text(parkAreaData.parkName),
+                        Text(parkAreaData.parkImage),
+                        Text(parkAreaData.parkInformation),
+                      ],
+                    );
+            }),
+            ElevatedButton(
+              onPressed: () async {
+                await _parksearchcontroller.parkRecommendation(
+                    parkAreaId: parkAreaData.id.toString());
+              },
+              child: Text('Rekomendasi'),
+            ),
+            Obx(() {
+              return _parksearchcontroller.isLoading.value
+                  ? CircularProgressIndicator()
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _parksearchcontroller.datas2.value.length,
+                      itemCount:
+                          _parksearchcontroller.datasParkData.value.length,
                       itemBuilder: (context, index) {
                         return ParkData(
-                          data: _parksearchcontroller.datas2.value[index],
+                          data:
+                              _parksearchcontroller.datasParkData.value[index],
                         );
                       },
                     );
