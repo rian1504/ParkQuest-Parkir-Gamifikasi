@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/pencarian_parkir/park_recommendation.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkRecommendation.dart';
 
 class DaftarRekomendasiParkir extends StatelessWidget {
   DaftarRekomendasiParkir({super.key});
@@ -57,9 +57,36 @@ class DaftarRekomendasiParkir extends StatelessWidget {
                       itemCount: _parksearchcontroller
                           .datasParkRecommendation.value.length,
                       itemBuilder: (context, index) {
-                        return ParkRecommendationWidget(
-                          data: _parksearchcontroller
-                              .datasParkRecommendation.value[index],
+                        final ParkRecommendationModel data =
+                            _parksearchcontroller
+                                .datasParkRecommendation.value[index];
+
+                        return Column(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await _parksearchcontroller
+                                        .parkRecommendationDetail(
+                                            parkRecommendationId:
+                                                data.id.toString());
+                                  },
+                                  child: Obx(() {
+                                    return _parksearchcontroller.isLoading.value
+                                        ? CircularProgressIndicator()
+                                        : Column(
+                                            children: [
+                                              Text(data.user.name),
+                                              Text(data.description),
+                                            ],
+                                          );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ],
                         );
                       },
                     );

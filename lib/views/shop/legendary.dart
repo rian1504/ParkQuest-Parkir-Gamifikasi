@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ShopController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/shop/legendary.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
 
 class ShopLegendary extends StatelessWidget {
   ShopLegendary({super.key});
@@ -47,8 +47,16 @@ class ShopLegendary extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _shopcontroller.datasLegendary.value.length,
                       itemBuilder: (context, index) {
-                        return ShopLegendaryWidget(
-                          data: _shopcontroller.datasLegendary.value[index],
+                        final AvatarModel data =
+                            _shopcontroller.datasLegendary.value[index];
+
+                        return Column(
+                          children: [
+                            Text(data.rarityName),
+                            Text(data.avatarName),
+                            Text(data.avatarImage),
+                            Text(data.avatarDescription),
+                          ],
                         );
                       },
                     );

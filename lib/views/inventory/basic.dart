@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/inventory/basic.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
 
 class InventoryBasic extends StatelessWidget {
   InventoryBasic({super.key});
@@ -48,8 +48,15 @@ class InventoryBasic extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _inventorycontroller.datasBasic.value.length,
                       itemBuilder: (context, index) {
-                        return InventoryBasicWidget(
-                          data: _inventorycontroller.datasBasic.value[index],
+                        final UserAvatarModel data =
+                            _inventorycontroller.datasBasic.value[index];
+                        return Column(
+                          children: [
+                            Text(data.rarityName),
+                            Text(data.avatarName),
+                            Text(data.avatarImage),
+                            Text(data.avatarDescription),
+                          ],
                         );
                       },
                     );

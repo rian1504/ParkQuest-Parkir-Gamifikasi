@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkRecommendationController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/rekomendasi_parkir/park_area.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/ParkRecommendation/ParkArea.dart';
 
 class RekomendasiParkir extends StatelessWidget {
   RekomendasiParkir({super.key});
@@ -37,9 +37,26 @@ class RekomendasiParkir extends StatelessWidget {
                       itemCount:
                           _parkrecommendationcontroller.datas.value.length,
                       itemBuilder: (context, index) {
-                        return ParkArea(
-                          data:
-                              _parkrecommendationcontroller.datas.value[index],
+                        final ParkAreaModel data =
+                            _parkrecommendationcontroller.datas.value[index];
+
+                        return Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/formRekomendasiParkir',
+                                  arguments: data.id,
+                                );
+                              },
+                              child: Text(data.parkName),
+                            ),
+                            Text(data.id.toString()),
+                            Text(data.parkName),
+                            Text(data.parkCoordinate),
+                            Text(data.parkCapacity.toString()),
+                          ],
                         );
                       },
                     );

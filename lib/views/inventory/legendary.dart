@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/inventory/legendary.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
 
 class InventoryLegendary extends StatelessWidget {
   InventoryLegendary({super.key});
@@ -49,9 +49,15 @@ class InventoryLegendary extends StatelessWidget {
                       itemCount:
                           _inventorycontroller.datasLegendary.value.length,
                       itemBuilder: (context, index) {
-                        return InventoryLegendaryWidget(
-                          data:
-                              _inventorycontroller.datasLegendary.value[index],
+                        final UserAvatarModel data =
+                            _inventorycontroller.datasLegendary.value[index];
+                        return Column(
+                          children: [
+                            Text(data.rarityName),
+                            Text(data.avatarName),
+                            Text(data.avatarImage),
+                            Text(data.avatarDescription),
+                          ],
                         );
                       },
                     );

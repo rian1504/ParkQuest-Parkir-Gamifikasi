@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ShopController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/shop/rare.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
 
 class ShopRare extends StatelessWidget {
   ShopRare({super.key});
@@ -47,8 +47,16 @@ class ShopRare extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _shopcontroller.datasRare.value.length,
                       itemBuilder: (context, index) {
-                        return ShopRareWidget(
-                          data: _shopcontroller.datasRare.value[index],
+                        final AvatarModel data =
+                            _shopcontroller.datasRare.value[index];
+
+                        return Column(
+                          children: [
+                            Text(data.rarityName),
+                            Text(data.avatarName),
+                            Text(data.avatarImage),
+                            Text(data.avatarDescription),
+                          ],
                         );
                       },
                     );

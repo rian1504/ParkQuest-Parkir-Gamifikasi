@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/profile/profile.dart';
 
 class UbahProfile extends StatelessWidget {
   UbahProfile({super.key});
@@ -30,8 +29,10 @@ class UbahProfile extends StatelessWidget {
             Obx(() {
               return _profilecontroller.isLoading.value
                   ? CircularProgressIndicator()
-                  : UbahProfileWidget(
-                      data: _profilecontroller.datas.value!,
+                  : Column(
+                      children: [
+                        Text('tes'),
+                      ],
                     );
             }),
           ],

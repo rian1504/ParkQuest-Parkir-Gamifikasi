@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/pencarian_parkir/park_area.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkArea.dart';
 
 class PencarianParkir extends StatelessWidget {
   PencarianParkir({super.key});
@@ -37,9 +37,36 @@ class PencarianParkir extends StatelessWidget {
                       itemCount:
                           _parksearchcontroller.datasParkArea.value.length,
                       itemBuilder: (context, index) {
-                        return ParkArea(
-                          data:
-                              _parksearchcontroller.datasParkArea.value[index],
+                        final ParkAreaModel data =
+                            _parksearchcontroller.datasParkArea.value[index];
+                        final formKey = GlobalKey<FormState>();
+
+                        return Column(
+                          children: [
+                            Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await _parksearchcontroller.parkData(
+                                          parkAreaId: data.id.toString());
+                                    },
+                                    child: Obx(() {
+                                      return _parksearchcontroller
+                                              .isLoading.value
+                                          ? CircularProgressIndicator()
+                                          : Text(data.parkName);
+                                    }),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(data.id.toString()),
+                            Text(data.parkName),
+                            Text(data.parkCoordinate),
+                            Text(data.parkCapacity.toString()),
+                          ],
                         );
                       },
                     );

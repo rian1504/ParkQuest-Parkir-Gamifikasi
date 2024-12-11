@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/pencarian_parkir/park_data.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkData.dart';
 
 class DetailPencarianParkir extends StatelessWidget {
   DetailPencarianParkir({super.key});
@@ -57,9 +57,15 @@ class DetailPencarianParkir extends StatelessWidget {
                       itemCount:
                           _parksearchcontroller.datasParkData.value.length,
                       itemBuilder: (context, index) {
-                        return ParkData(
-                          data:
-                              _parksearchcontroller.datasParkData.value[index],
+                        final ParkDataModel data =
+                            _parksearchcontroller.datasParkData.value[index];
+
+                        return Column(
+                          children: [
+                            Text(data.startHour.toString()),
+                            Text(data.endHour.toString()),
+                            Text(data.available.toString()),
+                          ],
                         );
                       },
                     );

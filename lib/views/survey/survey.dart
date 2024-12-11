@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/SurveyController.dart';
-import 'package:parkquest_parkir_gamifikasi/views/widgets/survey/survey.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
 
 class Survey extends StatelessWidget {
   Survey({super.key});
@@ -35,8 +35,14 @@ class Survey extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _surveycontroller.datas.value.length,
                       itemBuilder: (context, index) {
-                        return SurveyWidget(
-                          data: _surveycontroller.datas.value[index],
+                        final SurveyModel data =
+                            _surveycontroller.datas.value[index];
+                        return Column(
+                          children: [
+                            Text(data.id.toString()),
+                            Text(data.surveyName),
+                            Text(data.surveyImage),
+                          ],
                         );
                       },
                     );
