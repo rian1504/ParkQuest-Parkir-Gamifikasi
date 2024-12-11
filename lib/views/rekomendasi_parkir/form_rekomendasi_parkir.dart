@@ -1,13 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkRecommendationController.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 
 class FormRekomendasiParkir extends StatelessWidget {
   FormRekomendasiParkir({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final _capacity = TextEditingController();
-  final _image = TextEditingController();
   final _description = TextEditingController();
 
   final ParkRecommendationController _parkrecommendationcontroller =
@@ -35,13 +36,47 @@ class FormRekomendasiParkir extends StatelessWidget {
                       hintText: 'Kapasitas',
                     ),
                   ),
-                  TextFormField(
-                    controller: _image,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: 'Gambar',
-                    ),
-                  ),
+                  Obx(() {
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            await _parkrecommendationcontroller.pickImage();
+                          },
+                          child: _parkrecommendationcontroller
+                                  .selectedImagePath.value.isNotEmpty
+                              ? (kIsWeb
+                                  ? Image.network(
+                                      _parkrecommendationcontroller
+                                          .selectedImagePath.value,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(_parkrecommendationcontroller
+                                          .selectedImagePath.value),
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ))
+                              : Container(
+                                  width: 100,
+                                  height: 100,
+                                  color: Colors.grey[300],
+                                  child: Icon(Icons.add_a_photo),
+                                ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          _parkrecommendationcontroller
+                                  .selectedImagePath.value.isNotEmpty
+                              ? "Gambar dipilih"
+                              : "Pilih gambar",
+                        ),
+                      ],
+                    );
+                  }),
                   TextFormField(
                     controller: _description,
                     obscureText: false,
@@ -54,7 +89,8 @@ class FormRekomendasiParkir extends StatelessWidget {
                       await _parkrecommendationcontroller.storeRekomendasi(
                         parkAreaId: parkAreaId.toString(),
                         capacity: _capacity.text,
-                        image: _image.text,
+                        image: _parkrecommendationcontroller
+                            .selectedImagePath.value,
                         description: _description.text,
                       );
                     },

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkRecommendation/ParkArea.dart';
 
@@ -10,6 +12,10 @@ class ParkRecommendationController extends GetxController {
   Rx<List> datas = Rx<List>([]);
   final isLoading = false.obs;
   final box = GetStorage();
+
+  var selectedImagePath = ''.obs;
+  var selectedImageBytes = Rxn<Uint8List>();
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void onInit() {
@@ -60,6 +66,27 @@ class ParkRecommendationController extends GetxController {
     }
   }
 
+  Future pickImage() async {
+    try {
+      final XFile? pickedFile =
+          await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        if (kIsWeb) {
+          // Jika platform adalah Web
+          selectedImagePath.value = pickedFile.path;
+          selectedImageBytes.value = await pickedFile.readAsBytes();
+        } else {
+          // Jika platform adalah selain Web
+          selectedImagePath.value = pickedFile.path;
+        }
+      } else {
+        Get.snackbar("Error", "No image selected");
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+  }
+
   Future storeRekomendasi({
     required String parkAreaId,
     required String capacity,
@@ -70,20 +97,40 @@ class ParkRecommendationController extends GetxController {
       isLoading.value = true;
       final token = box.read('token');
 
-      var data = {
-        'capacity': capacity,
-        'image': image,
-        'description': description,
-      };
-
-      var response = await http.post(
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${apiUrl}parkRecommendation/$parkAreaId'),
-        headers: {
-          ...headers,
-          'Authorization': 'Bearer $token',
-        },
-        body: data,
       );
+
+      // Field form
+      request.fields['capacity'] = capacity;
+      request.fields['description'] = description;
+
+      // Tambahkan file (Web dan non-Web)
+      if (selectedImagePath.value.isNotEmpty) {
+        if (kIsWeb) {
+          // Jika platform adalah Web
+          request.files.add(http.MultipartFile.fromBytes(
+            'image', // Nama field di backend
+            selectedImageBytes.value!,
+            filename: selectedImagePath.value,
+          ));
+        } else {
+          // Jika platform adalah selain Web
+          request.files.add(await http.MultipartFile.fromPath(
+            'image',
+            selectedImagePath.value,
+          ));
+        }
+      }
+
+      request.headers.addAll({
+        ...headers,
+        'Authorization': 'Bearer $token',
+      });
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
 
       final content = json.decode(response.body);
 
