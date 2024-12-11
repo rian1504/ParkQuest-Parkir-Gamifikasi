@@ -24,6 +24,7 @@ class UserModel {
   int isAdmin;
   DateTime createdAt;
   DateTime updatedAt;
+  Eksternal? eksternal;
 
   UserModel({
     required this.id,
@@ -41,6 +42,7 @@ class UserModel {
     required this.isAdmin,
     required this.createdAt,
     required this.updatedAt,
+    this.eksternal,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -59,6 +61,9 @@ class UserModel {
         isAdmin: json["is_admin"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        eksternal: json["eksternal"] != null
+            ? Eksternal.fromJson(json["eksternal"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,6 +80,39 @@ class UserModel {
         "coin": coin,
         "referral_code": referralCode,
         "is_admin": isAdmin,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "eksternal": eksternal?.toJson(),
+      };
+}
+
+class Eksternal {
+  int userId;
+  String agencyCompany;
+  String position;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  Eksternal({
+    required this.userId,
+    required this.agencyCompany,
+    required this.position,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Eksternal.fromJson(Map<String, dynamic> json) => Eksternal(
+        userId: json["user_id"],
+        agencyCompany: json["agency/company"],
+        position: json["position"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_id": userId,
+        "agency/company": agencyCompany,
+        "position": position,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
       };

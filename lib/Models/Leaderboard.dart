@@ -105,11 +105,11 @@ class LeaderboardModel {
 }
 
 class Rank {
-  int? id;
-  String? rankName;
-  int? expRequired;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  int id;
+  String rankName;
+  int expRequired;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   Rank({
     required this.id,
@@ -131,7 +131,7 @@ class Rank {
         "id": id,
         "rank_name": rankName,
         "exp_required": expRequired,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
       };
 }
