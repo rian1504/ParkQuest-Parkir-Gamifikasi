@@ -38,8 +38,17 @@ class Survey extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final SurveyModel data =
                             _surveycontroller.datas.value[index];
+
                         return Column(
                           children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                await _surveycontroller.detail(
+                                  surveyId: data.id.toString(),
+                                );
+                              },
+                              child: Text(data.surveyName),
+                            ),
                             Text(data.id.toString()),
                             Text(data.surveyName),
                             Image.network(
