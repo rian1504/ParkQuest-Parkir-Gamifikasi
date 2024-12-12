@@ -149,4 +149,45 @@ class InventoryController extends GetxController {
       debugPrint(e.toString());
     }
   }
+
+  Future updateAvatar({required String avatarId}) async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      final response = await http.post(
+        Uri.parse('${apiUrl}inventory/updateAvatar/$avatarId'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final content = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+
+        Get.offAllNamed('/dashboard');
+
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          content['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(content.toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
 }
