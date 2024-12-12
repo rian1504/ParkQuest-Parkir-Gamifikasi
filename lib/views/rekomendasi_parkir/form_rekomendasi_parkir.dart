@@ -88,10 +88,10 @@ class FormRekomendasiParkir extends StatelessWidget {
                     onPressed: () async {
                       await _parkrecommendationcontroller.storeRekomendasi(
                         parkAreaId: parkAreaId.toString(),
-                        capacity: _capacity.text,
+                        capacity: _capacity.text.trim(),
                         image: _parkrecommendationcontroller
                             .selectedImagePath.value,
-                        description: _description.text,
+                        description: _description.text.trim(),
                       );
                     },
                     child: Obx(() {

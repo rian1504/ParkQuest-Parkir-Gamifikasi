@@ -7,8 +7,7 @@ import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class ProfileController extends GetxController {
-  // Rx<List<UserModel>> datas = Rx<List<UserModel>>([]);
-  Rxn<UserModel> datas = Rxn<UserModel>();
+  Rxn<UserModel> userData = Rxn<UserModel>();
   final isLoading = false.obs;
   final box = GetStorage();
 
@@ -36,7 +35,65 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         isLoading.value = false;
 
-        datas.value = UserModel.fromJson(content['data']);
+        userData.value = UserModel.fromJson(content['data']);
+
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          content['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(content.toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
+
+  Future ubahProfile({
+    required String name,
+    required String username,
+    required String email,
+    required String identityNumber,
+    String? company,
+    String? position,
+  }) async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      var data = {
+        'name': name,
+        'username': username,
+        'email': email,
+        'identity_number': identityNumber,
+        'company': company,
+        'position': position,
+      };
+
+      final response = await http.post(
+        Uri.parse('${apiUrl}profile'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+        body: data,
+      );
+
+      final content = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+
+        Get.offAllNamed('/dashboard');
 
         debugPrint(content.toString());
       } else {
