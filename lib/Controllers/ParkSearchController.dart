@@ -67,9 +67,7 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkData({
-    required String parkAreaId,
-  }) async {
+  Future parkData({required String parkAreaId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -117,9 +115,7 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendation({
-    required String parkAreaId,
-  }) async {
+  Future parkRecommendation({required String parkAreaId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -165,9 +161,8 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendationDetail({
-    required String parkRecommendationId,
-  }) async {
+  Future parkRecommendationDetail(
+      {required String parkRecommendationId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -212,9 +207,8 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendationAccepted({
-    required String parkRecommendationId,
-  }) async {
+  Future parkRecommendationAccepted(
+      {required String parkRecommendationId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');

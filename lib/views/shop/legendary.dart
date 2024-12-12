@@ -53,6 +53,13 @@ class ShopLegendary extends StatelessWidget {
 
                         return Column(
                           children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                await _shopcontroller.shopDetail(
+                                    avatarId: data.id.toString());
+                              },
+                              child: Text(data.avatarName),
+                            ),
                             Image.network(
                               storageUrl + data.avatarImage,
                               width: 100,
