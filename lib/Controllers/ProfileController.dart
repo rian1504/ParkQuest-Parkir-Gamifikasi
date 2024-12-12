@@ -115,4 +115,56 @@ class ProfileController extends GetxController {
       debugPrint(e.toString());
     }
   }
+
+  Future UbahPassword({
+    required String oldPassword,
+    required String newPassword,
+    required String newPasswordConfirmation,
+  }) async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      var data = {
+        'old_password': oldPassword,
+        'new_password': newPassword,
+        'new_password_confirmation': newPasswordConfirmation,
+      };
+
+      final response = await http.post(
+        Uri.parse('${apiUrl}password'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+        body: data,
+      );
+
+      final content = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+
+        Get.offAllNamed('/dashboard');
+
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          content['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(content.toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
 }
