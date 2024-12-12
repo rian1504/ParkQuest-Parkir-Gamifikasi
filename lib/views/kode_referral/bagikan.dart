@@ -27,6 +27,12 @@ class KodeReferralBagikan extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Kode Referral Bagikan'),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/referralMasukkan');
+              },
+              child: Text('Referral Masukkan'),
+            ),
             Obx(() {
               return _referralcodecontroller.isLoading.value
                   ? CircularProgressIndicator()

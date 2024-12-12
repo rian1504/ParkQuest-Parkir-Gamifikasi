@@ -57,4 +57,48 @@ class ReferralCodeController extends GetxController {
       debugPrint(e.toString());
     }
   }
+
+  Future store({required String referralCode}) async {
+    try {
+      isLoading.value = true;
+      final token = box.read('token');
+
+      var data = {'referral_code': referralCode};
+
+      final response = await http.post(
+        Uri.parse('${apiUrl}referral'),
+        headers: {
+          ...headers,
+          'Authorization': 'Bearer $token',
+        },
+        body: data,
+      );
+
+      final content = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+
+        Get.offAllNamed('/dashboard');
+
+        debugPrint(content.toString());
+      } else {
+        isLoading.value = false;
+
+        Get.snackbar(
+          'Error',
+          content['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
+        debugPrint(content.toString());
+      }
+    } catch (e) {
+      isLoading.value = false;
+
+      debugPrint(e.toString());
+    }
+  }
 }

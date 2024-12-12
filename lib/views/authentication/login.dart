@@ -10,7 +10,8 @@ class Login extends StatelessWidget {
   final _roleId = TextEditingController();
   final _username = TextEditingController();
   final _password = TextEditingController();
-  final _authenticationController = Get.put(AuthenticationController());
+  final AuthenticationController _authenticationController =
+      Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
