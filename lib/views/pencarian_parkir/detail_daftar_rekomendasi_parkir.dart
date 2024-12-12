@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class DetailDaftarRekomendasiParkir extends StatelessWidget {
   DetailDaftarRekomendasiParkir({super.key});
@@ -57,7 +58,11 @@ class DetailDaftarRekomendasiParkir extends StatelessWidget {
                       children: [
                         Text(parkRecommendationData.user.name),
                         Text(parkRecommendationData.capacity.toString()),
-                        Text(parkRecommendationData.image),
+                        Image.network(
+                          storageUrl + parkRecommendationData.image,
+                          width: 100,
+                          height: 100,
+                        ),
                         Text(parkRecommendationData.description),
                       ],
                     );

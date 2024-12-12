@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkData.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class DetailPencarianParkir extends StatelessWidget {
   DetailPencarianParkir({super.key});
@@ -35,8 +36,12 @@ class DetailPencarianParkir extends StatelessWidget {
                   ? CircularProgressIndicator()
                   : Column(
                       children: [
+                        Image.network(
+                          storageUrl + parkAreaData.parkImage,
+                          width: 100,
+                          height: 100,
+                        ),
                         Text(parkAreaData.parkName),
-                        Text(parkAreaData.parkImage),
                         Text(parkAreaData.parkInformation),
                       ],
                     );

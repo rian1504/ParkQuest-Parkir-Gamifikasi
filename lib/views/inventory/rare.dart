@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class InventoryRare extends StatelessWidget {
   InventoryRare({super.key});
@@ -52,9 +53,12 @@ class InventoryRare extends StatelessWidget {
                             _inventorycontroller.datasRare.value[index];
                         return Column(
                           children: [
-                            Text(data.rarityName),
+                            Image.network(
+                              storageUrl + data.avatarImage,
+                              width: 100,
+                              height: 100,
+                            ),
                             Text(data.avatarName),
-                            Text(data.avatarImage),
                             Text(data.avatarDescription),
                           ],
                         );

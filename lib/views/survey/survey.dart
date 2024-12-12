@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/SurveyController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class Survey extends StatelessWidget {
   Survey({super.key});
@@ -41,7 +42,11 @@ class Survey extends StatelessWidget {
                           children: [
                             Text(data.id.toString()),
                             Text(data.surveyName),
-                            Text(data.surveyImage),
+                            Image.network(
+                              storageUrl + data.surveyImage,
+                              width: 100,
+                              height: 100,
+                            ),
                           ],
                         );
                       },
