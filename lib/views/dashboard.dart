@@ -3,7 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
