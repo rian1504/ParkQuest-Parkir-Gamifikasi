@@ -8,6 +8,7 @@ import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/UserLeaderboard.d
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class LeaderboardController extends GetxController {
+  Rx<List<LeaderboardModel>> datasTopThree = Rx<List<LeaderboardModel>>([]);
   Rx<List<LeaderboardModel>> datas = Rx<List<LeaderboardModel>>([]);
   final isLoading = false.obs;
   final box = GetStorage();
@@ -40,7 +41,7 @@ class LeaderboardController extends GetxController {
         isLoading.value = false;
 
         for (var item in content['data']) {
-          datas.value.add(LeaderboardModel.fromJson(item));
+          datasTopThree.value.add(LeaderboardModel.fromJson(item));
         }
 
         debugPrint(content.toString());
@@ -125,9 +126,11 @@ class LeaderboardController extends GetxController {
       if (response.statusCode == 200) {
         isLoading.value = false;
 
-        final data = content['data'].first;
+        final data = content['data'];
         dataUserLeaderboard.value = UserLeaderboardModel.fromJson(data);
 
+        debugPrint(
+            'Updated Data User Leaderboard: ${dataUserLeaderboard.value}');
         debugPrint(content.toString());
       } else {
         isLoading.value = false;

@@ -105,14 +105,15 @@ class Dashboard extends StatelessWidget {
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _leaderboardcontroller.datas.value.length,
+                      itemCount:
+                          _leaderboardcontroller.datasTopThree.value.length,
                       itemBuilder: (context, index) {
                         final LeaderboardModel data =
                             _leaderboardcontroller.datas.value[index];
                         return Column(
                           children: [
-                            Text(data.username),
-                            Text(data.rank.rankName.toString()),
+                            Text(data.user.username),
+                            Text(data.rank.rankName),
                           ],
                         );
                       },
