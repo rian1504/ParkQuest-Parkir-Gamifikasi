@@ -109,7 +109,7 @@ class Dashboard extends StatelessWidget {
                           _leaderboardcontroller.datasTopThree.value.length,
                       itemBuilder: (context, index) {
                         final LeaderboardModel data =
-                            _leaderboardcontroller.datas.value[index];
+                            _leaderboardcontroller.datasTopThree.value[index];
                         return Column(
                           children: [
                             Text(data.user.username),

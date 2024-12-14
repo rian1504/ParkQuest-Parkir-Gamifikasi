@@ -19,7 +19,6 @@ class AuthenticationController extends GetxController {
     required String username,
     required String email,
     required String password,
-    required String passwordConfirmation,
     required String identityNumber,
     required String company,
     required String position,
@@ -36,7 +35,6 @@ class AuthenticationController extends GetxController {
         'company': company,
         'position': position,
         'password': password,
-        'password_confirmation': passwordConfirmation,
       };
 
       var response = await http.post(
@@ -50,8 +48,8 @@ class AuthenticationController extends GetxController {
       if (response.statusCode == 201) {
         isLoading.value = false;
 
-        token.value = content['token'];
-        box.write('token', token.value);
+        // token.value = content['token'];
+        // box.write('token', token.value);
 
         Get.offAllNamed('/login');
         debugPrint(content.toString());
@@ -81,7 +79,6 @@ class AuthenticationController extends GetxController {
     required String username,
     required String email,
     required String password,
-    required String passwordConfirmation,
     required String identityNumber,
   }) async {
     try {
@@ -94,7 +91,6 @@ class AuthenticationController extends GetxController {
         'email': email,
         'identity_number': identityNumber,
         'password': password,
-        'password_confirmation': passwordConfirmation,
       };
 
       var response = await http.post(
@@ -108,8 +104,8 @@ class AuthenticationController extends GetxController {
       if (response.statusCode == 201) {
         isLoading.value = false;
 
-        token.value = content['token'];
-        box.write('token', token.value);
+        // token.value = content['token'];
+        // box.write('token', token.value);
 
         Get.offAllNamed('/login');
         debugPrint(content.toString());

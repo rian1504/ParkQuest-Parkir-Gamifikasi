@@ -19,7 +19,6 @@ class _DaftarEksternalState extends State<DaftarEksternal> {
   final _company = TextEditingController();
   final _position = TextEditingController();
   final _password = TextEditingController();
-  final _passwordConfirmation = TextEditingController();
   final _authenticationController = Get.put(AuthenticationController());
 
   @override
@@ -96,14 +95,6 @@ class _DaftarEksternalState extends State<DaftarEksternal> {
                       hintText: 'Password',
                     ),
                   ),
-                  TextFormField(
-                    controller: _passwordConfirmation,
-                    obscureText: true,
-                    obscuringCharacter: '*',
-                    decoration: InputDecoration(
-                      hintText: 'Konfirmasi Password',
-                    ),
-                  ),
                   ElevatedButton(
                     onPressed: () async {
                       await _authenticationController.registerEksternal(
@@ -115,7 +106,6 @@ class _DaftarEksternalState extends State<DaftarEksternal> {
                         company: _company.text,
                         position: _position.text,
                         password: _password.text,
-                        passwordConfirmation: _passwordConfirmation.text,
                       );
                     },
                     child: Obx(() {

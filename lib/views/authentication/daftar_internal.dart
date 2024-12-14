@@ -17,7 +17,6 @@ class _DaftarInternalState extends State<DaftarInternal> {
   final _email = TextEditingController();
   final _identityNumber = TextEditingController();
   final _password = TextEditingController();
-  final _passwordConfirmation = TextEditingController();
   final _authenticationController = Get.put(AuthenticationController());
 
   @override
@@ -80,14 +79,6 @@ class _DaftarInternalState extends State<DaftarInternal> {
                       hintText: 'Password',
                     ),
                   ),
-                  TextFormField(
-                    controller: _passwordConfirmation,
-                    obscureText: true,
-                    obscuringCharacter: '*',
-                    decoration: InputDecoration(
-                      hintText: 'Konfirmasi Password',
-                    ),
-                  ),
                   ElevatedButton(
                     onPressed: () async {
                       await _authenticationController.registerInternal(
@@ -97,7 +88,6 @@ class _DaftarInternalState extends State<DaftarInternal> {
                         email: _email.text,
                         identityNumber: _identityNumber.text,
                         password: _password.text,
-                        passwordConfirmation: _passwordConfirmation.text,
                       );
                     },
                     child: Obx(() {
