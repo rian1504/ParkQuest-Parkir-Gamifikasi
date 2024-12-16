@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/AvatarDetail.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
@@ -14,6 +15,9 @@ class ShopController extends GetxController {
   final isLoading = false.obs;
   final box = GetStorage();
   Rxn<AvatarDetailModel> avatarDetailData = Rxn<AvatarDetailModel>();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -39,6 +43,7 @@ class ShopController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasBasic.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -82,6 +87,7 @@ class ShopController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasRare.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -125,6 +131,7 @@ class ShopController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasLegendary..value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -168,6 +175,7 @@ class ShopController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        avatarDetailData.value = null;
         isLoading.value = false;
 
         final dataAvatar = content['data'];
@@ -213,6 +221,8 @@ class ShopController extends GetxController {
 
       if (response.statusCode == 201) {
         isLoading.value = false;
+
+        await _profilecontroller.profile();
 
         Get.offAllNamed('/dashboard');
 

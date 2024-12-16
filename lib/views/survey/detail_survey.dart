@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/SurveyController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Survey/SurveyDetail.dart';
@@ -16,14 +16,14 @@ class DetailSurvey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     return Scaffold(
       body: SafeArea(
@@ -108,6 +108,7 @@ class DetailSurvey extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             _submitAnswers(context);
+            _answerControllers.clear();
           },
           child: Text("Submit"),
         ),

@@ -5,9 +5,14 @@ import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController
 import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   Dashboard({super.key});
 
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   // Leaderboard
   final LeaderboardController _leaderboardcontroller =
       Get.put(LeaderboardController());

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkRecommendation/ParkArea.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 
 class ParkRecommendationController extends GetxController {
   Rx<List> datas = Rx<List>([]);
@@ -16,6 +17,9 @@ class ParkRecommendationController extends GetxController {
   var selectedImagePath = ''.obs;
   var selectedImageBytes = Rxn<Uint8List>();
   final ImagePicker _picker = ImagePicker();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -39,6 +43,7 @@ class ParkRecommendationController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datas.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -135,9 +140,13 @@ class ParkRecommendationController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 201) {
+        selectedImagePath.value = '';
         isLoading.value = false;
 
+        await _profilecontroller.profile();
+
         Get.offAllNamed('/dashboard');
+
         debugPrint(content.toString());
       } else {
         isLoading.value = false;

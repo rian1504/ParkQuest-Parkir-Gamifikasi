@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkRecommendation.dart';
 
@@ -13,14 +13,14 @@ class DaftarRekomendasiParkir extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     final parkAreaData = _parksearchcontroller.parkAreaData.value!;
 
@@ -44,7 +44,8 @@ class DaftarRekomendasiParkir extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await _parksearchcontroller.parkData(
-                    parkAreaId: parkAreaData.id.toString());
+                  parkAreaId: parkAreaData.id.toString(),
+                );
               },
               child: Text('Informasi'),
             ),
@@ -70,8 +71,8 @@ class DaftarRekomendasiParkir extends StatelessWidget {
                                   onPressed: () async {
                                     await _parksearchcontroller
                                         .parkRecommendationDetail(
-                                            parkRecommendationId:
-                                                data.id.toString());
+                                      parkRecommendationId: data.id.toString(),
+                                    );
                                   },
                                   child: Obx(() {
                                     return _parksearchcontroller.isLoading.value

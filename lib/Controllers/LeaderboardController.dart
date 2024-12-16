@@ -9,7 +9,7 @@ import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class LeaderboardController extends GetxController {
   Rx<List<LeaderboardModel>> datasTopThree = Rx<List<LeaderboardModel>>([]);
-  Rx<List<LeaderboardModel>> datas = Rx<List<LeaderboardModel>>([]);
+  Rx<List<LeaderboardModel>> datasLeaderboard = Rx<List<LeaderboardModel>>([]);
   final isLoading = false.obs;
   final box = GetStorage();
   Rxn<UserLeaderboardModel> dataUserLeaderboard = Rxn<UserLeaderboardModel>();
@@ -38,6 +38,7 @@ class LeaderboardController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasTopThree.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -81,10 +82,11 @@ class LeaderboardController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasLeaderboard.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
-          datas.value.add(LeaderboardModel.fromJson(item));
+          datasLeaderboard.value.add(LeaderboardModel.fromJson(item));
         }
 
         debugPrint(content.toString());
@@ -124,13 +126,12 @@ class LeaderboardController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        dataUserLeaderboard.value = null;
         isLoading.value = false;
 
         final data = content['data'];
         dataUserLeaderboard.value = UserLeaderboardModel.fromJson(data);
 
-        debugPrint(
-            'Updated Data User Leaderboard: ${dataUserLeaderboard.value}');
         debugPrint(content.toString());
       } else {
         isLoading.value = false;

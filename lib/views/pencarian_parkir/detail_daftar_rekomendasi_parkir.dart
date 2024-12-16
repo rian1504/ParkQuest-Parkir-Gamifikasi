@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
@@ -15,14 +15,14 @@ class DetailDaftarRekomendasiParkir extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     final parkRecommendationData =
         _parksearchcontroller.parkRecommendationData.value!;
@@ -39,8 +39,9 @@ class DetailDaftarRekomendasiParkir extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       await _parksearchcontroller.parkRecommendationAccepted(
-                          parkRecommendationId:
-                              parkRecommendationData.id.toString());
+                        parkRecommendationId:
+                            parkRecommendationData.id.toString(),
+                      );
                     },
                     child: Obx(() {
                       return _parksearchcontroller.isLoading.value

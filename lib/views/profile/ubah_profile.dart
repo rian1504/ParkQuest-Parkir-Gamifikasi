@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 
@@ -19,14 +19,14 @@ class UbahProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     return Scaffold(
       body: Center(
@@ -40,11 +40,11 @@ class UbahProfile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Obx(() {
-                    final user = _profilecontroller.userData.value!;
-
                     if (_profilecontroller.isLoading.value) {
                       return CircularProgressIndicator();
                     }
+
+                    final user = _profilecontroller.userData.value!;
 
                     // Set nilai awal ke controller hanya sekali
                     if (_name.text.isEmpty) {
@@ -110,6 +110,7 @@ class UbahProfile extends StatelessWidget {
                               company: _company.text.trim(),
                               position: _position.text.trim(),
                             );
+                            _profilecontroller.profile();
                           },
                           child: Obx(() {
                             return _profilecontroller.isLoading.value

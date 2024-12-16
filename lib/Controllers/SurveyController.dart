@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Survey/SurveyDetail.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
@@ -12,6 +13,9 @@ class SurveyController extends GetxController {
   Rx<List> datasDetail = Rx<List>([]);
   final isLoading = false.obs;
   final box = GetStorage();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -35,6 +39,7 @@ class SurveyController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datas.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -78,6 +83,7 @@ class SurveyController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasDetail.value.clear();
         isLoading.value = false;
 
         datasDetail.value.add(SurveyDetailModel.fromJson(content['data']));
@@ -132,6 +138,8 @@ class SurveyController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoading.value = false;
+
+        await _profilecontroller.profile();
 
         Get.offAllNamed('/dashboard');
 

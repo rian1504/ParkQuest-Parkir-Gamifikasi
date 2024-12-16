@@ -93,6 +93,8 @@ class FormRekomendasiParkir extends StatelessWidget {
                             .selectedImagePath.value,
                         description: _description.text.trim(),
                       );
+                      _capacity.clear();
+                      _description.clear();
                     },
                     child: Obx(() {
                       return _parkrecommendationcontroller.isLoading.value

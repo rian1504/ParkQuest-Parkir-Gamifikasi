@@ -29,13 +29,10 @@ class DetailMisiDaily extends StatelessWidget {
     // Cek jika hari ini sudah login berdasarkan updatedAt
     final updatedDateOnly = DateTime(updatedDate.year, updatedDate.month,
         updatedDate.day); // Hanya tahun, bulan, dan hari
-    final isTodayLogin = today.isAtSameMomentAs(updatedDateOnly);
 
-    debugPrint(isTodayLogin.toString());
-    debugPrint(updatedDate.toString());
-    debugPrint(updatedDateOnly.toString());
-    debugPrint(currentDate.toString());
-    debugPrint(today.toString());
+    // Jika streak 0
+    final isTodayLogin =
+        streak == 0 ? false : today.isAtSameMomentAs(updatedDateOnly);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +56,7 @@ class DetailMisiDaily extends StatelessWidget {
                     ? null // Disable tombol jika sudah login hari ini atau tidak aktif
                     : () async {
                         await _missioncontroller.dailyLogin();
+                        _missioncontroller.index();
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isButtonDisabled

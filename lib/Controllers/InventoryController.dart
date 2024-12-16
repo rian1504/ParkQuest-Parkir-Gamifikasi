@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
@@ -12,6 +13,9 @@ class InventoryController extends GetxController {
   Rx<List<UserAvatarModel>> datasLegendary = Rx<List<UserAvatarModel>>([]);
   final isLoading = false.obs;
   final box = GetStorage();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -37,6 +41,7 @@ class InventoryController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasBasic.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -80,6 +85,7 @@ class InventoryController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasRare.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -123,6 +129,7 @@ class InventoryController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasLegendary.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -167,6 +174,8 @@ class InventoryController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoading.value = false;
+
+        await _profilecontroller.profile();
 
         Get.offAllNamed('/dashboard');
 

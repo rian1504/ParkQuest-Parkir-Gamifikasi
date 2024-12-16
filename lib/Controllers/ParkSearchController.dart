@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkArea.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkData.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkRecommendation.dart';
@@ -17,6 +18,9 @@ class ParkSearchController extends GetxController {
   Rxn<ParkAreaModel> parkAreaData = Rxn<ParkAreaModel>();
   Rxn<ParkRecommendationModel> parkRecommendationData =
       Rxn<ParkRecommendationModel>();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -40,6 +44,7 @@ class ParkSearchController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasParkArea.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -83,6 +88,7 @@ class ParkSearchController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasParkData.value.clear();
         isLoading.value = false;
 
         final dataArea = content['dataParkArea'];
@@ -131,6 +137,7 @@ class ParkSearchController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datasParkRecommendation.value.clear();
         isLoading.value = false;
 
         Get.offAllNamed('/daftarRekomendasiParkir');
@@ -178,6 +185,7 @@ class ParkSearchController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        parkRecommendationData.value = null;
         isLoading.value = false;
 
         final dataRecommendation = content['data'];
@@ -225,6 +233,8 @@ class ParkSearchController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoading.value = false;
+
+        await _profilecontroller.profile();
 
         Get.offAllNamed('/dashboard');
 

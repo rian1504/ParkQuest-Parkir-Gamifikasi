@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 
 class Login extends StatelessWidget {
@@ -15,14 +15,14 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    var token = box.read('token');
+    // final box = GetStorage();
+    // var token = box.read('token');
 
-    if (token != null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/dashboard');
-      });
-    }
+    // if (token != null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/dashboard');
+    //   });
+    // }
 
     return Scaffold(
       body: Center(

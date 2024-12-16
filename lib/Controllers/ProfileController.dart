@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
@@ -10,6 +11,10 @@ class ProfileController extends GetxController {
   Rxn<UserModel> userData = Rxn<UserModel>();
   final isLoading = false.obs;
   final box = GetStorage();
+
+  // User
+  final AuthenticationController _authenticationcontroller =
+      Get.put(AuthenticationController());
 
   @override
   void onInit() {
@@ -36,6 +41,10 @@ class ProfileController extends GetxController {
         isLoading.value = false;
 
         userData.value = UserModel.fromJson(content['data']);
+
+        _authenticationcontroller.user.value =
+            userData.value; // Memperbarui user di ProfileController
+        _authenticationcontroller.user.refresh();
 
         debugPrint(content.toString());
       } else {

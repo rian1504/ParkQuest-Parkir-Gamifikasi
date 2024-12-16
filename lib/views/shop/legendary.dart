@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ShopController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
@@ -13,14 +13,14 @@ class ShopLegendary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     return Scaffold(
       body: Center(
@@ -56,7 +56,8 @@ class ShopLegendary extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 await _shopcontroller.shopDetail(
-                                    avatarId: data.id.toString());
+                                  avatarId: data.id.toString(),
+                                );
                               },
                               child: Text(data.avatarName),
                             ),

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ class MissionController extends GetxController {
   Rx<List<MissionModel>> datas = Rx<List<MissionModel>>([]);
   final isLoading = false.obs;
   final box = GetStorage();
+
+  // User
+  final ProfileController _profilecontroller = Get.put(ProfileController());
 
   @override
   void onInit() {
@@ -33,6 +37,7 @@ class MissionController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        datas.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -77,6 +82,8 @@ class MissionController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoading.value = false;
+
+        await _profilecontroller.profile();
 
         Get.offAllNamed('/dashboard');
 

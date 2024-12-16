@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ReferralCodeController.dart';
 
 class KodeReferralMasukkan extends StatelessWidget {
@@ -13,14 +13,14 @@ class KodeReferralMasukkan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    final token = box.read('token');
+    // final box = GetStorage();
+    // final token = box.read('token');
 
-    if (token == null) {
-      Future.microtask(() {
-        Navigator.pushNamed(context, '/login');
-      });
-    }
+    // if (token == null) {
+    //   Future.microtask(() {
+    //     Navigator.pushNamed(context, '/login');
+    //   });
+    // }
 
     return Scaffold(
       body: Center(
@@ -49,7 +49,9 @@ class KodeReferralMasukkan extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       await _referralcodecontroller.store(
-                          referralCode: _referralCode.text.trim());
+                        referralCode: _referralCode.text.trim(),
+                      );
+                      _referralCode.clear();
                     },
                     child: Obx(() {
                       return _referralcodecontroller.isLoading.value
