@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:parkquest_parkir_gamifikasi/main.dart';
+import 'package:parkquest_parkir_gamifikasi/mainBackend.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

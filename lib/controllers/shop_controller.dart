@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Avatar/AvatarDetail.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/inventory_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/avatar.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/avatar_detail.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class ShopController extends GetxController {

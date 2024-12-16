@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ParkRecommendationController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_recommendation_controller.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 

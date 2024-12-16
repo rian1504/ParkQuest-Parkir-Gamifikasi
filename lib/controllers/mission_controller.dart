@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';

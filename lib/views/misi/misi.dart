@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/MissionController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/mission_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
 
 class Misi extends StatelessWidget {

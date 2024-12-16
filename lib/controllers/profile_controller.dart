@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 

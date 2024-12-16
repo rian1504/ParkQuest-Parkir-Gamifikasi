@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_search_controller.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkData.dart';
+import 'package:parkquest_parkir_gamifikasi/models/park_search/park_data.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class DetailPencarianParkir extends StatelessWidget {

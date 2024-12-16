@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/SurveyController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/survey_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 

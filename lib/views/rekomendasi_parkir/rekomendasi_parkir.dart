@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ParkRecommendationController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/ParkRecommendation/ParkArea.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_recommendation_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/park_recommendation/park_area.dart';
 
 class RekomendasiParkir extends StatelessWidget {
   RekomendasiParkir({super.key});

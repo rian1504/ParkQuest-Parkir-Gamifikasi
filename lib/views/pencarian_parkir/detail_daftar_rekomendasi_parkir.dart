@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_search_controller.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';

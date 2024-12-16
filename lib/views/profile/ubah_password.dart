@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
 
 class UbahPassword extends StatelessWidget {
   UbahPassword({super.key});

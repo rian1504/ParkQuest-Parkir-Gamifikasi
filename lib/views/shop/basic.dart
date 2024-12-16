@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/ShopController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/shop_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class ShopBasic extends StatelessWidget {

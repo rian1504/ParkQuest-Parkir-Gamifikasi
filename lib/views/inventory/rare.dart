@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/inventory_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/user_avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class InventoryRare extends StatefulWidget {

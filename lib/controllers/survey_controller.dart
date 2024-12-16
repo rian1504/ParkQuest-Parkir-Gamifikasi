@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Survey/Survey.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Survey/SurveyDetail.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/survey/survey.dart';
+import 'package:parkquest_parkir_gamifikasi/models/survey/survey_detail.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class SurveyController extends GetxController {

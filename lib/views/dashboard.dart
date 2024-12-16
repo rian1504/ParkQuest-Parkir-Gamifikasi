@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/leaderboard/leaderboard.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class Dashboard extends StatefulWidget {

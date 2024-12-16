@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/MissionController.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/mission_controller.dart';
 
 class DetailMisiDaily extends StatelessWidget {
   DetailMisiDaily({super.key});
