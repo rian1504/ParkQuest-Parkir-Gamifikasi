@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/InventoryController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/Avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/AvatarDetail.dart';
@@ -18,6 +19,10 @@ class ShopController extends GetxController {
 
   // User
   final ProfileController _profilecontroller = Get.put(ProfileController());
+
+  // Inventory
+  final InventoryController _inventorycontroller =
+      Get.put(InventoryController());
 
   @override
   void onInit() {
@@ -131,7 +136,7 @@ class ShopController extends GetxController {
       final content = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        datasLegendary..value.clear();
+        datasLegendary.value.clear();
         isLoading.value = false;
 
         for (var item in content['data']) {
@@ -223,6 +228,9 @@ class ShopController extends GetxController {
         isLoading.value = false;
 
         await _profilecontroller.profile();
+        await _inventorycontroller.inventoryBasic();
+        await _inventorycontroller.inventoryRare();
+        await _inventorycontroller.inventoryLegendary();
 
         Get.offAllNamed('/dashboard');
 

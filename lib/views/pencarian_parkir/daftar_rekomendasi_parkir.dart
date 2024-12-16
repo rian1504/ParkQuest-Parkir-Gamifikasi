@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ParkSearchController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/ParkSearch/ParkRecommendation.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class DaftarRekomendasiParkir extends StatelessWidget {
   DaftarRekomendasiParkir({super.key});
@@ -79,6 +80,16 @@ class DaftarRekomendasiParkir extends StatelessWidget {
                                         ? CircularProgressIndicator()
                                         : Column(
                                             children: [
+                                              data.user.avatar == null
+                                                  ? Image(
+                                                      image: AssetImage(
+                                                          'assets/img/user.png'))
+                                                  : Image.network(
+                                                      storageUrl +
+                                                          data.user.avatar,
+                                                      width: 100,
+                                                      height: 100,
+                                                    ),
                                               Text(data.user.name),
                                               Text(data.description),
                                             ],

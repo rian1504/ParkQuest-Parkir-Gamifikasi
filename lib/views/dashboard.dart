@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/AuthenticationController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({super.key});
@@ -43,7 +44,15 @@ class _DashboardState extends State<Dashboard> {
                   ? CircularProgressIndicator()
                   : Column(
                       children: [
-                        Text(user.name),
+                        user.avatar == null
+                            ? Image(image: AssetImage('assets/img/user.png'))
+                            : Image.network(
+                                storageUrl + user.avatar,
+                                width: 100,
+                                height: 100,
+                              ),
+                        Text('Hello, ${user.name}'),
+                        Text(user.username),
                         Text('${user.totalExp.toString()} EXP'),
                         Text('${user.coin.toString()} Coin'),
                       ],
@@ -117,6 +126,14 @@ class _DashboardState extends State<Dashboard> {
                             _leaderboardcontroller.datasTopThree.value[index];
                         return Column(
                           children: [
+                            data.user.avatar == null
+                                ? Image(
+                                    image: AssetImage('assets/img/user.png'))
+                                : Image.network(
+                                    storageUrl + data.user.avatar,
+                                    width: 100,
+                                    height: 100,
+                                  ),
                             Text(data.user.username),
                             Text(data.rank.rankName),
                           ],

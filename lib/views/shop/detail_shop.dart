@@ -49,6 +49,9 @@ class DetailShop extends StatelessWidget {
                 await _shopcontroller.buyAvatar(
                   avatarId: avatarDetailData.id.toString(),
                 );
+                _shopcontroller.shopBasic();
+                _shopcontroller.shopRare();
+                _shopcontroller.shopLegendary();
               },
               child: Text('Buy'),
             ),

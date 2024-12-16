@@ -49,11 +49,13 @@ class _LeaderboardState extends State<Leaderboard> {
                     : Column(
                         children: [
                           Text(data.user.name),
-                          Image.network(
-                            storageUrl + (data.user.avatar ?? ''),
-                            width: 100,
-                            height: 100,
-                          ),
+                          data.user.avatar == null
+                              ? Image(image: AssetImage('assets/img/user.png'))
+                              : Image.network(
+                                  storageUrl + data.user.avatar,
+                                  width: 100,
+                                  height: 100,
+                                ),
                           Text(data.rank.rankName),
                         ],
                       );

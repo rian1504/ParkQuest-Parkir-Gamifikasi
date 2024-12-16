@@ -57,6 +57,13 @@ class DetailDaftarRekomendasiParkir extends StatelessWidget {
                   ? CircularProgressIndicator()
                   : Column(
                       children: [
+                        parkRecommendationData.user.avatar == null
+                            ? Image(image: AssetImage('assets/img/user.png'))
+                            : Image.network(
+                                storageUrl + parkRecommendationData.user.avatar,
+                                width: 100,
+                                height: 100,
+                              ),
                         Text(parkRecommendationData.user.name),
                         Text(parkRecommendationData.capacity.toString()),
                         Image.network(

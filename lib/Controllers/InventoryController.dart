@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:parkquest_parkir_gamifikasi/Controllers/LeaderboardController.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/Avatar/UserAvatar.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
@@ -16,6 +17,9 @@ class InventoryController extends GetxController {
 
   // User
   final ProfileController _profilecontroller = Get.put(ProfileController());
+  // User Leaderboard
+  final LeaderboardController _leaderboardcontroller =
+      Get.put(LeaderboardController());
 
   @override
   void onInit() {
@@ -176,6 +180,7 @@ class InventoryController extends GetxController {
         isLoading.value = false;
 
         await _profilecontroller.profile();
+        await _leaderboardcontroller.userLeaderboard();
 
         Get.offAllNamed('/dashboard');
 
