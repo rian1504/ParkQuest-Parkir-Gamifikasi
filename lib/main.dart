@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/cari_parkir.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/form_rekomendasi.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/halaman_awal.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/daftar.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/misi.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/landing_page.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/register.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/login.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/dashboard.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/profile.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -25,18 +31,24 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(0xFFFEC827),
           primary: Colors.black,
+          surface: Colors.white,
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: RekomendasiParkir(),
+      home: LandingPage(),
       routes: {
         '/login': (context) => Login(),
-        '/daftar': (context) => Daftar(),
+        '/register': (context) => Register(),
         '/dashboard': (context) => Dashboard(),
-        '/survey': (context) => Survey(),
         '/rekomendasi_parkir': (context) => RekomendasiParkir(),
-        '/form_rekomendasi': (context) => FormRekomendasi(),
-        '/cari_parkir': (context) => CariParkir(),
+        '/pencarian_parkir': (context) => PencarianParkir(),
+        '/survey': (context) => Survey(),
+        '/shop': (context) => Shop(),
+        '/kode_referral': (context) => KodeReferral(),
+        '/leaderboard': (context) => Leaderboard(),
+        '/misi': (context) => Misi(),
+        '/profile': (context) => Profile(),
+        '/inventory': (context) => Inventory(),
       },
     );
   }
