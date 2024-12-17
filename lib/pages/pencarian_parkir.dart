@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/detail_parkir.dart';
 
 class PencarianParkir extends StatefulWidget {
   const PencarianParkir({super.key});
@@ -24,7 +25,7 @@ class _PencarianParkir extends State<PencarianParkir> {
   );
 
   // Card
-  Widget _buildCard(String title, String status, String route) {
+  Widget _buildCard(String title, String status, Widget page) {
     return Container(
       width: 200,
       height: 60,
@@ -87,7 +88,12 @@ class _PencarianParkir extends State<PencarianParkir> {
                 icon: Icon(CupertinoIcons.chevron_right),
                 iconSize: 32,
                 onPressed: () {
-                  Navigator.pushNamed(context, route);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => page,
+                    ),
+                  );
                 },
               ),
             ],
@@ -199,17 +205,17 @@ class _PencarianParkir extends State<PencarianParkir> {
                       _buildCard(
                         "Gedung Utama",
                         "Available",
-                        "/detail_gedung_utama",
+                        DetailParkir(),
                       ),
                       _buildCard(
                         "Technopreneur",
                         "Available",
-                        "/detail_gedung_utama",
+                        DetailParkir(),
                       ),
                       _buildCard(
                         "Tower A",
                         "Available",
-                        "/detail_gedung_utama",
+                        DetailParkir(),
                       ),
                     ],
                   ),

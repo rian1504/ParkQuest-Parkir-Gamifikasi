@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/detail_rekomendasi.dart';
 
 class DetailParkir extends StatefulWidget {
   const DetailParkir({super.key});
@@ -76,7 +77,12 @@ class _DetailParkirState extends State<DetailParkir> {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/detail_rekomendasi');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailRekomendasi(),
+              ),
+            );
           },
           child: Row(
             children: [

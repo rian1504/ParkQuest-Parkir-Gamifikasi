@@ -42,7 +42,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Pilih Gambar Dari',
+                  'Pilih gambar dari',
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -215,12 +215,14 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                   ),
                 ),
                 // Gambar
-                SizedBox(
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
                   child: _image != null
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: Image.file(_image!, fit: BoxFit.cover),
-                        )
+                      ? Image.file(_image!, fit: BoxFit.cover)
                       : SizedBox.shrink(),
                 ),
                 SizedBox(height: 20),
