@@ -118,11 +118,11 @@ class _RegisterState extends State<Register> {
                 if (_selectedRole == 'internal') {
                   await _authenticationController.registerInternal(
                       roleId: 1.toString(),
-                      name: _name.text,
-                      username: _username.text,
-                      email: _email.text,
-                      identityNumber: _identityNumber.text,
-                      password: _password.text,
+                      name: _name.text.trim(),
+                      username: _username.text.trim(),
+                      email: _email.text.trim(),
+                      identityNumber: _identityNumber.text.trim(),
+                      password: _password.text.trim(),
                       onSuccess: () {
                         // Membersihkan field
                         _name.clear();
@@ -139,13 +139,13 @@ class _RegisterState extends State<Register> {
                 if (_selectedRole == 'eksternal') {
                   await _authenticationController.registerEksternal(
                       roleId: 2.toString(),
-                      name: _name.text,
-                      username: _username.text,
-                      email: _email.text,
-                      identityNumber: _identityNumber.text,
-                      company: _company.text,
-                      position: _position.text,
-                      password: _password.text,
+                      name: _name.text.trim(),
+                      username: _username.text.trim(),
+                      email: _email.text.trim(),
+                      identityNumber: _identityNumber.text.trim(),
+                      company: _company.text.trim(),
+                      position: _position.text.trim(),
+                      password: _password.text.trim(),
                       onSuccess: () {
                         // Membersihkan field
                         _name.clear();

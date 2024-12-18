@@ -2,9 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:show_hide_password/show_hide_password.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Login extends StatefulWidget {
+  Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _roleId = TextEditingController();
+  final AuthenticationController _authenticationController =
+      Get.put(AuthenticationController());
+  String? selectedValue;
+
+  @override
+  void dispose() {
+    _roleId.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,21 +96,29 @@ class Login extends StatelessWidget {
                                   ),
                                 ),
                                 items: [
-                                  'Internal',
-                                  'Eksternal'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
+                                  DropdownMenuItem<String>(
+                                    value: '1',
                                     child: Text(
-                                      value,
+                                      'Internal',
                                       style: GoogleFonts.inter(
                                         color: Colors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                  );
-                                }).toList(),
+                                  ),
+                                  DropdownMenuItem<String>(
+                                    value: '2',
+                                    child: Text(
+                                      'Eksternal',
+                                      style: GoogleFonts.inter(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                                 hint: Text(
                                   "Role",
                                   style: GoogleFonts.inter(
@@ -100,8 +128,12 @@ class Login extends StatelessWidget {
                                   ),
                                 ),
                                 onChanged: (String? newValue) {
-                                  // Handle role selection logic
+                                  setState(() {
+                                    selectedValue = newValue;
+                                    _roleId.text = newValue!;
+                                  });
                                 },
+                                value: selectedValue,
                               ),
                             ),
                             SizedBox(height: 15),
@@ -110,6 +142,7 @@ class Login extends StatelessWidget {
                               height: 50,
                               width: double.infinity,
                               child: TextFormField(
+                                controller: _username,
                                 decoration: InputDecoration(
                                   labelText: "Username",
                                   labelStyle: GoogleFonts.inter(
@@ -141,6 +174,7 @@ class Login extends StatelessWidget {
                                 hidePassword: true,
                                 passwordField: (hidePassword) {
                                   return TextField(
+                                    controller: _password,
                                     obscureText: hidePassword,
                                     decoration: InputDecoration(
                                       labelText: "Password",
@@ -176,8 +210,16 @@ class Login extends StatelessWidget {
                               height: 50,
                               width: 175,
                               child: TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/dashboard');
+                                onPressed: () async {
+                                  await _authenticationController.login(
+                                      roleId: _roleId.text,
+                                      username: _username.text.trim(),
+                                      password: _password.text.trim(),
+                                      onSuccess: () {
+                                        _roleId.clear();
+                                        _username.clear();
+                                        _password.clear();
+                                      });
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: Color(0xFFFEC827),
@@ -207,7 +249,7 @@ class Login extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/daftar');
+                                Navigator.pushNamed(context, '/register');
                               },
                               child: Text(
                                 'Daftar',

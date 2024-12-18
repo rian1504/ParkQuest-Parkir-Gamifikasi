@@ -143,6 +143,7 @@ class AuthenticationController extends GetxController {
     required String roleId,
     required String username,
     required String password,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -172,8 +173,10 @@ class AuthenticationController extends GetxController {
         final token = content['token'];
         box.write('token', token);
 
-        Get.offAllNamed('/dashboard');
+        onSuccess();
+
         debugPrint(content.toString());
+        Get.offAllNamed('/dashboard');
       } else {
         isLoading.value = false;
 
