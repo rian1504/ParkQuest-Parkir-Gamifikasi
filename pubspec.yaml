@@ -3,7 +3,6 @@ description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -42,6 +41,9 @@ dependencies:
   flutter_dotenv: ^5.2.1
   flutter_rating_bar: ^4.0.1
   video_player: ^2.9.2
+  get: ^4.6.6
+  http: ^1.2.2
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
