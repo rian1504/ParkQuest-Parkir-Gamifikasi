@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:show_hide_password/show_hide_password.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -12,6 +14,15 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   var _selectedRole = "internal";
+
+  final _name = TextEditingController();
+  final _username = TextEditingController();
+  final _email = TextEditingController();
+  final _identityNumber = TextEditingController();
+  final _company = TextEditingController();
+  final _position = TextEditingController();
+  final _password = TextEditingController();
+  final _authenticationController = Get.put(AuthenticationController());
 
   // Card
   Widget _buildCard(double height) {
@@ -103,8 +114,52 @@ class _RegisterState extends State<Register> {
             height: 50,
             width: double.infinity,
             child: TextButton(
-              onPressed: () {
-                _showSuccessDialog();
+              onPressed: () async {
+                if (_selectedRole == 'internal') {
+                  await _authenticationController.registerInternal(
+                      roleId: 1.toString(),
+                      name: _name.text,
+                      username: _username.text,
+                      email: _email.text,
+                      identityNumber: _identityNumber.text,
+                      password: _password.text,
+                      onSuccess: () {
+                        // Membersihkan field
+                        _name.clear();
+                        _username.clear();
+                        _email.clear();
+                        _identityNumber.clear();
+                        _password.clear();
+
+                        // Memanggil success dialog
+                        _showSuccessDialog();
+                      });
+                }
+
+                if (_selectedRole == 'eksternal') {
+                  await _authenticationController.registerEksternal(
+                      roleId: 2.toString(),
+                      name: _name.text,
+                      username: _username.text,
+                      email: _email.text,
+                      identityNumber: _identityNumber.text,
+                      company: _company.text,
+                      position: _position.text,
+                      password: _password.text,
+                      onSuccess: () {
+                        // Membersihkan field
+                        _name.clear();
+                        _username.clear();
+                        _email.clear();
+                        _identityNumber.clear();
+                        _company.clear();
+                        _position.clear();
+                        _password.clear();
+
+                        // Memanggil success dialog
+                        _showSuccessDialog();
+                      });
+                }
               },
               style: TextButton.styleFrom(
                 backgroundColor: Color(0xFFFEC827),
@@ -151,11 +206,12 @@ class _RegisterState extends State<Register> {
   }
 
   // Text Form Field
-  Widget _buildTextFormField(String label) {
+  Widget _buildTextFormField(String label, TextEditingController controller) {
     return SizedBox(
       height: 50,
       width: double.infinity,
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: GoogleFonts.inter(
@@ -181,7 +237,7 @@ class _RegisterState extends State<Register> {
   }
 
   // Password Field
-  Widget _buildPasswordField(String label) {
+  Widget _buildPasswordField(String label, TextEditingController controller) {
     return SizedBox(
       height: 50,
       width: double.infinity,
@@ -189,6 +245,7 @@ class _RegisterState extends State<Register> {
         hidePassword: true,
         passwordField: (hidePassword) {
           return TextField(
+            controller: controller,
             obscureText: hidePassword,
             decoration: InputDecoration(
               labelText: label,
@@ -225,15 +282,15 @@ class _RegisterState extends State<Register> {
       child: Column(
         children: [
           SizedBox(height: 25),
-          _buildTextFormField('Nama'),
+          _buildTextFormField('Nama', _name),
           SizedBox(height: 15),
-          _buildTextFormField('Username'),
+          _buildTextFormField('Username', _username),
           SizedBox(height: 15),
-          _buildTextFormField('NIM/NIK/NIDN'),
+          _buildTextFormField('NIM/NIK/NIDN', _identityNumber),
           SizedBox(height: 15),
-          _buildTextFormField('Email'),
+          _buildTextFormField('Email', _email),
           SizedBox(height: 15),
-          _buildPasswordField('Password'),
+          _buildPasswordField('Password', _password),
         ],
       ),
     );
@@ -244,19 +301,19 @@ class _RegisterState extends State<Register> {
     return Column(
       children: [
         SizedBox(height: 25),
-        _buildTextFormField('Nama'),
+        _buildTextFormField('Nama', _name),
         SizedBox(height: 15),
-        _buildTextFormField('Username'),
+        _buildTextFormField('Username', _username),
         SizedBox(height: 15),
-        _buildTextFormField('No KTP/NIK'),
+        _buildTextFormField('No KTP/NIK', _identityNumber),
         SizedBox(height: 15),
-        _buildTextFormField('Instansi/Perusahaan'),
+        _buildTextFormField('Instansi/Perusahaan', _company),
         SizedBox(height: 15),
-        _buildTextFormField('Jabatan'),
+        _buildTextFormField('Jabatan', _position),
         SizedBox(height: 15),
-        _buildTextFormField('Email'),
+        _buildTextFormField('Email', _email),
         SizedBox(height: 15),
-        _buildPasswordField('Password'),
+        _buildPasswordField('Password', _password),
       ],
     );
   }

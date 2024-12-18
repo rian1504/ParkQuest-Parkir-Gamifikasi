@@ -26,6 +26,7 @@ class AuthenticationController extends GetxController {
     required String identityNumber,
     required String company,
     required String position,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -55,8 +56,10 @@ class AuthenticationController extends GetxController {
         // token.value = content['token'];
         // box.write('token', token.value);
 
-        Get.offAllNamed('/login');
+        // Get.offAllNamed('/login');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
@@ -84,6 +87,7 @@ class AuthenticationController extends GetxController {
     required String email,
     required String password,
     required String identityNumber,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -111,8 +115,10 @@ class AuthenticationController extends GetxController {
         // token.value = content['token'];
         // box.write('token', token.value);
 
-        Get.offAllNamed('/login');
+        // Get.offAllNamed('/login');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
