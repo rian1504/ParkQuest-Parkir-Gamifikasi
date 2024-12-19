@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 import 'detail_avatar.dart';
 
-class Shop extends StatelessWidget {
+class Shop extends StatefulWidget {
   const Shop({super.key});
 
   @override
+  State<Shop> createState() => _ShopState();
+}
+
+class _ShopState extends State<Shop> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: Colors.amber[300],
-          title: const Text(
-            "Shop",
-            style: TextStyle(color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFEC827),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            'Shop',
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Category Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Category Row
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildCategoryItem(
@@ -47,41 +56,41 @@ class Shop extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              // Shop Cards
-              _buildShopCard(
-                context,
-                'assets/img/basic_avatar.png',
-                'Old Car',
-                'assets/img/money.png',
-                const Color(0xFFD9D9D9),
-              ), // Basic
-              _buildShopCard(
-                context,
-                'assets/img/rare_avatar.png',
-                'Blue Sedan',
-                'assets/img/money.png',
-                const Color(0xFF176CC7),
-              ), // Rare
-              _buildShopCard(
-                context,
-                'assets/img/rare_bike_avatar.png',
-                'Army Bike',
-                'assets/img/money.png',
-                const Color(0xFF176CC7),
-              ), // Rare
-              _buildShopCard(
-                context,
-                'assets/img/legendary_avatar.png',
-                'White Sport',
-                'assets/img/money.png',
-                const Color(0xFFF71010),
-              ), // Legendary
-              const Spacer(),
-            ],
+                // Shop Cards
+                _buildShopCard(
+                  context,
+                  'assets/img/basic_avatar.png',
+                  'Old Car',
+                  'assets/img/money.png',
+                  const Color(0xFFD9D9D9),
+                ), // Basic
+                _buildShopCard(
+                  context,
+                  'assets/img/rare_avatar.png',
+                  'Blue Sedan',
+                  'assets/img/money.png',
+                  const Color(0xFF176CC7),
+                ), // Rare
+                _buildShopCard(
+                  context,
+                  'assets/img/rare_bike_avatar.png',
+                  'Army Bike',
+                  'assets/img/money.png',
+                  const Color(0xFF176CC7),
+                ), // Rare
+                _buildShopCard(
+                  context,
+                  'assets/img/legendary_avatar.png',
+                  'White Sport',
+                  'assets/img/money.png',
+                  const Color(0xFFF71010),
+                ), // Legendary
+              ],
+            ),
           ),
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2),
     );
   }
 

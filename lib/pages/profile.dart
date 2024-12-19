@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/change_password.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/edit_profile.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
+import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -17,6 +18,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFEC827),
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'Profil',
@@ -180,6 +182,7 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 3),
     );
   }
 }
