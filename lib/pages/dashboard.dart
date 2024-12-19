@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
@@ -10,6 +14,8 @@ import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
+// import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,6 +25,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  // Leaderboard
+  final LeaderboardController _leaderboardcontroller =
+      Get.put(LeaderboardController());
+
+  // Data user
+  final AuthenticationController _authenticationcontroller =
+      Get.put(AuthenticationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,60 +79,70 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ],
                     ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 32,
-                          child: Icon(Icons.person),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hello, Elys!',
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                    child: Obx(() {
+                      final user = _authenticationcontroller.user.value!;
+
+                      return _authenticationcontroller.isLoading.value
+                          ? CircularProgressIndicator()
+                          : Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 32,
+                                  child: user.avatar == null
+                                      ? Icon(Icons.person)
+                                      : Image.network(storageUrl + user.avatar),
                                 ),
-                              ),
-                              Text(
-                                '@elysaulia20',
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Hello, ${user.name}',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        user.username,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        '${user.totalExp.toString()} EXP',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                '100 EXP',
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/img/coin.png',
-                              width: 32,
-                            ),
-                            Text(
-                              '5 Coins',
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/img/coin.png',
+                                      width: 32,
+                                    ),
+                                    Text(
+                                      '${user.coin.toString()} Coins',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            );
+                    }),
                   ),
                 ],
               ),
@@ -226,33 +250,36 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                   ),
-                  ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      // 1st Place
-                      _buildLeaderboardCard(
-                        'assets/img/1st_place_medal.png',
-                        '@jihan65',
-                        'Mahasiswa',
-                        'Kang Parkir',
-                      ),
-                      // 2nd Place
-                      _buildLeaderboardCard(
-                        'assets/img/2nd_place_medal.png',
-                        '@jihan65',
-                        'Mahasiswa',
-                        'Kang Parkir',
-                      ),
-                      // 3rd Place
-                      _buildLeaderboardCard(
-                        'assets/img/3rd_place_medal.png',
-                        '@jihan65',
-                        'Mahasiswa',
-                        'Kang Parkir',
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    return _leaderboardcontroller.isLoading.value
+                        ? CircularProgressIndicator()
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _leaderboardcontroller
+                                .datasTopThree.value.length,
+                            itemBuilder: (context, index) {
+                              final data = _leaderboardcontroller
+                                  .datasTopThree.value[index];
+
+                              return ListView(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                children: [
+                                  _buildLeaderboardCard(
+                                    'assets/img/${index + 1}_place_medal.png',
+                                    data.user.avatar == null
+                                        ? Icon(Icons.person)
+                                        : Image.network(
+                                            storageUrl + data.user.avatar),
+                                    data.user.username,
+                                    'Mahasiswa',
+                                    data.rank.rankName,
+                                  ),
+                                ],
+                              );
+                            });
+                  }),
                 ],
               ),
             ),
@@ -355,6 +382,7 @@ Widget _buildFeatures(context, Widget page, IconData icon, String title) {
 // Leaderboard Card
 Widget _buildLeaderboardCard(
   String imagePath,
+  Widget avatar,
   String username,
   String status,
   String rank,
@@ -379,7 +407,7 @@ Widget _buildLeaderboardCard(
       children: [
         Image.asset(imagePath, width: 45),
         CircleAvatar(
-          child: Icon(Icons.person),
+          child: avatar,
         ),
         SizedBox(width: 10),
         Expanded(
