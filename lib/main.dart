@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: Dashboard(),
+      home: LandingPage(),
       routes: {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
