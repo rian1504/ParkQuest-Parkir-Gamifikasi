@@ -1,248 +1,423 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/misi.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
+import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 
-class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key}) : super(key: key);
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Top Section with Hello and Coin
-          Container(
-            color: const Color(0xFFFEC827),
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'ParkQuest',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                top: 48,
+                right: 24,
+                left: 24,
+                bottom: 20,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xFFFEC827),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  // App Title
+                  Text(
+                    'ParkQuest',
+                    style: GoogleFonts.inter(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.menu, color: Colors.white),
-                      onPressed: () {
-                        // Handle menu action
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    // Profile Picture and Details
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(
-                          "assets/img/profile.png"), // Placeholder image path
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("Hello, Elys!",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text("@elysaulia20"),
-                        Text("100 EXP", style: TextStyle(color: Colors.grey)),
+                  ),
+                  // Profile
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 3,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
                       ],
                     ),
-                    Spacer(),
-                    // Coin Info
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.attach_money, color: Colors.yellow),
-                          SizedBox(width: 5),
-                          Text('5 Coin',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 32,
+                          child: Icon(Icons.person),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hello, Elys!',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '@elysaulia20',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                '100 EXP',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/img/coin.png',
+                              width: 32,
+                            ),
+                            Text(
+                              '5 Coins',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Main Content: Search and Recommendations
-          Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildFeatureCard(Icons.search, 'Cari Parkir', 0xFFFEC827),
-                _buildFeatureCard(
-                    Icons.star, 'Rekomendasi Tempat Parkir', 0xFFFEC827),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Features Buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 69,
-              runSpacing: 20,
-              children: [
-                InkWell(
-                  onTap: () {
-                    // Survey
-                    Navigator.pushNamed(context, '/survey');
-                  },
-                  child: Column(
-                    children: [
-                      _buildCircularIconButton(Icons.assignment, 'Survey'),
-                      const Text('Go to Survey',
-                          style: TextStyle(fontSize: 12)),
-                    ],
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Shop
-                    Navigator.pushNamed(context, '/shop');
-                  },
-                  child: Column(
-                    children: [
-                      _buildCircularIconButton(Icons.shopping_cart, 'Shop'),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Inventory
-                    Navigator.pushNamed(context, '/inventory');
-                  },
-                  child: Column(
-                    children: [
-                      _buildCircularIconButton(Icons.storage, 'inventory'),
-                    ],
-                  ),
-                ),
-                _buildCircularIconButton(Icons.gamepad, 'Misi'),
-                _buildCircularIconButton(Icons.person_add, 'Kode Referral'),
-                _buildCircularIconButton(Icons.leaderboard, 'Leaderboard'),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 20),
-          // Leaderboard Section
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Leaderboard',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                _buildLeaderboardEntry(
-                    1, '@Jihan65', 'Mahasiswa', 'Kang Parkir'),
-                _buildLeaderboardEntry(
-                    2, '@Jihan65', 'Mahasiswa', 'Kang Parkir'),
-                _buildLeaderboardEntry(
-                    3, '@Jihan65', 'Mahasiswa', 'Kang Parkir'),
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFFFEC827),
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black.withOpacity(0.5),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-        currentIndex: 2, // Example: QR is selected
-        onTap: (index) {
-          // Handle bottom nav tap
-        },
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard(IconData icon, String label, int colorHex) {
-    return Container(
-      width: 160, // Increase width to provide more space
-      height: 170, // Increase height if necessary
-      decoration: BoxDecoration(
-        color: Color(colorHex),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: Colors.white),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Add padding if needed
-            child: Text(
-              label,
-              textAlign: TextAlign.center, // Ensure text is centered
-              style: const TextStyle(
-                fontSize: 14, // Reduce font size slightly
-                color: Colors.white,
+                ],
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Main Features
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PencarianParkir(),
+                            ),
+                          );
+                        },
+                        child: _buildMainFeatureCard(
+                          CupertinoIcons.search,
+                          'Cari Parkir',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RekomendasiParkir(),
+                            ),
+                          );
+                        },
+                        child: _buildMainFeatureCard(
+                          CupertinoIcons.star,
+                          'Rekomendasi Parkir',
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Features
+                  GridView.count(
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      // Survey
+                      _buildFeatures(
+                        context,
+                        Survey(),
+                        CupertinoIcons.doc_plaintext,
+                        'Survey',
+                      ),
+                      // Shop
+                      _buildFeatures(
+                        context,
+                        Shop(),
+                        CupertinoIcons.cart,
+                        'Shop',
+                      ),
+                      // Misi
+                      _buildFeatures(
+                        context,
+                        Misi(),
+                        CupertinoIcons.game_controller,
+                        'Misi',
+                      ),
+                      // Inventory
+                      _buildFeatures(
+                        context,
+                        Inventory(),
+                        CupertinoIcons.archivebox,
+                        'Inventory',
+                      ),
+                      // Kode Referral
+                      _buildFeatures(
+                        context,
+                        KodeReferral(),
+                        CupertinoIcons.person_add,
+                        'Kode Referral',
+                      ),
+                      // Leaderboard
+                      _buildFeatures(
+                        context,
+                        Leaderboard(),
+                        CupertinoIcons.flag,
+                        'Leaderboard',
+                      ),
+                    ],
+                  ),
+                  // Leaderboard
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Leaderboard',
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      // 1st Place
+                      _buildLeaderboardCard(
+                        'assets/img/1st_place_medal.png',
+                        '@jihan65',
+                        'Mahasiswa',
+                        'Kang Parkir',
+                      ),
+                      // 2nd Place
+                      _buildLeaderboardCard(
+                        'assets/img/2nd_place_medal.png',
+                        '@jihan65',
+                        'Mahasiswa',
+                        'Kang Parkir',
+                      ),
+                      // 3rd Place
+                      _buildLeaderboardCard(
+                        'assets/img/3rd_place_medal.png',
+                        '@jihan65',
+                        'Mahasiswa',
+                        'Kang Parkir',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0),
     );
   }
+}
 
-  Widget _buildCircularIconButton(IconData icon, String label) {
-    return Column(
+// Main Feature Card
+Widget _buildMainFeatureCard(IconData icon, String title) {
+  return Container(
+    width: 130,
+    height: 180,
+    margin: EdgeInsets.symmetric(horizontal: 20),
+    padding: EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: Color(0xFFFEC827),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          spreadRadius: 2,
+          blurRadius: 4,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.grey[200],
-          child: Icon(icon, size: 30, color: Colors.black),
+          radius: 40,
+          backgroundColor: Colors.white,
+          child: Icon(icon, size: 40),
         ),
-        const SizedBox(height: 10),
-        Text(label, style: const TextStyle(fontSize: 14)),
+        SizedBox(height: 12),
+        Expanded(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
       ],
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildLeaderboardEntry(
-      int rank, String username, String role, String badge) {
-    return Card(
-      elevation: 4,
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.yellow,
-          child: Text('$rank',
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold)),
+// Features
+Widget _buildFeatures(context, Widget page, IconData icon, String title) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => page,
         ),
-        title:
-            Text(username, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(role),
-        trailing: Chip(label: Text(badge)),
-      ),
-    );
-  }
+      );
+    },
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: CircleAvatar(
+            radius: 32,
+            backgroundColor: Colors.white,
+            child: Icon(icon, size: 32),
+          ),
+        ),
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+// Leaderboard Card
+Widget _buildLeaderboardCard(
+  String imagePath,
+  String username,
+  String status,
+  String rank,
+) {
+  return Container(
+    height: 60,
+    padding: EdgeInsets.all(10),
+    margin: EdgeInsets.only(bottom: 20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          spreadRadius: 2,
+          blurRadius: 3,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Row(
+      children: [
+        Image.asset(imagePath, width: 45),
+        CircleAvatar(
+          child: Icon(Icons.person),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                username,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                status,
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.workspace_premium),
+            Text(
+              rank,
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

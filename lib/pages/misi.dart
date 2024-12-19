@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 
 class Misi extends StatefulWidget {
   const Misi({super.key});
@@ -15,6 +16,7 @@ class _MisiState extends State<Misi> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFEC827),
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'Misi',
@@ -58,6 +60,7 @@ class _MisiState extends State<Misi> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
     );
   }
 

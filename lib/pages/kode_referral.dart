@@ -6,10 +6,10 @@ class KodeReferral extends StatefulWidget {
   const KodeReferral({super.key});
 
   @override
-  State<KodeReferral> createState() => _KodeReferral();
+  State<KodeReferral> createState() => _KodeReferralState();
 }
 
-class _KodeReferral extends State<KodeReferral> {
+class _KodeReferralState extends State<KodeReferral> {
   // Container
   Widget _buildContainer(double height, Widget child) {
     return Container(
