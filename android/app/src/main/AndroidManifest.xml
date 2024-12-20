@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="parkquest_parkir_gamifikasi"
+        android:label="ParkQuest"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
