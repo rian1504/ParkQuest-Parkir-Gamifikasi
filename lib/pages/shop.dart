@@ -12,6 +12,8 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
+  var selectedCategory = "Basic";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,26 +37,52 @@ class _ShopState extends State<Shop> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Category Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildCategoryItem(
-                      context,
+                    Image.asset(
                       'assets/img/basic_avatar.png',
-                      'Basic',
+                      width: 120,
                     ),
-                    _buildCategoryItem(
-                      context,
+                    Image.asset(
                       'assets/img/rare_avatar.png',
-                      'Rare',
+                      width: 120,
                     ),
-                    _buildCategoryItem(
-                      context,
+                    Image.asset(
                       'assets/img/legendary_avatar.png',
-                      'Legendary',
+                      width: 120,
                     ),
                   ],
+                ),
+                // Category
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 16,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildCategoryButton(
+                        'Basic',
+                        "Basic",
+                        Color(0xFFD9D9D9),
+                        Color(0xFF545454),
+                      ),
+                      _buildCategoryButton(
+                        'Rare',
+                        "Rare",
+                        Color(0xFF5EB8FF),
+                        Color(0xFF003966),
+                      ),
+                      _buildCategoryButton(
+                        'Legendary',
+                        "Legendary",
+                        Color(0xFFFF2323),
+                        Color(0xFF5D0000),
+                      ),
+                    ],
+                  ),
                 ),
                 // Shop Cards
                 _buildShopCard(
@@ -94,23 +122,40 @@ class _ShopState extends State<Shop> {
     );
   }
 
-  // Category Item
-  Widget _buildCategoryItem(
-      BuildContext context, String imagePath, String title) {
-    return Column(
-      children: [
-        Image.asset(
-          imagePath,
-          width: MediaQuery.of(context).size.width * 0.3,
-          height: MediaQuery.of(context).size.height * 0.15,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 20,
+  // Category Button
+  Widget _buildCategoryButton(
+    String text,
+    String role,
+    Color backgroundColor,
+    Color textColor,
+  ) {
+    return SizedBox(
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            selectedCategory = role;
+          });
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          backgroundColor:
+              selectedCategory == role ? backgroundColor : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            side: selectedCategory == role
+                ? BorderSide.none
+                : BorderSide(color: Colors.black),
           ),
         ),
-      ],
+        child: Text(
+          text,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: selectedCategory == role ? textColor : Colors.black,
+          ),
+        ),
+      ),
     );
   }
 
@@ -128,10 +173,11 @@ class _ShopState extends State<Shop> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 55.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
-          width: 320,
+          width: double.infinity,
           height: 95,
+          margin: EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
             color: backgroundColor,
             boxShadow: [

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/dashboard.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/misi.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/profile.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -16,28 +12,16 @@ class CustomBottomNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Dashboard()),
-        );
+        Navigator.pushNamed(context, '/dashboard');
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Misi()),
-        );
+        Navigator.pushNamed(context, '/misi');
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Shop()),
-        );
+        Navigator.pushNamed(context, '/shop');
         break;
       case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Profile()),
-        );
+        Navigator.pushNamed(context, '/profile');
         break;
     }
   }
