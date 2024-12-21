@@ -4,8 +4,8 @@
 // php artisan serve --host=0.0.0.0 --port=8000
 // ambil ipv4 untuk baseUrl
 
-String baseUrl = 'http://127.0.0.1:8000/';
-// String baseUrl = 'http://192.168.1.6:8000/';
+// String baseUrl = 'http://127.0.0.1:8000/';
+String baseUrl = 'http://192.168.1.4:8000/';
 // String baseUrl = 'https://parkquest.site/';
 String apiUrl = '${baseUrl}api/';
 String storageUrl = '${baseUrl}storage/';

@@ -58,7 +58,10 @@ class ReferralCodeController extends GetxController {
     }
   }
 
-  Future store({required String referralCode}) async {
+  Future store({
+    required String referralCode,
+    required Function onSuccess,
+  }) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -80,8 +83,17 @@ class ReferralCodeController extends GetxController {
         isLoading.value = false;
 
         Get.offAllNamed('/dashboard');
-
         debugPrint(content.toString());
+
+        Get.snackbar(
+          'Berhasil',
+          content['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        onSuccess();
       } else {
         isLoading.value = false;
 

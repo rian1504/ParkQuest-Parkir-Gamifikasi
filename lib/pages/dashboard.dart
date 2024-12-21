@@ -5,14 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/misi.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
@@ -195,42 +189,42 @@ class _DashboardState extends State<Dashboard> {
                       // Survey
                       _buildFeatures(
                         context,
-                        Survey(),
+                        '/survey',
                         CupertinoIcons.doc_plaintext,
                         'Survey',
                       ),
                       // Shop
                       _buildFeatures(
                         context,
-                        Shop(),
+                        '/Shop',
                         CupertinoIcons.cart,
                         'Shop',
                       ),
                       // Misi
                       _buildFeatures(
                         context,
-                        Misi(),
+                        'misi',
                         CupertinoIcons.game_controller,
                         'Misi',
                       ),
                       // Inventory
                       _buildFeatures(
                         context,
-                        Inventory(),
+                        '/inventory',
                         CupertinoIcons.archivebox,
                         'Inventory',
                       ),
                       // Kode Referral
                       _buildFeatures(
                         context,
-                        KodeReferral(),
+                        '/kode_referral',
                         CupertinoIcons.person_add,
                         'Kode Referral',
                       ),
                       // Leaderboard
                       _buildFeatures(
                         context,
-                        Leaderboard(),
+                        '/leaderboard',
                         CupertinoIcons.flag,
                         'Leaderboard',
                       ),
@@ -335,14 +329,12 @@ Widget _buildMainFeatureCard(IconData icon, String title) {
 }
 
 // Features
-Widget _buildFeatures(context, Widget page, IconData icon, String title) {
+Widget _buildFeatures(context, String page, IconData icon, String title) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(
-          builder: (context) => page,
-        ),
+        page,
       );
     },
     child: Column(

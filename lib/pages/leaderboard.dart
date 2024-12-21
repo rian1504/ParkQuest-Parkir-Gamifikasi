@@ -288,21 +288,21 @@ class _LeaderboardState extends State<Leaderboard> {
                 children: [
                   // Second Place
                   _buildPodium(
-                    'assets/img/2nd_place_medal.png',
+                    'assets/img/2_place_medal.png',
                     'jihan65',
                     100,
                     Color(0xFFFECE2E),
                   ),
                   // First Place
                   _buildPodium(
-                    'assets/img/1st_place_medal.png',
+                    'assets/img/1_place_medal.png',
                     'jihan65',
                     150,
                     Color(0xFFFFB636),
                   ),
                   // Third Place
                   _buildPodium(
-                    'assets/img/3rd_place_medal.png',
+                    'assets/img/3_place_medal.png',
                     'jihan65',
                     50,
                     Color(0xFFFFEC4C),

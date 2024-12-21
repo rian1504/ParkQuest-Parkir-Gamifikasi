@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/referral_code_controller.dart';
 
 class KodeReferral extends StatefulWidget {
   const KodeReferral({super.key});
@@ -10,6 +12,11 @@ class KodeReferral extends StatefulWidget {
 }
 
 class _KodeReferralState extends State<KodeReferral> {
+  // Referral
+  final _referralCode = TextEditingController();
+  final ReferralCodeController _referralcodecontroller =
+      Get.put(ReferralCodeController());
+
   // Container
   Widget _buildContainer(double height, Widget child) {
     return Container(
@@ -112,16 +119,21 @@ class _KodeReferralState extends State<KodeReferral> {
                           child: Row(
                             children: [
                               // Kode Referral
-                              Expanded(
-                                child: Text(
-                                  '12345',
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+                              Obx(() {
+                                return _referralcodecontroller.isLoading.value
+                                    ? CircularProgressIndicator()
+                                    : Expanded(
+                                        child: Text(
+                                          _referralcodecontroller
+                                              .referralCode.value,
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                              }),
                               // Button Salin Kode
                               SizedBox(
                                 height: double.infinity,
@@ -195,6 +207,7 @@ class _KodeReferralState extends State<KodeReferral> {
                                 width: double.infinity,
                                 height: 60,
                                 child: TextFormField(
+                                  controller: _referralCode,
                                   decoration: InputDecoration(
                                     hintText: 'Kode Promosi',
                                     hintStyle: GoogleFonts.inter(
@@ -211,7 +224,14 @@ class _KodeReferralState extends State<KodeReferral> {
                               SizedBox(
                                 width: 200,
                                 child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    await _referralcodecontroller.store(
+                                      referralCode: _referralCode.text.trim(),
+                                      onSuccess: () {
+                                        _referralCode.clear();
+                                      },
+                                    );
+                                  },
                                   style: TextButton.styleFrom(
                                     backgroundColor: Color(0xFFFEC827),
                                   ),
