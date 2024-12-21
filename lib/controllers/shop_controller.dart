@@ -164,7 +164,7 @@ class ShopController extends GetxController {
     }
   }
 
-  Future shopDetail({required String avatarId}) async {
+  Future shopDetail({required int avatarId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -186,9 +186,10 @@ class ShopController extends GetxController {
         final dataAvatar = content['data'];
         avatarDetailData.value = AvatarDetailModel.fromJson(dataAvatar);
 
-        Get.offAllNamed('/shopDetail');
-
+        // Get.offAllNamed('/shop_detail');
         debugPrint(content.toString());
+
+        Get.toNamed('/shop_detail');
       } else {
         isLoading.value = false;
 
@@ -209,7 +210,7 @@ class ShopController extends GetxController {
     }
   }
 
-  Future buyAvatar({required String avatarId}) async {
+  Future buyAvatar({required int avatarId, required Function onSuccess}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -232,9 +233,10 @@ class ShopController extends GetxController {
         await _inventorycontroller.inventoryRare();
         await _inventorycontroller.inventoryLegendary();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 

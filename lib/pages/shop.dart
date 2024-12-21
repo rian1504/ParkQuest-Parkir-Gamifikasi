@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/shop_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
-import 'detail_avatar.dart';
+import 'package:get/get.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -13,6 +16,9 @@ class Shop extends StatefulWidget {
 
 class _ShopState extends State<Shop> {
   var selectedCategory = "Basic";
+
+  // Shop
+  final ShopController _shopcontroller = Get.put(ShopController());
 
   @override
   Widget build(BuildContext context) {
@@ -85,34 +91,43 @@ class _ShopState extends State<Shop> {
                   ),
                 ),
                 // Shop Cards
-                _buildShopCard(
-                  context,
-                  'assets/img/basic_avatar.png',
-                  'Old Car',
-                  'assets/img/money.png',
-                  const Color(0xFFD9D9D9),
-                ), // Basic
-                _buildShopCard(
-                  context,
-                  'assets/img/rare_avatar.png',
-                  'Blue Sedan',
-                  'assets/img/money.png',
-                  const Color(0xFF176CC7),
-                ), // Rare
-                _buildShopCard(
-                  context,
-                  'assets/img/rare_bike_avatar.png',
-                  'Army Bike',
-                  'assets/img/money.png',
-                  const Color(0xFF176CC7),
-                ), // Rare
-                _buildShopCard(
-                  context,
-                  'assets/img/legendary_avatar.png',
-                  'White Sport',
-                  'assets/img/money.png',
-                  const Color(0xFFF71010),
-                ), // Legendary
+                Obx(() {
+                  List<AvatarModel> currentData;
+
+                  switch (selectedCategory) {
+                    case "Rare":
+                      currentData = _shopcontroller.datasRare.value;
+                      break;
+                    case "Legendary":
+                      currentData = _shopcontroller.datasLegendary.value;
+                      break;
+                    default:
+                      currentData = _shopcontroller.datasBasic.value;
+                  }
+
+                  return _shopcontroller.isLoading.value
+                      ? CircularProgressIndicator()
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: currentData.length,
+                          itemBuilder: (context, index) {
+                            final AvatarModel data = currentData[index];
+
+                            return _buildShopCard(
+                              context,
+                              data.id,
+                              storageUrl + data.avatarImage,
+                              data.avatarName,
+                              data.price,
+                              selectedCategory == "Basic"
+                                  ? const Color(0xFFD9D9D9)
+                                  : selectedCategory == "Rare"
+                                      ? const Color(0xFF176CC7)
+                                      : const Color(0xFFF71010),
+                            );
+                          });
+                }),
               ],
             ),
           ),
@@ -160,17 +175,18 @@ class _ShopState extends State<Shop> {
   }
 
   // Shop Card
-  Widget _buildShopCard(BuildContext context, String imagePath, String title,
-      String descriptionImagePath, Color backgroundColor) {
+  Widget _buildShopCard(
+    BuildContext context,
+    int id,
+    String imagePath,
+    String title,
+    // String descriptionImagePath,
+    int price,
+    Color backgroundColor,
+  ) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                DetailAvatar(imagePath: imagePath, title: title),
-          ),
-        );
+      onTap: () async {
+        await _shopcontroller.shopDetail(avatarId: id);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -195,7 +211,7 @@ class _ShopState extends State<Shop> {
               Positioned(
                 left: 10,
                 top: -30,
-                child: Image.asset(
+                child: Image.network(
                   imagePath,
                   width: 130,
                   height: 130,
@@ -245,12 +261,17 @@ class _ShopState extends State<Shop> {
                           alignment: Alignment.center,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.asset(
-                              descriptionImagePath,
-                              width: 50,
-                              height: 25,
-                              fit: BoxFit.none,
-                            ),
+                            child: Text('${price} Coins',
+                                style: GoogleFonts.inter(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            // child: Image.asset(
+                            //   descriptionImagePath,
+                            //   width: 50,
+                            //   height: 25,
+                            //   fit: BoxFit.none,
+                            // ),
                           ),
                         ),
                       ],

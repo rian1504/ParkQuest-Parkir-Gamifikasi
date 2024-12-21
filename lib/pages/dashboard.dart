@@ -196,14 +196,14 @@ class _DashboardState extends State<Dashboard> {
                       // Shop
                       _buildFeatures(
                         context,
-                        '/Shop',
+                        '/shop',
                         CupertinoIcons.cart,
                         'Shop',
                       ),
                       // Misi
                       _buildFeatures(
                         context,
-                        'misi',
+                        '/misi',
                         CupertinoIcons.game_controller,
                         'Misi',
                       ),
