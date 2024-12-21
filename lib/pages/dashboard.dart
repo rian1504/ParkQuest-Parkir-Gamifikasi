@@ -265,7 +265,8 @@ class _DashboardState extends State<Dashboard> {
                                     data.user.avatar == null
                                         ? Icon(Icons.person)
                                         : Image.network(
-                                            storageUrl + data.user.avatar),
+                                            storageUrl + data.user.avatar,
+                                          ),
                                     data.user.username,
                                     'Mahasiswa',
                                     data.rank.rankName,
