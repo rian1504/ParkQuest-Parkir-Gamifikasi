@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/change_password.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/edit_profile.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
+import 'package:get/get.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -13,6 +13,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  // Data user
+  final AuthenticationController _authenticationcontroller =
+      Get.put(AuthenticationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,39 +63,45 @@ class _ProfileState extends State<Profile> {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 32,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.black,
+                  child: Obx(() {
+                    final user = _authenticationcontroller.user.value!;
+
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 32,
+                          child: user.avatar == null
+                              ? Icon(
+                                  Icons.person,
+                                  color: Colors.black,
+                                )
+                              : Image.network(storageUrl + user.avatar),
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Halo, Steve',
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                        SizedBox(width: 16),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Halo, ${user.name}',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '@steve01',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
+                            Text(
+                              user.username,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               ],
             ),
@@ -106,11 +116,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             onTap: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => EditProfile(),
-                ),
+                '/ubah_profile',
               );
             },
           ),
@@ -125,11 +133,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             onTap: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ChangePassword(),
-                ),
+                '/ubah_password',
               );
             },
           ),
@@ -144,11 +150,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             onTap: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Inventory(),
-                ),
+                '/inventory',
               );
             },
           ),
@@ -161,7 +165,7 @@ class _ProfileState extends State<Profile> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // Fungsi logout
+                  _showConfirmationDialog();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFF71010),
@@ -183,6 +187,101 @@ class _ProfileState extends State<Profile> {
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 3),
+    );
+  }
+
+  // Confirmation Dialog
+  Future<void> _showConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          contentPadding: EdgeInsets.all(20),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                children: [
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/img/question_mark.png',
+                        width: 200,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Apakah anda yakin?',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            // Button Ya
+            Center(
+              child: SizedBox(
+                width: 130,
+                height: 40,
+                child: TextButton(
+                  onPressed: () async {
+                    await _authenticationcontroller.logout();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xFFFEC827),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Ya',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            // Button Tidak
+            Center(
+              child: SizedBox(
+                width: 130,
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xFFFEC827),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Tidak',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

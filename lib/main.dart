@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/change_password.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/detail_avatar.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/edit_profile.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
@@ -51,6 +53,8 @@ class MyApp extends StatelessWidget {
         '/leaderboard': (context) => Leaderboard(),
         '/misi': (context) => Misi(),
         '/profile': (context) => Profile(),
+        '/ubah_profile': (context) => EditProfile(),
+        '/ubah_password': (context) => ChangePassword(),
         '/inventory': (context) => Inventory(),
       },
     );

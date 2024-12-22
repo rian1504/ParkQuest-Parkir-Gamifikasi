@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/profile.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -11,13 +13,30 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  // Profile
+  final ProfileController _profilecontroller = Get.put(ProfileController());
+
+  final _name = TextEditingController();
+  final _username = TextEditingController();
+  final _email = TextEditingController();
+  final _identityNumber = TextEditingController();
+  final _company = TextEditingController();
+  final _position = TextEditingController();
+
+  @override
+  initState() {
+    super.initState();
+    _profilecontroller.profile();
+  }
+
   // Text Form Field
-  Widget _buildTextFormField(String label) {
+  Widget _buildTextFormField(String label, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
         width: double.infinity,
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: GoogleFonts.inter(
@@ -85,9 +104,20 @@ class _EditProfileState extends State<EditProfile> {
                 width: 130,
                 height: 40,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
-                    _showSuccessDialog();
+                    await _profilecontroller.ubahProfile(
+                      name: _name.text.trim(),
+                      username: _username.text.trim(),
+                      email: _email.text.trim(),
+                      identityNumber: _identityNumber.text.trim(),
+                      company: _company.text.trim(),
+                      position: _position.text.trim(),
+                      onSuccess: () {
+                        _showSuccessDialog();
+                        _profilecontroller.profile();
+                      },
+                    );
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color(0xFFFEC827),
@@ -174,12 +204,9 @@ class _EditProfileState extends State<EditProfile> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => Profile(),
-                          ),
+                          '/profile',
                         );
                       },
                       child: Container(
@@ -267,56 +294,77 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     Padding(
                       padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          // Profile Picture
-                          CircleAvatar(
-                            radius: 40,
-                            child: Icon(Icons.person),
-                          ),
-                          SizedBox(
-                            height: 40,
-                            child: Center(
-                              child: Text(
-                                'Akun Saya',
-                                style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                      child: Obx(() {
+                        if (_profilecontroller.isLoading.value) {
+                          return CircularProgressIndicator();
+                        }
+
+                        final user = _profilecontroller.userData.value!;
+
+                        if (_name.text.isEmpty) {
+                          _name.text = user.name;
+                          _username.text = user.username;
+                          _email.text = user.email;
+                          _identityNumber.text = user.identityNumber;
+                          _company.text = user.eksternal?.agencyCompany ?? '';
+                          _position.text = user.eksternal?.position ?? '';
+                        }
+
+                        return Column(
+                          children: [
+                            // Profile Picture
+                            CircleAvatar(
+                              radius: 40,
+                              child: user.avatar == null
+                                  ? Icon(Icons.person)
+                                  : Image.network(storageUrl + user.avatar),
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  'Akun Saya',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Divider(),
-                          // Text Form Field
-                          _buildTextFormField('Nama Lengkap'),
-                          _buildTextFormField('Username'),
-                          _buildTextFormField('Email'),
-                          _buildTextFormField('NIM'),
-                          _buildTextFormField('Instansi'),
-                          _buildTextFormField('Jabatan'),
-                          SizedBox(height: 20),
-                          // Save Button
-                          SizedBox(
-                            width: 125,
-                            child: TextButton(
-                              onPressed: () {
-                                _showConfirmationDialog();
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFFECE2E),
-                              ),
-                              child: Text(
-                                'Simpan',
-                                style: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                            Divider(),
+                            // Text Form Field
+                            _buildTextFormField('Nama Lengkap', _name),
+                            _buildTextFormField('Username', _username),
+                            _buildTextFormField('Email', _email),
+                            _buildTextFormField('NIM', _identityNumber),
+                            if (user.eksternal != null)
+                              _buildTextFormField('Instansi', _company),
+                            if (user.eksternal != null)
+                              _buildTextFormField('Jabatan', _position),
+                            SizedBox(height: 20),
+                            // Save Button
+                            SizedBox(
+                              width: 125,
+                              child: TextButton(
+                                onPressed: () {
+                                  _showConfirmationDialog();
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFFECE2E),
+                                ),
+                                child: Text(
+                                  'Simpan',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        );
+                      }),
                     ),
                   ],
                 ),

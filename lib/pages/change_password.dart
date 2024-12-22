@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/profile.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:show_hide_password/show_hide_password.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -12,8 +14,21 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  // Profile
+  final ProfileController _profilecontroller = Get.put(ProfileController());
+
+  final _oldPassword = TextEditingController();
+  final _newPassword = TextEditingController();
+  final _newPasswordConfirmation = TextEditingController();
+
+  @override
+  initState() {
+    super.initState();
+    _profilecontroller.profile();
+  }
+
   // Password Field
-  Widget _buildPasswordField(String label) {
+  Widget _buildPasswordField(String label, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
@@ -23,6 +38,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           hidePassword: true,
           passwordField: (hidePassword) {
             return TextField(
+              controller: controller,
               obscureText: hidePassword,
               decoration: InputDecoration(
                 labelText: label,
@@ -96,9 +112,19 @@ class _ChangePasswordState extends State<ChangePassword> {
                 width: 130,
                 height: 40,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
-                    _showSuccessDialog();
+                    await _profilecontroller.UbahPassword(
+                        oldPassword: _oldPassword.text.trim(),
+                        newPassword: _newPassword.text.trim(),
+                        newPasswordConfirmation:
+                            _newPasswordConfirmation.text.trim(),
+                        onSuccess: () {
+                          _showSuccessDialog();
+                          _oldPassword.clear();
+                          _newPassword.clear();
+                          _newPasswordConfirmation.clear();
+                        });
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color(0xFFFEC827),
@@ -185,12 +211,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => Profile(),
-                          ),
+                          '/profile',
                         );
                       },
                       child: Container(
@@ -278,53 +301,63 @@ class _ChangePasswordState extends State<ChangePassword> {
                   children: [
                     Padding(
                       padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          // Profile Picture
-                          CircleAvatar(
-                            radius: 40,
-                            child: Icon(Icons.person),
-                          ),
-                          SizedBox(
-                            height: 40,
-                            child: Center(
-                              child: Text(
-                                'Akun Saya',
-                                style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                      child: Obx(() {
+                        if (_profilecontroller.isLoading.value) {
+                          return CircularProgressIndicator();
+                        }
+
+                        final user = _profilecontroller.userData.value!;
+                        return Column(
+                          children: [
+                            // Profile Picture
+                            CircleAvatar(
+                              radius: 40,
+                              child: user.avatar == null
+                                  ? Icon(Icons.person)
+                                  : Image.network(storageUrl + user.avatar),
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  'Akun Saya',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Divider(),
-                          // Password Form Field
-                          _buildPasswordField('Password Lama'),
-                          _buildPasswordField('Password Baru'),
-                          _buildPasswordField('Konfirmasi Password'),
-                          SizedBox(height: 20),
-                          // Save Button
-                          SizedBox(
-                            width: 125,
-                            child: TextButton(
-                              onPressed: () {
-                                _showConfirmationDialog();
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFFECE2E),
-                              ),
-                              child: Text(
-                                'Simpan',
-                                style: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                            Divider(),
+                            // Password Form Field
+                            _buildPasswordField('Password Lama', _oldPassword),
+                            _buildPasswordField('Password Baru', _newPassword),
+                            _buildPasswordField('Konfirmasi Password',
+                                _newPasswordConfirmation),
+                            SizedBox(height: 20),
+                            // Save Button
+                            SizedBox(
+                              width: 125,
+                              child: TextButton(
+                                onPressed: () {
+                                  _showConfirmationDialog();
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFFECE2E),
+                                ),
+                                child: Text(
+                                  'Simpan',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        );
+                      }),
                     ),
                   ],
                 ),

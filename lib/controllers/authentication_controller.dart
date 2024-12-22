@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-// import 'package:parkquest_parkir_gamifikasi/Controllers/ProfileController.dart';
 import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
@@ -13,9 +12,6 @@ class AuthenticationController extends GetxController {
   final token = ''.obs;
   final box = GetStorage();
   Rxn<UserModel> user = Rxn<UserModel>();
-
-  // User
-  // final ProfileController _profilecontroller = Get.put(ProfileController());
 
   Future registerEksternal({
     required String roleId,
@@ -217,9 +213,18 @@ class AuthenticationController extends GetxController {
         isLoading.value = false;
 
         box.remove('token');
+        box.erase();
         Get.offAllNamed('/login');
 
         debugPrint(content.toString());
+
+        Get.snackbar(
+          'Success',
+          content['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
       } else {
         isLoading.value = false;
 

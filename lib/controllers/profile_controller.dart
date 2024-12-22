@@ -8,7 +8,7 @@ import 'package:parkquest_parkir_gamifikasi/Models/User.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class ProfileController extends GetxController {
-  Rxn<UserModel> userData = Rxn<UserModel>();
+  var userData = Rx<UserModel?>(null);
   final isLoading = false.obs;
   final box = GetStorage();
 
@@ -45,6 +45,7 @@ class ProfileController extends GetxController {
         _authenticationcontroller.user.value =
             userData.value; // Memperbarui user di ProfileController
         _authenticationcontroller.user.refresh();
+        userData.refresh();
 
         debugPrint(content.toString());
       } else {
@@ -74,6 +75,7 @@ class ProfileController extends GetxController {
     required String identityNumber,
     String? company,
     String? position,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -102,9 +104,10 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         isLoading.value = false;
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
@@ -129,6 +132,7 @@ class ProfileController extends GetxController {
     required String oldPassword,
     required String newPassword,
     required String newPasswordConfirmation,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -154,9 +158,10 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         isLoading.value = false;
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
