@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/inventory_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/models/avatar/user_avatar.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class Inventory extends StatefulWidget {
   const Inventory({super.key});
@@ -11,38 +15,49 @@ class Inventory extends StatefulWidget {
 }
 
 class _InventoryState extends State<Inventory> {
-  final String _selectedButton = "basic";
-  String _selectedAvatar = 'assets/img/basic_avatar.png';
-  String _selectedAvatarName = "Old Car";
   var selectedCategory = "Basic";
 
-  // Categories
-  final List<Category> categories = [
-    // Basic Category
-    Category("basic", const Color(0xFFD9D9D9), "Basic", [
-      "assets/img/basic_avatar.png",
-      "assets/img/basic_bike_avatar.png",
-    ], [
-      "Old Car",
-      "Scooter",
-    ]),
-    // Rare Category
-    Category("rare", const Color(0xFF2592E7), "Rare", [
-      "assets/img/rare_avatar.png",
-      "assets/img/rare_bike_avatar.png",
-    ], [
-      "Blue Sedan",
-      "Army Bike",
-    ]),
-    // Legendary Category
-    Category("legendary", const Color(0xFFF71010), "Legendary", [
-      "assets/img/legendary_avatar.png",
-      "assets/img/legendary2_avatar.png",
-    ], [
-      "White Sport",
-      "White Jeep",
-    ]),
-  ];
+  // Inventory
+  final InventoryController _inventorycontroller =
+      Get.put(InventoryController());
+
+  // Data Awal
+  final Rxn<UserAvatarModel> dataAwal = Rxn<UserAvatarModel>();
+
+  Future<void> _initializeData() async {
+    dataAwal.value = null;
+
+    // Panggil fungsi inventori sesuai kategori
+    switch (selectedCategory) {
+      case "Rare":
+        await _inventorycontroller.inventoryRare();
+        if (_inventorycontroller.datasRare.value.isNotEmpty) {
+          dataAwal.value = _inventorycontroller.datasRare.value.first;
+        }
+        break;
+      case "Legendary":
+        await _inventorycontroller.inventoryLegendary();
+        if (_inventorycontroller.datasLegendary.value.isNotEmpty) {
+          dataAwal.value = _inventorycontroller.datasLegendary.value.first;
+        }
+        break;
+      default:
+        await _inventorycontroller.inventoryBasic();
+        if (_inventorycontroller.datasBasic.value.isNotEmpty) {
+          dataAwal.value = _inventorycontroller.datasBasic.value.first;
+        }
+        break;
+    }
+
+    // Perbarui tampilan setelah data berhasil dimuat
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,50 +165,83 @@ class _InventoryState extends State<Inventory> {
 
   // Avatar
   Widget _buildAvatarSection() {
-    return Column(
-      children: [
-        Text(
-          "Avatar",
-          style: GoogleFonts.inter(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: Image.asset(
-            _selectedAvatar,
-            fit: BoxFit.contain,
-          ),
-        ),
-        Text(
-          _selectedAvatarName,
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 20),
-        SizedBox(
-          width: 160,
-          child: TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              backgroundColor: Color(0xFFFECE2E),
-            ),
-            child: Text(
-              'Gunakan',
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+    return Obx(() {
+      return _inventorycontroller.isLoading.value
+          ? CircularProgressIndicator()
+          : dataAwal.value == null
+              ? Text('No Data Available')
+              : Column(
+                  children: [
+                    Text(
+                      "Avatar",
+                      style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Image.network(
+                        storageUrl + dataAwal.value!.avatarImage,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Text(
+                      dataAwal.value!.avatarName,
+                      style: GoogleFonts.inter(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 160,
+                      child: Obx(() {
+                        return dataAwal.value!.isEquipped == 1
+                            ? TextButton(
+                                onPressed: () {
+                                  null;
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFF666666),
+                                ),
+                                child: Text(
+                                  'Digunakan',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: () async {
+                                  await _inventorycontroller.updateAvatar(
+                                      avatarId:
+                                          dataAwal.value!.avatarId.toString(),
+                                      onSuccess: () {
+                                        _showSuccessDialog();
+                                        _initializeData();
+                                      });
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFFECE2E),
+                                ),
+                                child: Text(
+                                  'Gunakan',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                      }),
+                    ),
+                  ],
+                );
+    });
   }
 
   // Category Button
@@ -208,6 +256,7 @@ class _InventoryState extends State<Inventory> {
         onPressed: () {
           setState(() {
             selectedCategory = role;
+            _initializeData();
           });
         },
         style: TextButton.styleFrom(
@@ -234,76 +283,152 @@ class _InventoryState extends State<Inventory> {
   }
 
   Widget _buildItemGrid() {
-    final category = categories.firstWhere((c) => c.name == _selectedButton);
+    return Obx(() {
+      List<UserAvatarModel> currentData;
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: 1.2,
-      ),
-      itemCount: category.assets.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedAvatar = category.assets[index];
-              _selectedAvatarName = category.names[index];
-            });
-          },
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              // Card
-              Card(
-                elevation: 2,
-                color: category.color,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+      switch (selectedCategory) {
+        case "Rare":
+          currentData = _inventorycontroller.datasRare.value;
+          break;
+        case "Legendary":
+          currentData = _inventorycontroller.datasLegendary.value;
+          break;
+        default:
+          currentData = _inventorycontroller.datasBasic.value;
+      }
+
+      return _inventorycontroller.isLoading.value
+          ? CircularProgressIndicator()
+          : GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 1.2,
+              ),
+              itemCount: currentData.length,
+              itemBuilder: (context, index) {
+                final UserAvatarModel data = currentData[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    dataAwal.value = data;
+                  },
+                  child: Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      RatingBar.builder(
-                        initialRating: 3,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 16,
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                      // Card
+                      Card(
+                        elevation: 2,
+                        color: selectedCategory == "Basic"
+                            ? const Color(0xFFD9D9D9)
+                            : selectedCategory == "Rare"
+                                ? const Color(0xFF176CC7)
+                                : const Color(0xFFF71010),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              RatingBar.builder(
+                                initialRating: 3,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 16,
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  print(rating);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Avatar
+                      Positioned(
+                        bottom: 20,
+                        left: 0,
+                        right: 0,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.network(
+                              storageUrl + data.avatarImage,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ),
-              // Avatar
-              Positioned(
-                bottom: 20,
-                left: 0,
-                right: 0,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.asset(
-                      category.assets[index],
-                      fit: BoxFit.cover,
+                );
+              },
+            );
+    });
+  }
+
+  // Success Dialog
+  Future<void> _showSuccessDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          contentPadding: EdgeInsets.all(20),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                children: [
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/img/success_checked.png',
+                        width: 100,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Avatar Berhasil Digunakan!',
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF24E1E),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -311,20 +436,4 @@ class _InventoryState extends State<Inventory> {
       },
     );
   }
-}
-
-class Category {
-  final String name;
-  final Color color;
-  final String label;
-  final List<String> assets;
-  final List<String> names;
-
-  Category(
-    this.name,
-    this.color,
-    this.label,
-    this.assets,
-    this.names,
-  );
 }

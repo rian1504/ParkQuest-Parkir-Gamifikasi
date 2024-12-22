@@ -161,7 +161,10 @@ class InventoryController extends GetxController {
     }
   }
 
-  Future updateAvatar({required String avatarId}) async {
+  Future updateAvatar({
+    required String avatarId,
+    required Function onSuccess,
+  }) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -182,9 +185,10 @@ class InventoryController extends GetxController {
         await _profilecontroller.profile();
         await _leaderboardcontroller.userLeaderboard();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
