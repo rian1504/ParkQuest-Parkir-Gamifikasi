@@ -65,7 +65,7 @@ class MissionController extends GetxController {
     }
   }
 
-  Future dailyLogin() async {
+  Future dailyLogin({required Function onSuccess}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -85,9 +85,10 @@ class MissionController extends GetxController {
 
         await _profilecontroller.profile();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 

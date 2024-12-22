@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/mission_controller.dart';
 
 class Misi extends StatefulWidget {
   const Misi({super.key});
@@ -11,6 +14,15 @@ class Misi extends StatefulWidget {
 }
 
 class _MisiState extends State<Misi> {
+  // Mission
+  final MissionController _missioncontroller = Get.put(MissionController());
+
+  @override
+  void initState() {
+    super.initState();
+    _missioncontroller.index();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,36 +41,81 @@ class _MisiState extends State<Misi> {
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            GestureDetector(
-              onTap: () => _showLoginPopup(context),
-              child: _buildMissionCard(
-                title: "Daily",
-                subtitle: "Login",
-                icon: CupertinoIcons.calendar,
-                progress: 3,
-                total: 7,
-              ),
-            ),
-            SizedBox(height: 16),
-            _buildMissionCard(
-              title: "Weekly",
-              subtitle: "Rekomendasi",
-              icon: CupertinoIcons.star,
-              progressPercentage: 70,
-              isPercentage: true,
-            ),
-            SizedBox(height: 16),
-            _buildMissionCard(
-              title: "Lifetime",
-              subtitle: "Undang Teman",
-              icon: CupertinoIcons.person_add,
-              progress: 1,
-              total: 3,
-            ),
-          ],
-        ),
+        child: Obx(() {
+          return _missioncontroller.isLoading.value
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _missioncontroller.datas.value.length,
+                  itemBuilder: (context, index) {
+                    final MissionModel data =
+                        _missioncontroller.datas.value[index];
+
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        Obx(() {
+                          if (_missioncontroller.isLoading.value) {
+                            return CircularProgressIndicator();
+                          }
+
+                          if (index == 0) {
+                            return GestureDetector(
+                              onTap: () => _showLoginPopup(
+                                context,
+                                data.streak,
+                                data.updatedAt,
+                              ),
+                              child: _buildMissionCard(
+                                title: "Daily",
+                                subtitle: "Login",
+                                icon: CupertinoIcons.calendar,
+                                progress: data.streak,
+                                total: 7,
+                              ),
+                            );
+                          }
+
+                          if (index == 1) {
+                            return Column(
+                              children: [
+                                SizedBox(height: 16),
+                                _buildMissionCard(
+                                  title: 'Weekly',
+                                  subtitle: data.mission.missionDescription,
+                                  icon: CupertinoIcons.star,
+                                  // progressPercentage: data.streak,
+                                  // isPercentage: true,
+                                  progress: data.streak,
+                                  total: 5,
+                                ),
+                              ],
+                            );
+                          }
+
+                          if (index == 2) {
+                            return Column(
+                              children: [
+                                SizedBox(height: 16),
+                                _buildMissionCard(
+                                  title: 'Lifetime',
+                                  subtitle: data.mission.missionDescription,
+                                  icon: CupertinoIcons.person_add,
+                                  progress: data.streak,
+                                  total: 3,
+                                ),
+                              ],
+                            );
+                          }
+
+                          return Text('No mission available');
+                        }),
+                      ],
+                    );
+                  });
+        }),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
     );
@@ -153,171 +210,218 @@ class _MisiState extends State<Misi> {
     );
   }
 
-  void _showLoginPopup(BuildContext context) {
+  void _showLoginPopup(BuildContext context, int streak, DateTime updatedAt) {
     showDialog(
       context: context,
       useSafeArea: true,
       barrierDismissible: false,
       builder: (context) {
+        // Daftar hadiah misi
+        final rewards = [1, 1, 1, 3, 3, 3, 5];
+
+        // Ambil tanggal hari ini tanpa memperhitungkan waktu
+        final currentDate = DateTime.now();
+        final today =
+            DateTime(currentDate.year, currentDate.month, currentDate.day);
+
+        // Cek jika hari ini sudah login berdasarkan updatedAt
+        final updatedDateOnly =
+            DateTime(updatedAt.year, updatedAt.month, updatedAt.day);
+
+        // Jika streak 0
+        final isTodayLogin =
+            streak == 0 ? false : today.isAtSameMomentAs(updatedDateOnly);
+
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           backgroundColor: Color(0xFFFFD858),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.red),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        crossAxisCount: 3,
-                        childAspectRatio: 0.5,
-                        mainAxisSpacing: 6,
-                        crossAxisSpacing: 6,
-                        children: List.generate(6, (index) {
-                          return _buildDayReward(index + 1, context);
-                        }),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.red),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                    ),
-                    SizedBox(width: 6),
-                    Expanded(
-                      flex: 1,
-                      child: _buildBigDayReward(7, context),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Grid untuk Day 1 sampai Day 6
+                      Expanded(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.8,
+                            mainAxisSpacing: 6,
+                            crossAxisSpacing: 6,
+                          ),
+                          itemCount: 6,
+                          itemBuilder: (context, index) {
+                            final isActive = streak == index;
+                            final isButtonDisabled = isTodayLogin || !isActive;
+
+                            // Menambahkan jarak ekstra untuk baris kedua (index 3, 4, 5)
+                            final extraSpacing = (index >= 3)
+                                ? SizedBox(height: 35)
+                                : SizedBox(height: 0);
+
+                            return Column(
+                              children: [
+                                if (index >= 3) extraSpacing,
+                                GestureDetector(
+                                  onTap: isButtonDisabled
+                                      ? null
+                                      : () async {
+                                          await _missioncontroller.dailyLogin(
+                                            onSuccess: () {
+                                              Navigator.of(context).pop();
+                                              _showClaimSuccessPopup(context);
+                                              _missioncontroller.index();
+                                            },
+                                          );
+                                        },
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Day ${index + 1}',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Container(
+                                        height: 60,
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          color: isButtonDisabled
+                                              ? Colors.white
+                                              : Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/img/coin.png',
+                                              width: 40,
+                                            ),
+                                            Text(
+                                              '${rewards[index]} Koin',
+                                              style: GoogleFonts.inter(
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      // Elemen untuk Day 7
+                      GestureDetector(
+                        onTap: isTodayLogin || streak != 6
+                            ? null
+                            : () async {
+                                await _missioncontroller.dailyLogin(
+                                  onSuccess: () {
+                                    Navigator.of(context).pop();
+                                    _showClaimSuccessPopup(context);
+                                    _missioncontroller.index();
+                                  },
+                                );
+                              },
+                        child: Column(
+                          children: [
+                            Text(
+                              'Day 7',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Container(
+                              height: 160,
+                              width: 100,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: isTodayLogin || streak != 6
+                                    ? Colors.white
+                                    : Colors.blue,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/img/coin.png',
+                                    width: 50,
+                                  ),
+                                  Text(
+                                    '${rewards[6]} Koin',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _buildDayReward(int day, BuildContext context) {
-    int coinReward = (day < 4) ? 1 : 3;
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-        _showClaimSuccessPopup(context);
-      },
-      child: Column(
-        children: [
-          Text(
-            'Day $day',
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 6),
-          Container(
-            height: 80,
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/img/coin.png',
-                  width: 40,
-                ),
-                Text(
-                  '$coinReward Koin',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBigDayReward(int day, BuildContext context) {
-    int coinReward = 5;
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-        _showClaimSuccessPopup(context);
-      },
-      child: Column(
-        children: [
-          Text(
-            'Day $day',
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 6),
-          Container(
-            height: 100,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/img/coin.png',
-                  width: 50,
-                ),
-                Text(
-                  '$coinReward Koin',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
