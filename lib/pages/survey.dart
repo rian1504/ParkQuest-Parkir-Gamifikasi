@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/form_survey.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/survey_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class Survey extends StatelessWidget {
-  const Survey({super.key});
+  Survey({super.key});
+
+  // Survey
+  final SurveyController _surveycontroller = Get.put(SurveyController());
 
   @override
   Widget build(BuildContext context) {
@@ -26,50 +31,41 @@ class Survey extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        child: ListView(
-          children: [
-            // Gedung Utama
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FormSurvey(),
-                  ),
-                );
-              },
-              child: buildSurveyCard('Gedung Utama', 'assets/img/login.png'),
-            ),
-            // Technopreneur
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FormSurvey(),
-                  ),
-                );
-              },
-              child: buildSurveyCard('Technopreneur', 'assets/img/login.png'),
-            ),
-            // Tower A
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FormSurvey(),
-                  ),
-                );
-              },
-              child: buildSurveyCard('Tower A', 'assets/img/login.png'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          child: Obx(() {
+            return _surveycontroller.isLoading.value
+                ? CircularProgressIndicator()
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _surveycontroller.datas.value.length,
+                    itemBuilder: (context, index) {
+                      final data = _surveycontroller.datas.value[index];
+
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              await _surveycontroller.detail(
+                                surveyId: data.id.toString(),
+                              );
+                            },
+                            child: buildSurveyCard(
+                              data.surveyName,
+                              storageUrl + data.surveyImage,
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+          }),
         ),
       ),
     );
@@ -103,7 +99,7 @@ class Survey extends StatelessWidget {
                   SizedBox(height: 8),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
+                    child: Image.network(
                       imagePath,
                       height: 150,
                       width: double.infinity,

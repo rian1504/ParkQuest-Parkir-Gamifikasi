@@ -88,9 +88,10 @@ class SurveyController extends GetxController {
 
         datasDetail.value.add(SurveyDetailModel.fromJson(content['data']));
 
-        Get.offAllNamed('/detailSurvey');
-
+        // Get.offAllNamed('/form_survey');
         debugPrint(content.toString());
+
+        Get.toNamed('/form_survey');
       } else {
         isLoading.value = false;
 
@@ -114,6 +115,7 @@ class SurveyController extends GetxController {
   Future submit({
     required int surveyId,
     required List<Map<String, dynamic>> answers,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -141,9 +143,10 @@ class SurveyController extends GetxController {
 
         await _profilecontroller.profile();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 
