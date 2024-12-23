@@ -72,7 +72,7 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkData({required String parkAreaId}) async {
+  Future parkData({required int parkAreaId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -94,13 +94,14 @@ class ParkSearchController extends GetxController {
         final dataArea = content['dataParkArea'];
         parkAreaData.value = ParkAreaModel.fromJson(dataArea);
 
-        Get.offAllNamed('/detailPencarianParkir');
-
         for (var item in content['data']) {
           datasParkData.value.add(ParkDataModel.fromJson(item));
         }
 
+        // Get.offAllNamed('/detail_parkir');
         debugPrint(content.toString());
+
+        Get.toNamed('/detail_parkir');
       } else {
         isLoading.value = false;
 
@@ -121,7 +122,7 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendation({required String parkAreaId}) async {
+  Future parkRecommendation({required int parkAreaId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -140,7 +141,7 @@ class ParkSearchController extends GetxController {
         datasParkRecommendation.value.clear();
         isLoading.value = false;
 
-        Get.offAllNamed('/daftarRekomendasiParkir');
+        // Get.offAllNamed('/daftarRekomendasiParkir');
 
         for (var item in content['data']) {
           datasParkRecommendation.value
@@ -168,8 +169,7 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendationDetail(
-      {required String parkRecommendationId}) async {
+  Future parkRecommendationDetail({required int parkRecommendationId}) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -192,9 +192,10 @@ class ParkSearchController extends GetxController {
         parkRecommendationData.value =
             ParkRecommendationModel.fromJson(dataRecommendation);
 
-        Get.offAllNamed('/detailDaftarRekomendasiParkir');
-
+        // Get.offAllNamed('/detail_rekomendasi');
         debugPrint(content.toString());
+
+        Get.toNamed('/detail_rekomendasi');
       } else {
         isLoading.value = false;
 
@@ -215,8 +216,10 @@ class ParkSearchController extends GetxController {
     }
   }
 
-  Future parkRecommendationAccepted(
-      {required String parkRecommendationId}) async {
+  Future parkRecommendationAccepted({
+    required int parkRecommendationId,
+    required Function onSuccess,
+  }) async {
     try {
       isLoading.value = true;
       final token = box.read('token');
@@ -236,9 +239,10 @@ class ParkSearchController extends GetxController {
 
         await _profilecontroller.profile();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 

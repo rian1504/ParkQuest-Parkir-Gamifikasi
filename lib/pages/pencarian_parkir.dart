@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/detail_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_search_controller.dart';
+import 'package:get/get.dart';
 
 class PencarianParkir extends StatefulWidget {
   const PencarianParkir({super.key});
@@ -24,8 +25,12 @@ class _PencarianParkir extends State<PencarianParkir> {
     zoom: 18,
   );
 
+  // Park Area
+  final ParkSearchController _parksearchcontroller =
+      Get.put(ParkSearchController());
+
   // Card
-  Widget _buildCard(String title, String status, Widget page) {
+  Widget _buildCard(String title, String status, int id) {
     return Container(
       width: 200,
       height: 60,
@@ -87,12 +92,9 @@ class _PencarianParkir extends State<PencarianParkir> {
               IconButton(
                 icon: Icon(CupertinoIcons.chevron_right),
                 iconSize: 32,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => page,
-                    ),
+                onPressed: () async {
+                  await _parksearchcontroller.parkData(
+                    parkAreaId: id,
                   );
                 },
               ),
@@ -134,97 +136,83 @@ class _PencarianParkir extends State<PencarianParkir> {
         ),
       ),
       backgroundColor: Color(0xFFFFFFE5),
-      body: Column(
-        children: [
-          // Maps
-          SizedBox(
-            height: 627,
-            child: GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: _initialCameraPosition,
-              markers: {
-                // Parkiran GU
-                Marker(
-                  markerId: MarkerId('parkir_gu'),
-                  position: LatLng(1.119266192849427, 104.04884385456609),
-                  infoWindow: InfoWindow(
-                    title: 'Parkiran Gedung Utama',
-                  ),
-                  onTap: () {
-                    _scrollCard(0);
-                  },
+      body: Obx(() {
+        if (_parksearchcontroller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final parkData = _parksearchcontroller.datasParkArea.value;
+
+        Set<Marker> markers = parkData
+            .map(
+              (park) => Marker(
+                markerId: MarkerId(park.id.toString()),
+                position: LatLng(
+                  double.parse(park.parkCoordinate.split(',')[0]),
+                  double.parse(park.parkCoordinate.split(',')[1]),
                 ),
-                // Parkiran Techno
-                Marker(
-                  markerId: MarkerId('parkir_techno'),
-                  position: LatLng(1.1191713857641197, 104.04810983744885),
-                  infoWindow: InfoWindow(
-                    title: 'Parkiran Technopreneur',
-                  ),
-                  onTap: () {
-                    _scrollCard(1);
-                  },
+                infoWindow: InfoWindow(
+                  title: park.parkName,
                 ),
-                // Parkiran TA
-                Marker(
-                  markerId: MarkerId('parkir_ta'),
-                  position: LatLng(1.1187655629258093, 104.04767799900829),
-                  infoWindow: InfoWindow(
-                    title: 'Parkiran Tower A',
-                  ),
-                  onTap: () {
-                    _scrollCard(2);
-                  },
-                ),
-              },
-              onMapCreated: (GoogleMapController controller) {
-                _mapController.complete(controller);
-              },
-              scrollGesturesEnabled: false,
-              zoomGesturesEnabled: false,
-              zoomControlsEnabled: false,
-              rotateGesturesEnabled: false,
-              tiltGesturesEnabled: false,
-              mapToolbarEnabled: false,
+                onTap: () {
+                  final index = parkData.indexOf(park);
+                  _scrollCard(index);
+                },
+              ),
+            )
+            .toSet();
+
+        return Column(
+          children: [
+            // Maps
+            SizedBox(
+              height: 570,
+              // height: 627,
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: _initialCameraPosition,
+                markers: markers,
+                onMapCreated: (GoogleMapController controller) {
+                  _mapController.complete(controller);
+                },
+                scrollGesturesEnabled: false,
+                zoomGesturesEnabled: false,
+                zoomControlsEnabled: false,
+                rotateGesturesEnabled: false,
+                tiltGesturesEnabled: false,
+                mapToolbarEnabled: false,
+              ),
             ),
-          ),
-          // Memanggil Card
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              controller: _scrollController,
-              itemCount: 1,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    left: index == 0 ? 80 : 0,
-                    right: index == 2 ? 0 : 80,
-                  ),
-                  child: Row(
-                    children: [
-                      _buildCard(
-                        "Gedung Utama",
-                        "Available",
-                        DetailParkir(),
-                      ),
-                      _buildCard(
-                        "Technopreneur",
-                        "Available",
-                        DetailParkir(),
-                      ),
-                      _buildCard(
-                        "Tower A",
-                        "Available",
-                        DetailParkir(),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            // Memanggil Card
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                controller: _scrollController,
+                itemCount: parkData.length,
+                itemBuilder: (context, index) {
+                  final park = parkData[index];
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: index == 0 ? 80 : 0,
+                      right: index == 2 ? 0 : 80,
+                    ),
+                    child: Row(
+                      children: [
+                        _buildCard(
+                          park.parkName,
+                          "Available",
+                          park.id,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 }

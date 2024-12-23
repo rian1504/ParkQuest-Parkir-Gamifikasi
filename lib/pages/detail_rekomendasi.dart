@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_search_controller.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
 class DetailRekomendasi extends StatefulWidget {
   const DetailRekomendasi({super.key});
@@ -10,6 +13,10 @@ class DetailRekomendasi extends StatefulWidget {
 }
 
 class _DetailRekomendasi extends State<DetailRekomendasi> {
+  // Data Recommendation
+  final ParkSearchController _parksearchcontroller =
+      Get.put(ParkSearchController());
+
   // Form Label
   Widget _buildFormLabel(String text) {
     return Align(
@@ -25,7 +32,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
   }
 
   // Confirmation Dialog
-  Future<void> _showConfirmationDialog() async {
+  Future<void> _showConfirmationDialog({required int id}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -82,9 +89,12 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                 width: 130,
                 height: 40,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
-                    _showSuccessDialog();
+                    await _parksearchcontroller.parkRecommendationAccepted(
+                      parkRecommendationId: id,
+                      onSuccess: () => _showSuccessDialog(),
+                    );
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color(0xFFFEC827),
@@ -131,7 +141,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        'Selamat! Kamu berhasil mendapatkan 10 exp',
+                        'Selamat! Kamu berhasil mendapatkan 20 exp',
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -144,7 +154,9 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                     top: 0,
                     right: 0,
                     child: GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/dashboard');
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Color(0xFFF24E1E),
@@ -168,6 +180,9 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
 
   @override
   Widget build(BuildContext context) {
+    final parkRecommendationData =
+        _parksearchcontroller.parkRecommendationData.value!;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFEC827),
@@ -182,160 +197,173 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(50),
-          child: Column(
-            children: [
-              // Profil
-              Row(
+          child: SingleChildScrollView(
+            child: Obx(() {
+              if (_parksearchcontroller.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return Column(
                 children: [
-                  Column(
+                  // Profil
+                  Row(
                     children: [
-                      // Foto Profil
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/img/profile_picture.png'),
-                          backgroundColor: Colors.white,
+                      Column(
+                        children: [
+                          // Foto Profil
+                          SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: parkRecommendationData.user.avatar ==
+                                        null
+                                    ? Icon(Icons.person)
+                                    : Image.network(
+                                        storageUrl +
+                                            parkRecommendationData.user.avatar,
+                                        fit: BoxFit.cover,
+                                      )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Nama
+                          Row(
+                            children: [
+                              Text(
+                                parkRecommendationData.user.name,
+                                style: GoogleFonts.inter(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
+                          // Waktu
+                          Row(
+                            children: [
+                              Text(
+                                '${parkRecommendationData.createdAt.hour.toString().padLeft(2, '0')}:${parkRecommendationData.createdAt.minute.toString().padLeft(2, '0')} WIB',
+                                style: GoogleFonts.inter(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 32),
+                  // Field Kapasitas
+                  _buildFormLabel("Kapasitas"),
+                  SizedBox(height: 4),
+                  SizedBox(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        label: Text(
+                          parkRecommendationData.capacity.toString(),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(width: 20),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Nama
-                      Row(
-                        children: [
-                          Text(
-                            'Rian',
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+                  SizedBox(height: 20),
+                  // Field Gambar
+                  _buildFormLabel('Gambar'),
+                  SizedBox(height: 4),
+                  Container(
+                    width: double.infinity,
+                    height: 190,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Colors.black,
                       ),
-                      // Waktu
-                      Row(
-                        children: [
-                          Text(
-                            '09.45 WIB',
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Image.network(
+                      storageUrl + parkRecommendationData.image,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Field Catatan
+                  _buildFormLabel('Catatan'),
+                  SizedBox(height: 4),
+                  SizedBox(
+                    child: TextFormField(
+                      readOnly: true,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 3,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        label: Text(
+                          parkRecommendationData.description,
+                        ),
+                        contentPadding: EdgeInsets.all(20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
                       ),
-                    ],
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  // Text 'Apakah Membantu?'
+                  Text(
+                    'Apakah Membantu?',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  // Button Terima
+                  SizedBox(
+                    width: 148,
+                    child: TextButton(
+                      onPressed: () {
+                        _showConfirmationDialog(id: parkRecommendationData.id);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color(0xFFFEC827),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      child: Text(
+                        'Terima',
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
-              ),
-              SizedBox(height: 32),
-              // Field Kapasitas
-              _buildFormLabel("Kapasitas"),
-              SizedBox(height: 4),
-              SizedBox(
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    label: Text(
-                      '2',
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Field Gambar
-              _buildFormLabel('Gambar'),
-              SizedBox(height: 4),
-              Container(
-                width: double.infinity,
-                height: 190,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Image.asset(
-                  'assets/img/rekomendasi.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              SizedBox(height: 20),
-              // Field Catatan
-              _buildFormLabel('Catatan'),
-              SizedBox(height: 4),
-              SizedBox(
-                child: TextFormField(
-                  readOnly: true,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 3,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    label: Text(
-                      'Parkirannya di dekat pamdal',
-                    ),
-                    contentPadding: EdgeInsets.all(20),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 24),
-              // Text 'Apakah Membantu?'
-              Text(
-                'Apakah Membantu?',
-                style: GoogleFonts.inter(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              SizedBox(height: 8),
-              // Button Terima
-              SizedBox(
-                width: 148,
-                child: TextButton(
-                  onPressed: () {
-                    _showConfirmationDialog();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color(0xFFFEC827),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Text(
-                    'Terima',
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              );
+            }),
           ),
         ),
       ),
