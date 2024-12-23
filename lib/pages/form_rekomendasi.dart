@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/park_recommendation_controller.dart';
 
 class FormRekomendasi extends StatefulWidget {
   const FormRekomendasi({super.key});
@@ -15,8 +17,16 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
   File? _image;
   String? _imageName;
 
+  // Park Area
+  final ParkRecommendationController _parkrecommendationcontroller =
+      Get.put(ParkRecommendationController());
+
+  final _capacity = TextEditingController();
+  final _description = TextEditingController();
+
   // Image Picker
   final ImagePicker _picker = ImagePicker();
+
   Future<void> _pickImage(ImageSource source) async {
     final XFile? pickedImage = await _picker.pickImage(source: source);
     if (pickedImage != null) {
@@ -87,7 +97,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
   }
 
   // Success Dialog
-  Future<void> _showAlertDialog() async {
+  Future<void> _showSuccessDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -122,7 +132,9 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 top: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/dashboard');
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: Color(0xFFF24E1E),
@@ -144,6 +156,9 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
 
   @override
   Widget build(BuildContext context) {
+    // Ambil arguments
+    final parkAreaId = ModalRoute.of(context)!.settings.arguments as int;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFEC827),
@@ -167,6 +182,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 SizedBox(height: 5),
                 SizedBox(
                   child: TextFormField(
+                    controller: _capacity,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -231,6 +247,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 SizedBox(height: 5),
                 SizedBox(
                   child: TextFormField(
+                    controller: _description,
                     keyboardType: TextInputType.multiline,
                     minLines: 3,
                     maxLines: null,
@@ -252,8 +269,22 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 SizedBox(
                   width: 148,
                   child: TextButton(
-                    onPressed: () {
-                      _showAlertDialog();
+                    onPressed: () async {
+                      await _parkrecommendationcontroller.storeRekomendasi(
+                        parkAreaId: parkAreaId,
+                        capacity: _capacity.text.trim(),
+                        image: _image!.path,
+                        description: _description.text.trim(),
+                        onSuccess: () {
+                          _showSuccessDialog();
+                          _capacity.clear();
+                          _description.clear();
+                          setState(() {
+                            _image = null;
+                            _imageName = null;
+                          });
+                        },
+                      );
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Color(0xFFFEC827),

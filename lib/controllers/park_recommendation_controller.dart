@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/models/park_recommendation/park_area.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
@@ -16,7 +15,6 @@ class ParkRecommendationController extends GetxController {
 
   var selectedImagePath = ''.obs;
   var selectedImageBytes = Rxn<Uint8List>();
-  final ImagePicker _picker = ImagePicker();
 
   // User
   final ProfileController _profilecontroller = Get.put(ProfileController());
@@ -71,32 +69,12 @@ class ParkRecommendationController extends GetxController {
     }
   }
 
-  Future pickImage() async {
-    try {
-      final XFile? pickedFile =
-          await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        if (kIsWeb) {
-          // Jika platform adalah Web
-          selectedImagePath.value = pickedFile.path;
-          selectedImageBytes.value = await pickedFile.readAsBytes();
-        } else {
-          // Jika platform adalah selain Web
-          selectedImagePath.value = pickedFile.path;
-        }
-      } else {
-        Get.snackbar("Error", "No image selected");
-      }
-    } catch (e) {
-      Get.snackbar("Error", e.toString());
-    }
-  }
-
   Future storeRekomendasi({
-    required String parkAreaId,
+    required int parkAreaId,
     required String capacity,
     required String image,
     required String description,
+    required Function onSuccess,
   }) async {
     try {
       isLoading.value = true;
@@ -110,24 +88,10 @@ class ParkRecommendationController extends GetxController {
       // Field form
       request.fields['capacity'] = capacity;
       request.fields['description'] = description;
-
-      // Tambahkan file (Web dan non-Web)
-      if (selectedImagePath.value.isNotEmpty) {
-        if (kIsWeb) {
-          // Jika platform adalah Web
-          request.files.add(http.MultipartFile.fromBytes(
-            'image', // Nama field di backend
-            selectedImageBytes.value!,
-            filename: selectedImagePath.value,
-          ));
-        } else {
-          // Jika platform adalah selain Web
-          request.files.add(await http.MultipartFile.fromPath(
-            'image',
-            selectedImagePath.value,
-          ));
-        }
-      }
+      request.files.add(await http.MultipartFile.fromPath(
+        'image',
+        image,
+      ));
 
       request.headers.addAll({
         ...headers,
@@ -145,9 +109,10 @@ class ParkRecommendationController extends GetxController {
 
         await _profilecontroller.profile();
 
-        Get.offAllNamed('/dashboard');
-
+        // Get.offAllNamed('/dashboard');
         debugPrint(content.toString());
+
+        onSuccess();
       } else {
         isLoading.value = false;
 

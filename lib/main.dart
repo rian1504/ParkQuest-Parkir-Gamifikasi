@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/change_password.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/detail_avatar.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/edit_profile.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/form_rekomendasi.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/form_survey.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => Register(),
         '/dashboard': (context) => Dashboard(),
         '/rekomendasi_parkir': (context) => RekomendasiParkir(),
+        '/form_rekomendasi': (context) => FormRekomendasi(),
         '/pencarian_parkir': (context) => PencarianParkir(),
         '/survey': (context) => Survey(),
         '/form_survey': (context) => FormSurvey(),
