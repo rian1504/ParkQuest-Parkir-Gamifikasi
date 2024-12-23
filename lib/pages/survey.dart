@@ -5,11 +5,22 @@ import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/survey_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 
-class Survey extends StatelessWidget {
+class Survey extends StatefulWidget {
   Survey({super.key});
 
+  @override
+  State<Survey> createState() => _SurveyState();
+}
+
+class _SurveyState extends State<Survey> {
   // Survey
   final SurveyController _surveycontroller = Get.put(SurveyController());
+
+  @override
+  void initState() {
+    super.initState();
+    _surveycontroller.index();
+  }
 
   @override
   Widget build(BuildContext context) {

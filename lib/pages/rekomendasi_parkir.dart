@@ -29,6 +29,12 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
   final ParkRecommendationController _parkrecommendationcontroller =
       Get.put(ParkRecommendationController());
 
+  @override
+  initState() {
+    super.initState();
+    _parkrecommendationcontroller.parkArea();
+  }
+
   // Card
   Widget _buildCard(String title, String status, int id) {
     return Container(

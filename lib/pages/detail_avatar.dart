@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/shop_controller.dart';
 
 class DetailAvatar extends StatefulWidget {
@@ -76,12 +77,14 @@ class _DetailAvatarState extends State<DetailAvatar> {
                     //Hero Widget dari Shop
                     const SizedBox(height: 12),
                     Hero(
-                      tag: avatarDetailData.id,
+                      tag: avatarDetailData.avatarName,
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: FittedBox(
                           fit: BoxFit.contain,
-                          child: Image.network(avatarDetailData.avatarImage),
+                          child: Image.network(
+                            storageUrl + avatarDetailData.avatarImage,
+                          ),
                         ),
                       ),
                     ),

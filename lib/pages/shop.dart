@@ -21,6 +21,14 @@ class _ShopState extends State<Shop> {
   final ShopController _shopcontroller = Get.put(ShopController());
 
   @override
+  void initState() {
+    super.initState();
+    _shopcontroller.shopBasic();
+    _shopcontroller.shopRare();
+    _shopcontroller.shopLegendary();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -48,15 +56,15 @@ class _ShopState extends State<Shop> {
                   children: [
                     Image.asset(
                       'assets/img/basic_avatar.png',
-                      width: 120,
+                      width: 110,
                     ),
                     Image.asset(
                       'assets/img/rare_avatar.png',
-                      width: 120,
+                      width: 110,
                     ),
                     Image.asset(
                       'assets/img/legendary_avatar.png',
-                      width: 120,
+                      width: 110,
                     ),
                   ],
                 ),

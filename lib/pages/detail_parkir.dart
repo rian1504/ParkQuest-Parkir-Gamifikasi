@@ -138,7 +138,7 @@ class _DetailParkirState extends State<DetailParkir> {
                     children: [
                       // Catatan
                       SizedBox(
-                        width: 250,
+                        width: 225,
                         child: Text(
                           description,
                           maxLines: 1,

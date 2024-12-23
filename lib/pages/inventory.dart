@@ -356,14 +356,14 @@ class _InventoryState extends State<Inventory> {
                       ),
                       // Avatar
                       Positioned(
-                        bottom: 20,
+                        bottom: 40,
                         left: 0,
                         right: 0,
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 50,
+                            height: 50,
                             child: Image.network(
                               storageUrl + data.avatarImage,
                               fit: BoxFit.cover,

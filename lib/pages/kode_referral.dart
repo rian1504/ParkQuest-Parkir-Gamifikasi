@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,98 +79,112 @@ class _KodeReferralState extends State<KodeReferral> {
               child: TabBarView(
                 children: [
                   // Tab Bagikan
-                  Column(
-                    children: [
-                      // Container
-                      _buildContainer(
-                        480,
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/img/kode_referral_bagikan.png',
-                              width: 260,
-                            ),
-                            SizedBox(height: 50),
-                            Text(
-                              'Ajak temanmu dan dapatkan Coinnya!',
-                              style: GoogleFonts.inter(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w300,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(32),
-                        child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Container
+                        _buildContainer(
+                          455,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Kode Referral
-                              Obx(() {
-                                return _referralcodecontroller.isLoading.value
-                                    ? CircularProgressIndicator()
-                                    : Expanded(
-                                        child: Text(
-                                          _referralcodecontroller
-                                              .referralCode.value,
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      );
-                              }),
-                              // Button Salin Kode
-                              SizedBox(
-                                height: double.infinity,
-                                child: TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Color(0xFFFEC827),
-                                    side: BorderSide(
-                                      width: 1,
-                                      strokeAlign:
-                                          BorderSide.strokeAlignOutside,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.horizontal(
-                                        right: Radius.circular(10),
-                                      ),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Salin Kode',
-                                    style: GoogleFonts.inter(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                              Image.asset(
+                                'assets/img/kode_referral_bagikan.png',
+                                width: 260,
+                              ),
+                              SizedBox(height: 50),
+                              Text(
+                                'Ajak temanmu dan dapatkan Coinnya!',
+                                style: GoogleFonts.inter(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w300,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: EdgeInsets.all(32),
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                // Kode Referral
+                                Obx(() {
+                                  return _referralcodecontroller.isLoading.value
+                                      ? CircularProgressIndicator()
+                                      : Expanded(
+                                          child: Text(
+                                            _referralcodecontroller
+                                                .referralCode.value,
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        );
+                                }),
+                                // Button Salin Kode
+                                SizedBox(
+                                  height: double.infinity,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(
+                                        text: _referralcodecontroller
+                                            .referralCode.value,
+                                      ));
+                                      Get.snackbar(
+                                        'Berhasil',
+                                        'Kode referral disalin',
+                                        snackPosition: SnackPosition.TOP,
+                                        backgroundColor: Colors.green,
+                                        colorText: Colors.white,
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Color(0xFFFEC827),
+                                      side: BorderSide(
+                                        width: 1,
+                                        strokeAlign:
+                                            BorderSide.strokeAlignOutside,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(10),
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Salin Kode',
+                                      style: GoogleFonts.inter(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   // Tab Masukkan
                   SingleChildScrollView(
@@ -177,7 +192,7 @@ class _KodeReferralState extends State<KodeReferral> {
                       children: [
                         // Container
                         _buildContainer(
-                          350,
+                          300,
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,

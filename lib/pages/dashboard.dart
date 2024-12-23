@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
@@ -152,11 +150,9 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => PencarianParkir(),
-                            ),
+                            '/pencarian_parkir',
                           );
                         },
                         child: _buildMainFeatureCard(
@@ -166,11 +162,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => RekomendasiParkir(),
-                            ),
+                            '/rekomendasi_parkir',
                           );
                         },
                         child: _buildMainFeatureCard(
@@ -291,7 +285,7 @@ Widget _buildMainFeatureCard(IconData icon, String title) {
   return Container(
     width: 130,
     height: 180,
-    margin: EdgeInsets.symmetric(horizontal: 20),
+    margin: EdgeInsets.symmetric(horizontal: 15),
     padding: EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: Color(0xFFFEC827),

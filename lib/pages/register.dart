@@ -206,11 +206,13 @@ class _RegisterState extends State<Register> {
   }
 
   // Text Form Field
-  Widget _buildTextFormField(String label, TextEditingController controller) {
+  Widget _buildTextFormField(String label, TextEditingController controller,
+      TextInputType keyboardType) {
     return SizedBox(
       height: 50,
       width: double.infinity,
       child: TextFormField(
+        keyboardType: keyboardType,
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
@@ -282,13 +284,14 @@ class _RegisterState extends State<Register> {
       child: Column(
         children: [
           SizedBox(height: 25),
-          _buildTextFormField('Nama', _name),
+          _buildTextFormField('Nama', _name, TextInputType.text),
           SizedBox(height: 15),
-          _buildTextFormField('Username', _username),
+          _buildTextFormField('Username', _username, TextInputType.text),
           SizedBox(height: 15),
-          _buildTextFormField('NIM/NIK/NIDN', _identityNumber),
+          _buildTextFormField(
+              'NIM/NIK/NIDN', _identityNumber, TextInputType.number),
           SizedBox(height: 15),
-          _buildTextFormField('Email', _email),
+          _buildTextFormField('Email', _email, TextInputType.emailAddress),
           SizedBox(height: 15),
           _buildPasswordField('Password', _password),
         ],
@@ -301,17 +304,19 @@ class _RegisterState extends State<Register> {
     return Column(
       children: [
         SizedBox(height: 25),
-        _buildTextFormField('Nama', _name),
+        _buildTextFormField('Nama', _name, TextInputType.text),
         SizedBox(height: 15),
-        _buildTextFormField('Username', _username),
+        _buildTextFormField('Username', _username, TextInputType.text),
         SizedBox(height: 15),
-        _buildTextFormField('No KTP/NIK', _identityNumber),
+        _buildTextFormField(
+            'No KTP/NIK', _identityNumber, TextInputType.number),
         SizedBox(height: 15),
-        _buildTextFormField('Instansi/Perusahaan', _company),
+        _buildTextFormField(
+            'Instansi/Perusahaan', _company, TextInputType.text),
         SizedBox(height: 15),
-        _buildTextFormField('Jabatan', _position),
+        _buildTextFormField('Jabatan', _position, TextInputType.text),
         SizedBox(height: 15),
-        _buildTextFormField('Email', _email),
+        _buildTextFormField('Email', _email, TextInputType.emailAddress),
         SizedBox(height: 15),
         _buildPasswordField('Password', _password),
       ],

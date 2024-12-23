@@ -29,6 +29,12 @@ class _PencarianParkir extends State<PencarianParkir> {
   final ParkSearchController _parksearchcontroller =
       Get.put(ParkSearchController());
 
+  @override
+  initState() {
+    super.initState();
+    _parksearchcontroller.parkArea();
+  }
+
   // Card
   Widget _buildCard(String title, String status, int id) {
     return Container(
