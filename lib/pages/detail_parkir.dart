@@ -72,11 +72,11 @@ class _DetailParkirState extends State<DetailParkir> {
       child: Container(
         height: 75,
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 20,
+        margin: EdgeInsets.only(
+          bottom: 20,
+          left: 20,
+          right: 20,
         ),
-        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -102,9 +102,8 @@ class _DetailParkirState extends State<DetailParkir> {
                 children: [
                   // Foto Profil
                   CircleAvatar(
-                    child: image,
-                    // backgroundImage: AssetImage(image),
                     backgroundColor: Colors.white,
+                    child: image,
                   ),
                 ],
               ),
@@ -255,10 +254,18 @@ class _DetailParkirState extends State<DetailParkir> {
                                           .datasParkData.value[index];
 
                                   return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         children: [
-                                          _buildText("${data.startHour}.00 - "),
+                                          _buildText("${data.startHour}.00"),
+                                          SizedBox(height: 12),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          _buildText("-"),
                                           SizedBox(height: 12),
                                         ],
                                       ),
@@ -293,43 +300,31 @@ class _DetailParkirState extends State<DetailParkir> {
                                 });
                           }),
                           // Keterangan
-                          SizedBox(height: 40),
+                          SizedBox(height: 60),
                           _buildTitleText('KET'),
                           SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      _buildColoredBox(Color(0xFF20FF0C)),
-                                      SizedBox(width: 1),
-                                      _buildText('Sepi'),
-                                    ],
-                                  ),
+                                  _buildColoredBox(Color(0xFF20FF0C)),
+                                  SizedBox(width: 4),
+                                  _buildText('Sepi'),
                                 ],
                               ),
-                              Column(
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      _buildColoredBox(Color(0xFFF8FD07)),
-                                      SizedBox(width: 1),
-                                      _buildText('Lumayan'),
-                                    ],
-                                  ),
+                                  _buildColoredBox(Color(0xFFF8FD07)),
+                                  SizedBox(width: 4),
+                                  _buildText('Lumayan'),
                                 ],
                               ),
-                              Column(
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      _buildColoredBox(Color(0xFFF20707)),
-                                      SizedBox(width: 1),
-                                      _buildText('Ramai'),
-                                    ],
-                                  ),
+                                  _buildColoredBox(Color(0xFFF20707)),
+                                  SizedBox(width: 4),
+                                  _buildText('Ramai'),
                                 ],
                               ),
                             ],
@@ -340,45 +335,52 @@ class _DetailParkirState extends State<DetailParkir> {
                   ),
                   // Tab Rekomendasi
                   SingleChildScrollView(
-                    child: Obx(() {
-                      if (_parksearchcontroller.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (_parksearchcontroller
-                          .datasParkRecommendation.value.isEmpty) {
-                        return Center(child: Text('Data tidak ditemukan'));
-                      }
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Obx(() {
+                        if (_parksearchcontroller.isLoading.value) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFEC827),
+                            ),
+                          );
+                        }
+                        if (_parksearchcontroller
+                            .datasParkRecommendation.value.isEmpty) {
+                          return Center(child: Text('Data tidak ditemukan'));
+                        }
 
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _parksearchcontroller
-                              .datasParkRecommendation.value.length,
-                          itemBuilder: (context, index) {
-                            final ParkRecommendationModel data =
-                                _parksearchcontroller
-                                    .datasParkRecommendation.value[index];
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _parksearchcontroller
+                                .datasParkRecommendation.value.length,
+                            itemBuilder: (context, index) {
+                              final ParkRecommendationModel data =
+                                  _parksearchcontroller
+                                      .datasParkRecommendation.value[index];
 
-                            return ListView(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              children: [
-                                _buildCard(
-                                  data.id,
-                                  data.user.avatar == null
-                                      ? Icon(Icons.person)
-                                      : Image.network(
-                                          storageUrl + data.user.avatar,
-                                        ),
-                                  data.user.name,
-                                  timeago.format(data.createdAt),
-                                  data.description,
-                                ),
-                              ],
-                            );
-                          });
-                    }),
+                              return ListView(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                children: [
+                                  _buildCard(
+                                    data.id,
+                                    data.user.avatar == null
+                                        ? Icon(Icons.person)
+                                        : Image.network(
+                                            storageUrl + data.user.avatar,
+                                          ),
+                                    data.user.name,
+                                    timeago.format(data.createdAt),
+                                    data.description,
+                                  ),
+                                ],
+                              );
+                            });
+                      }),
+                    ),
                   ),
                 ],
               ),

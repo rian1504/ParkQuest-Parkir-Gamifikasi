@@ -21,7 +21,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
 
   // Camera Position
   static const CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(1.1187720779636503, 104.04845573789976),
+    target: LatLng(1.1190118543033376, 104.04844122441285),
     zoom: 18,
   );
 
@@ -174,8 +174,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
           children: [
             // Maps
             SizedBox(
-              height: 570,
-              // height: 627,
+              height: 600,
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _initialCameraPosition,
@@ -191,7 +190,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
                 mapToolbarEnabled: false,
               ),
             ),
-            // Memanggil Card
+            // Card
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -203,7 +202,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
                   return Padding(
                     padding: EdgeInsets.only(
                       left: index == 0 ? 80 : 0,
-                      right: index == 2 ? 0 : 80,
+                      right: index == 2 ? 80 : 0,
                     ),
                     child: Row(
                       children: [
