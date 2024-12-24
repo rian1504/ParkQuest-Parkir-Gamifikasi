@@ -261,29 +261,24 @@ class _MisiState extends State<Misi> {
                     children: [
                       // Grid untuk Day 1 sampai Day 6
                       Expanded(
+                        flex: 2,
                         child: GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.8,
-                            mainAxisSpacing: 6,
+                            childAspectRatio: 0.5,
+                            mainAxisSpacing: 4,
                             crossAxisSpacing: 6,
                           ),
                           itemCount: 6,
                           itemBuilder: (context, index) {
                             final isActive = streak == index;
                             final isButtonDisabled = isTodayLogin || !isActive;
-
-                            // Menambahkan jarak ekstra untuk baris kedua (index 3, 4, 5)
-                            final extraSpacing = (index >= 3)
-                                ? SizedBox(height: 35)
-                                : SizedBox(height: 0);
-
+                                                
                             return Column(
                               children: [
-                                if (index >= 3) extraSpacing,
                                 GestureDetector(
                                   onTap: isButtonDisabled
                                       ? null
@@ -307,7 +302,7 @@ class _MisiState extends State<Misi> {
                                       ),
                                       SizedBox(height: 6),
                                       Container(
-                                        height: 60,
+                                        height: 80,
                                         padding:
                                             EdgeInsets.symmetric(horizontal: 8),
                                         decoration: BoxDecoration(
@@ -332,7 +327,6 @@ class _MisiState extends State<Misi> {
                                           children: [
                                             Image.asset(
                                               'assets/img/coin.png',
-                                              width: 40,
                                             ),
                                             Text(
                                               '${rewards[index]} Koin',
@@ -377,7 +371,7 @@ class _MisiState extends State<Misi> {
                             ),
                             SizedBox(height: 6),
                             Container(
-                              height: 160,
+                              height: 200,
                               width: 100,
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(

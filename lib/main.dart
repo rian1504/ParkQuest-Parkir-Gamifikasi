@@ -41,6 +41,9 @@ class MyApp extends StatelessWidget {
           primary: Colors.black,
           surface: Colors.white,
         ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Color(0xFFFEC827),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: LandingPage(),
