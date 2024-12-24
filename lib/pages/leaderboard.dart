@@ -304,58 +304,56 @@ class _LeaderboardState extends State<Leaderboard> {
                       ),
                       // Top 3 Leaderboard Podium
                       Padding(
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.only(top: 20),
                         child: Obx(() {
+                          if (_leaderboardcontroller.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          final order = [0, 1, 2];
+                          final heights = [100.0, 120.0, 80.0];
+                          final colors = [
+                            Color(0xFFFECE2E),
+                            Color(0xFFFFB636),
+                            Color(0xFFFFEC4C),
+                          ];
+                          final medals = [
+                            'assets/img/2_place_medal.png',
+                            'assets/img/1_place_medal.png',
+                            'assets/img/3_place_medal.png',
+                          ];
                           return _leaderboardcontroller.isLoading.value
                               ? CircularProgressIndicator()
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: _leaderboardcontroller
-                                      .datasTopThree.value.length,
-                                  itemBuilder: (context, index) {
-                                    // Map the index to the desired order
-                                    int mappedIndex;
-                                    if (index == 0) {
-                                      mappedIndex = 1;
-                                    } else if (index == 1) {
-                                      mappedIndex = 0;
-                                    } else {
-                                      mappedIndex = 2;
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: order.map((mappedIndex) {
+                                    if (mappedIndex >=
+                                        _leaderboardcontroller
+                                            .datasTopThree.value.length) {
+                                      return SizedBox.shrink();
                                     }
 
-                                    final LeaderboardModel data =
-                                        _leaderboardcontroller
-                                            .datasTopThree.value[index];
-
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        _buildPodium(
-                                          data.user.avatar == null
-                                              ? Icon(Icons.person)
-                                              : Image.network(
-                                                  storageUrl + data.user.avatar,
-                                                ),
-                                          mappedIndex == 0
-                                              ? 'assets/img/2_place_medal.png'
-                                              : mappedIndex == 1
-                                                  ? 'assets/img/1_place_medal.png'
-                                                  : 'assets/img/3_place_medal.png',
-                                          data.user.username,
-                                          100,
-                                          mappedIndex == 0
-                                              ? Color(0xFFFECE2E)
-                                              : mappedIndex == 1
-                                                  ? Color(0xFFFFB636)
-                                                  : Color(0xFFFFEC4C),
-                                        ),
-                                      ],
+                                    final data = _leaderboardcontroller
+                                        .datasTopThree.value[mappedIndex];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      child: _buildPodium(
+                                        data.user.avatar == null
+                                            ? Icon(Icons.person, size: 40)
+                                            : Image.network(
+                                                storageUrl + data.user.avatar,
+                                              ),
+                                        medals[mappedIndex],
+                                        data.user.username,
+                                        heights[mappedIndex],
+                                        colors[mappedIndex],
+                                      ),
                                     );
-                                  });
+                                  }).toList(),
+                                );
                         }),
                       ),
                       SizedBox(height: 20),
