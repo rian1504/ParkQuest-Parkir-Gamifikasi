@@ -50,7 +50,7 @@ class _LeaderboardState extends State<Leaderboard> {
         SizedBox(height: 10),
         Container(
           height: height,
-          width: 100,
+          width: 90,
           decoration: BoxDecoration(
             color: color,
           ),
@@ -162,232 +162,245 @@ class _LeaderboardState extends State<Leaderboard> {
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Obx(() {
+            if (_leaderboardcontroller.isLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (_leaderboardcontroller.dataUserLeaderboard.value == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
             final data = _leaderboardcontroller.dataUserLeaderboard.value!;
 
-            return _leaderboardcontroller.isLoading.value
-                ? CircularProgressIndicator()
-                : Column(
-                    children: [
-                      // Profile Greeting
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Greeting
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    'assets/img/waving_hand.png',
-                                    width: 40,
+            return Column(
+              children: [
+                // Profile Greeting
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Greeting
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/img/waving_hand.png',
+                              width: 40,
+                            ),
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Hi ${data.user.name},',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Hi ${data.user.name},',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Great to see you again',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ],
+                                ),
+                                Text(
+                                  'Great to see you again',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300,
                                   ),
-                                ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    // Profile
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          child: data.user.avatar == null
+                              ? Icon(Icons.person)
+                              : Image.network(
+                                  storageUrl + data.user.avatar,
+                                ),
+                          // child: IconButton(
+                          //   icon: Icon(Icons.person),
+                          //   onPressed: () {
+                          //     Navigator.pushNamed(context, '/profile');
+                          //   },
+                          // ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                // Container
+                GestureDetector(
+                  onTap: () {
+                    // Functionality for showing rank details
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 70,
+                    padding: EdgeInsets.all(12),
+                    margin: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.workspace_premium, size: 32),
+                            SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  data.rank.rankName,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  '${data.user.totalExp} exp',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/img/trophy.png',
+                              height: 32,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              '#1',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
                               ),
-                            ],
-                          ),
-                          // Profile
-                          Column(
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                child: data.user.avatar == null
-                                    ? Icon(Icons.person)
-                                    : Image.network(
-                                        storageUrl + data.user.avatar,
-                                      ),
-                                // child: IconButton(
-                                //   icon: Icon(Icons.person),
-                                //   onPressed: () {
-                                //     Navigator.pushNamed(context, '/profile');
-                                //   },
-                                // ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      // Container
-                      GestureDetector(
-                        onTap: () {
-                          // Functionality for showing rank details
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 70,
-                          padding: EdgeInsets.all(12),
-                          margin: EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Row(
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Leaderboard Title
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Leaderboard',
+                    style: GoogleFonts.inter(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                // Top 3 Leaderboard Podium
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Obx(() {
+                    if (_leaderboardcontroller.isLoading.value) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final order = [0, 1, 2];
+                    final heights = [100.0, 120.0, 80.0];
+                    final colors = [
+                      Color(0xFFFECE2E),
+                      Color(0xFFFFB636),
+                      Color(0xFFFFEC4C),
+                    ];
+                    final medals = [
+                      'assets/img/2_place_medal.png',
+                      'assets/img/1_place_medal.png',
+                      'assets/img/3_place_medal.png',
+                    ];
+                    return _leaderboardcontroller.isLoading.value
+                        ? CircularProgressIndicator()
+                        : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.workspace_premium, size: 32),
-                                  SizedBox(width: 8),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        data.rank.rankName,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: order.map((mappedIndex) {
+                              if (mappedIndex >=
+                                  _leaderboardcontroller
+                                      .datasTopThree.value.length) {
+                                return SizedBox.shrink();
+                              }
+
+                              final data = _leaderboardcontroller
+                                  .datasTopThree.value[mappedIndex];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: _buildPodium(
+                                  data.user.avatar == null
+                                      ? Icon(Icons.person, size: 40)
+                                      : Image.network(
+                                          storageUrl + data.user.avatar,
                                         ),
-                                      ),
-                                      Text(
-                                        '${data.user.totalExp} exp',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    'assets/img/trophy.png',
-                                    height: 32,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    '#1',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
+                                  medals[mappedIndex],
+                                  data.user.username,
+                                  heights[mappedIndex],
+                                  colors[mappedIndex],
+                                ),
+                              );
+                            }).toList(),
+                          );
+                  }),
+                ),
+                SizedBox(height: 20),
+                // Leaderboard List
+                SingleChildScrollView(
+                  child: Expanded(
+                    child: Obx(() {
+                      if (_leaderboardcontroller.isLoading.value) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _leaderboardcontroller
+                              .datasLeaderboard.value.length,
+                          itemBuilder: (context, index) {
+                            final LeaderboardModel data = _leaderboardcontroller
+                                .datasLeaderboard.value[index];
+                            return _buildCard(
+                              data.user.avatar == null
+                                  ? Icon(Icons.person)
+                                  : Image.network(
+                                      storageUrl + data.user.avatar,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Leaderboard Title
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Leaderboard',
-                          style: GoogleFonts.inter(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // Top 3 Leaderboard Podium
-                      Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Obx(() {
-                          if (_leaderboardcontroller.isLoading.value) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-
-                          final order = [0, 1, 2];
-                          final heights = [100.0, 120.0, 80.0];
-                          final colors = [
-                            Color(0xFFFECE2E),
-                            Color(0xFFFFB636),
-                            Color(0xFFFFEC4C),
-                          ];
-                          final medals = [
-                            'assets/img/2_place_medal.png',
-                            'assets/img/1_place_medal.png',
-                            'assets/img/3_place_medal.png',
-                          ];
-                          return _leaderboardcontroller.isLoading.value
-                              ? CircularProgressIndicator()
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: order.map((mappedIndex) {
-                                    if (mappedIndex >=
-                                        _leaderboardcontroller
-                                            .datasTopThree.value.length) {
-                                      return SizedBox.shrink();
-                                    }
-
-                                    final data = _leaderboardcontroller
-                                        .datasTopThree.value[mappedIndex];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                      ),
-                                      child: _buildPodium(
-                                        data.user.avatar == null
-                                            ? Icon(Icons.person, size: 40)
-                                            : Image.network(
-                                                storageUrl + data.user.avatar,
-                                              ),
-                                        medals[mappedIndex],
-                                        data.user.username,
-                                        heights[mappedIndex],
-                                        colors[mappedIndex],
-                                      ),
-                                    );
-                                  }).toList(),
-                                );
-                        }),
-                      ),
-                      SizedBox(height: 20),
-                      // Leaderboard List
-                      SingleChildScrollView(
-                        child: Expanded(
-                          child: Obx(() {
-                            return _leaderboardcontroller.isLoading.value
-                                ? CircularProgressIndicator()
-                                : ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: _leaderboardcontroller
-                                        .datasLeaderboard.value.length,
-                                    itemBuilder: (context, index) {
-                                      final LeaderboardModel data =
-                                          _leaderboardcontroller
-                                              .datasLeaderboard.value[index];
-                                      return _buildCard(
-                                        data.user.avatar == null
-                                            ? Icon(Icons.person)
-                                            : Image.network(
-                                                storageUrl + data.user.avatar,
-                                              ),
-                                        data.user.username,
-                                        'Mahasiswa',
-                                        data.rank.rankName,
-                                      );
-                                    });
-                          }),
-                        ),
-                      ),
-                    ],
-                  );
+                              data.user.username,
+                              'Mahasiswa',
+                              data.rank.rankName,
+                            );
+                          });
+                    }),
+                  ),
+                ),
+              ],
+            );
           }),
         ),
       ),

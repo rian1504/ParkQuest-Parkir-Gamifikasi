@@ -42,79 +42,84 @@ class _MisiState extends State<Misi> {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Obx(() {
-          return _missioncontroller.isLoading.value
-              ? CircularProgressIndicator()
-              : ListView.builder(
+          if (_missioncontroller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _missioncontroller.datas.value.length,
+              itemBuilder: (context, index) {
+                final MissionModel data = _missioncontroller.datas.value[index];
+
+                return ListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: _missioncontroller.datas.value.length,
-                  itemBuilder: (context, index) {
-                    final MissionModel data =
-                        _missioncontroller.datas.value[index];
+                  children: [
+                    Obx(() {
+                      if (_missioncontroller.isLoading.value) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        Obx(() {
-                          if (_missioncontroller.isLoading.value) {
-                            return CircularProgressIndicator();
-                          }
+                      if (index == 0) {
+                        return GestureDetector(
+                          onTap: () => _showLoginPopup(
+                            context,
+                            data.streak,
+                            data.updatedAt,
+                          ),
+                          child: _buildMissionCard(
+                            title: "Daily",
+                            subtitle: "Login",
+                            icon: CupertinoIcons.calendar,
+                            progress: data.streak,
+                            total: 7,
+                          ),
+                        );
+                      }
 
-                          if (index == 0) {
-                            return GestureDetector(
-                              onTap: () => _showLoginPopup(
-                                context,
-                                data.streak,
-                                data.updatedAt,
-                              ),
-                              child: _buildMissionCard(
-                                title: "Daily",
-                                subtitle: "Login",
-                                icon: CupertinoIcons.calendar,
-                                progress: data.streak,
-                                total: 7,
-                              ),
-                            );
-                          }
+                      if (index == 1) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 16),
+                            _buildMissionCard(
+                              title: 'Weekly',
+                              subtitle: data.mission.missionDescription,
+                              icon: CupertinoIcons.star,
+                              // progressPercentage: data.streak,
+                              // isPercentage: true,
+                              progress: data.streak,
+                              total: 5,
+                            ),
+                          ],
+                        );
+                      }
 
-                          if (index == 1) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 16),
-                                _buildMissionCard(
-                                  title: 'Weekly',
-                                  subtitle: data.mission.missionDescription,
-                                  icon: CupertinoIcons.star,
-                                  // progressPercentage: data.streak,
-                                  // isPercentage: true,
-                                  progress: data.streak,
-                                  total: 5,
-                                ),
-                              ],
-                            );
-                          }
+                      if (index == 2) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 16),
+                            _buildMissionCard(
+                              title: 'Lifetime',
+                              subtitle: data.mission.missionDescription,
+                              icon: CupertinoIcons.person_add,
+                              progress: data.streak,
+                              total: 3,
+                            ),
+                          ],
+                        );
+                      }
 
-                          if (index == 2) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 16),
-                                _buildMissionCard(
-                                  title: 'Lifetime',
-                                  subtitle: data.mission.missionDescription,
-                                  icon: CupertinoIcons.person_add,
-                                  progress: data.streak,
-                                  total: 3,
-                                ),
-                              ],
-                            );
-                          }
-
-                          return Text('No mission available');
-                        }),
-                      ],
-                    );
-                  });
+                      return Text('No mission available');
+                    }),
+                  ],
+                );
+              });
         }),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
@@ -276,7 +281,7 @@ class _MisiState extends State<Misi> {
                           itemBuilder: (context, index) {
                             final isActive = streak == index;
                             final isButtonDisabled = isTodayLogin || !isActive;
-                                                
+
                             return Column(
                               children: [
                                 GestureDetector(

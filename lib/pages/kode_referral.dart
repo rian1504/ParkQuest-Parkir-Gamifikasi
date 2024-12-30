@@ -18,6 +18,12 @@ class _KodeReferralState extends State<KodeReferral> {
   final ReferralCodeController _referralcodecontroller =
       Get.put(ReferralCodeController());
 
+  @override
+  void initState() {
+    super.initState();
+    _referralcodecontroller.index();
+  }
+
   // Container
   Widget _buildContainer(double height, Widget child) {
     return Container(
@@ -122,19 +128,21 @@ class _KodeReferralState extends State<KodeReferral> {
                               children: [
                                 // Kode Referral
                                 Obx(() {
-                                  return _referralcodecontroller.isLoading.value
-                                      ? CircularProgressIndicator()
-                                      : Expanded(
-                                          child: Text(
-                                            _referralcodecontroller
-                                                .referralCode.value,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        );
+                                  if (_referralcodecontroller.isLoading.value) {
+                                    return CircularProgressIndicator();
+                                  }
+
+                                  return Expanded(
+                                    child: Text(
+                                      _referralcodecontroller
+                                          .referralCode.value,
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
                                 }),
                                 // Button Salin Kode
                                 SizedBox(

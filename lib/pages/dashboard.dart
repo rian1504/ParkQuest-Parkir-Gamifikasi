@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/controllers/shop_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,18 @@ class _DashboardState extends State<Dashboard> {
   // Data user
   final AuthenticationController _authenticationcontroller =
       Get.put(AuthenticationController());
+
+  // Shop
+  final ShopController _shopcontroller = Get.put(ShopController());
+
+  @override
+  void initState() {
+    super.initState();
+    _leaderboardcontroller.topThree();
+    _leaderboardcontroller.leaderboard();
+    _leaderboardcontroller.userLeaderboard();
+    _shopcontroller.shopBasic();
+  }
 
   @override
   Widget build(BuildContext context) {

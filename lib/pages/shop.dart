@@ -113,28 +113,33 @@ class _ShopState extends State<Shop> {
                       currentData = _shopcontroller.datasBasic.value;
                   }
 
-                  return _shopcontroller.isLoading.value
-                      ? CircularProgressIndicator()
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: currentData.length,
-                          itemBuilder: (context, index) {
-                            final AvatarModel data = currentData[index];
+                  if (_shopcontroller.isLoading.value) {
+                    return CircularProgressIndicator();
+                  }
+                  if (currentData.isEmpty) {
+                    return Text("Data Tidak Tersedia");
+                  }
 
-                            return _buildShopCard(
-                              context,
-                              data.id,
-                              storageUrl + data.avatarImage,
-                              data.avatarName,
-                              data.price,
-                              selectedCategory == "Basic"
-                                  ? const Color(0xFFD9D9D9)
-                                  : selectedCategory == "Rare"
-                                      ? const Color(0xFF176CC7)
-                                      : const Color(0xFFF71010),
-                            );
-                          });
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: currentData.length,
+                      itemBuilder: (context, index) {
+                        final AvatarModel data = currentData[index];
+
+                        return _buildShopCard(
+                          context,
+                          data.id,
+                          storageUrl + data.avatarImage,
+                          data.avatarName,
+                          data.price,
+                          selectedCategory == "Basic"
+                              ? const Color(0xFFD9D9D9)
+                              : selectedCategory == "Rare"
+                                  ? const Color(0xFF176CC7)
+                                  : const Color(0xFFF71010),
+                        );
+                      });
                 }),
               ],
             ),

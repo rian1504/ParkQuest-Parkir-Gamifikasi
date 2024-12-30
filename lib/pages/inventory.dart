@@ -169,7 +169,7 @@ class _InventoryState extends State<Inventory> {
       return _inventorycontroller.isLoading.value
           ? CircularProgressIndicator()
           : dataAwal.value == null
-              ? Text('No Data Available')
+              ? Text('Data Tidak Tersedia')
               : Column(
                   children: [
                     Text(
