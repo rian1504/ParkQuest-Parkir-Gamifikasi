@@ -138,6 +138,11 @@ class _ShopState extends State<Shop> {
                               : selectedCategory == "Rare"
                                   ? const Color(0xFF176CC7)
                                   : const Color(0xFFF71010),
+                          selectedCategory == "Basic"
+                              ? 1
+                              : selectedCategory == "Rare"
+                                  ? 3
+                                  : 5,
                         );
                       });
                 }),
@@ -193,9 +198,9 @@ class _ShopState extends State<Shop> {
     int id,
     String imagePath,
     String title,
-    // String descriptionImagePath,
     int price,
     Color backgroundColor,
+    double rating,
   ) {
     return GestureDetector(
       onTap: () async {
@@ -253,7 +258,8 @@ class _ShopState extends State<Shop> {
                     subtitle: Column(
                       children: [
                         RatingBar.builder(
-                          initialRating: 3,
+                          ignoreGestures: true,
+                          initialRating: rating,
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
@@ -279,12 +285,6 @@ class _ShopState extends State<Shop> {
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 )),
-                            // child: Image.asset(
-                            //   descriptionImagePath,
-                            //   width: 50,
-                            //   height: 25,
-                            //   fit: BoxFit.none,
-                            // ),
                           ),
                         ),
                       ],

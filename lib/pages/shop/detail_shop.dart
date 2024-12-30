@@ -58,7 +58,13 @@ class _DetailAvatarState extends State<DetailAvatar> {
                     ),
                     const SizedBox(height: 8),
                     RatingBar.builder(
-                      initialRating: 3,
+                      ignoreGestures: true,
+                      initialRating:
+                          avatarDetailData.rarity.rarityName == 'Basic'
+                              ? 1
+                              : avatarDetailData.rarity.rarityName == 'Rare'
+                                  ? 3
+                                  : 5,
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,

@@ -273,7 +273,7 @@ class _MisiState extends State<Misi> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.5,
+                            childAspectRatio: 0.4,
                             mainAxisSpacing: 4,
                             crossAxisSpacing: 6,
                           ),

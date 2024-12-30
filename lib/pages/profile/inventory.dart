@@ -331,12 +331,17 @@ class _InventoryState extends State<Inventory> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               RatingBar.builder(
-                                initialRating: 3,
+                                ignoreGestures: true,
+                                initialRating: selectedCategory == "Basic"
+                                    ? 1
+                                    : selectedCategory == "Rare"
+                                        ? 3
+                                        : 5,
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -356,7 +361,7 @@ class _InventoryState extends State<Inventory> {
                       ),
                       // Avatar
                       Positioned(
-                        bottom: 40,
+                        bottom: 30,
                         left: 0,
                         right: 0,
                         child: Align(
