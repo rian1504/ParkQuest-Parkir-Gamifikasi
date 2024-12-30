@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/profile_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/mission.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';

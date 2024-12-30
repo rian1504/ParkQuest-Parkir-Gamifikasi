@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/change_password.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/detail_avatar.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/detail_parkir.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/detail_rekomendasi.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/edit_profile.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/form_rekomendasi.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/form_survey.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/inventory.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/profile/profile.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/profile/edit_password.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/profile/edit_profile.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/profile/inventory.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir/detail_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir/pencarian_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir/detail_rekomendasi.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir/rekomendasi_parkir.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir/form_rekomendasi.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/survey/survey.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/survey/form_survey.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/shop/shop.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/shop/detail_shop.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/authentication/register.dart';
+import 'package:parkquest_parkir_gamifikasi/pages/authentication/login.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/kode_referral.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/leaderboard.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/misi.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/pencarian_parkir.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/landing_page.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/register.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/login.dart';
 import 'package:parkquest_parkir_gamifikasi/pages/dashboard.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/profile.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/rekomendasi_parkir.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/shop.dart';
-import 'package:parkquest_parkir_gamifikasi/pages/survey.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
+  await GetStorage.init();
 
   runApp(const MyApp());
 }
@@ -33,6 +35,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    final token = box.read('token');
+
     return GetMaterialApp(
       title: 'ParkQuest',
       theme: ThemeData(
@@ -46,7 +51,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: LandingPage(),
+      home: token == null ? LandingPage() : Dashboard(),
       routes: {
         '/login': (context) => Login(),
         '/register': (context) => Register(),

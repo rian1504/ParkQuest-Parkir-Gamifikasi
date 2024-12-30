@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/referral_code_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/referral_code_controller.dart';
 
 class KodeReferral extends StatefulWidget {
   const KodeReferral({super.key});
@@ -138,7 +138,7 @@ class _KodeReferralState extends State<KodeReferral> {
                                           .referralCode.value,
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.inter(
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

@@ -6,7 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/models/park_recommendation/park_area.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/profile_controller.dart';
 
 class ParkRecommendationController extends GetxController {
   Rx<List> datas = Rx<List>([]);

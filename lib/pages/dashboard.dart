@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/authentication_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/shop_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/authentication_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/leaderboard_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/shop_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
@@ -85,68 +85,70 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                     child: Obx(() {
+                      if (_authenticationcontroller.user.value == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
                       final user = _authenticationcontroller.user.value!;
 
-                      return _authenticationcontroller.isLoading.value
-                          ? CircularProgressIndicator()
-                          : Row(
+                      return Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 32,
+                            child: user.avatar == null
+                                ? Icon(Icons.person)
+                                : Image.network(storageUrl + user.avatar),
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  radius: 32,
-                                  child: user.avatar == null
-                                      ? Icon(Icons.person)
-                                      : Image.network(storageUrl + user.avatar),
-                                ),
-                                SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Hello, ${user.name}',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        user.username,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        '${user.totalExp.toString()} EXP',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
+                                Text(
+                                  'Hello, ${user.name}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/coin.png',
-                                      width: 32,
-                                    ),
-                                    Text(
-                                      '${user.coin.toString()} Coins',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                )
+                                Text(
+                                  user.username,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${user.totalExp.toString()} EXP',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ],
-                            );
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/img/coin.png',
+                                width: 32,
+                              ),
+                              Text(
+                                '${user.coin.toString()} Coins',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      );
                     }),
                   ),
                 ],

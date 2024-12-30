@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkquest_parkir_gamifikasi/Models/Mission.dart';
+import 'package:parkquest_parkir_gamifikasi/Models/mission.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/mission_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/mission_controller.dart';
 
 class Misi extends StatefulWidget {
   const Misi({super.key});

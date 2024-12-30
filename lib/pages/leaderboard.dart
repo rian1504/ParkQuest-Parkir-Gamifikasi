@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
-import 'package:parkquest_parkir_gamifikasi/controllers/leaderboard_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/leaderboard_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/models/leaderboard/leaderboard.dart';
 
 class Leaderboard extends StatefulWidget {

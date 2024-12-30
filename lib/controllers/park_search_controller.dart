@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:parkquest_parkir_gamifikasi/controllers/profile_controller.dart';
+import 'package:parkquest_parkir_gamifikasi/Controllers/profile_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/models/park_search/park_area.dart';
 import 'package:parkquest_parkir_gamifikasi/models/park_search/park_data.dart';
 import 'package:parkquest_parkir_gamifikasi/models/park_search/park_recommendation.dart';
