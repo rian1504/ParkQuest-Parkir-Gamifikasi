@@ -13,6 +13,16 @@ class AuthenticationController extends GetxController {
   final box = GetStorage();
   Rxn<UserModel> user = Rxn<UserModel>();
 
+  // State untuk error message
+  var roleIdError = ''.obs;
+  var nameError = ''.obs;
+  var usernameError = ''.obs;
+  var identityNumberError = ''.obs;
+  var companyError = ''.obs;
+  var positionError = ''.obs;
+  var emailError = ''.obs;
+  var passwordError = ''.obs;
+
   Future registerEksternal({
     required String roleId,
     required String name,
@@ -59,13 +69,28 @@ class AuthenticationController extends GetxController {
       } else {
         isLoading.value = false;
 
-        Get.snackbar(
-          'Error',
-          content['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        // Tangkap pesan kesalahan dari backend
+        final errorMessage = content['message'];
+        final errors = content['errors'];
+
+        // Set error message untuk masing-masing field
+        if (errors != null) {
+          nameError.value = errors['name']?[0] ?? '';
+          usernameError.value = errors['username']?[0] ?? '';
+          identityNumberError.value = errors['identity_number']?[0] ?? '';
+          companyError.value = errors['company']?[0] ?? '';
+          positionError.value = errors['position']?[0] ?? '';
+          emailError.value = errors['email']?[0] ?? '';
+          passwordError.value = errors['password']?[0] ?? '';
+        } else {
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
 
         debugPrint(content.toString());
       }
@@ -118,13 +143,26 @@ class AuthenticationController extends GetxController {
       } else {
         isLoading.value = false;
 
-        Get.snackbar(
-          'Error',
-          content['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        // Tangkap pesan kesalahan dari backend
+        final errorMessage = content['message'];
+        final errors = content['errors'];
+
+        // Set error message untuk masing-masing field
+        if (errors != null) {
+          nameError.value = errors['name']?[0] ?? '';
+          usernameError.value = errors['username']?[0] ?? '';
+          identityNumberError.value = errors['identity_number']?[0] ?? '';
+          emailError.value = errors['email']?[0] ?? '';
+          passwordError.value = errors['password']?[0] ?? '';
+        } else {
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
 
         debugPrint(content.toString());
       }
@@ -176,13 +214,24 @@ class AuthenticationController extends GetxController {
       } else {
         isLoading.value = false;
 
-        Get.snackbar(
-          'Error',
-          content['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        // Tangkap pesan kesalahan dari backend
+        final errorMessage = content['message'];
+        final errors = content['errors'];
+
+        // Set error message untuk masing-masing field
+        if (errors != null) {
+          roleIdError.value = errors['role_id']?[0] ?? '';
+          usernameError.value = errors['username']?[0] ?? '';
+          passwordError.value = errors['password']?[0] ?? '';
+        } else {
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
 
         debugPrint(content.toString());
       }
@@ -243,5 +292,17 @@ class AuthenticationController extends GetxController {
 
       debugPrint(e.toString());
     }
+  }
+
+  // Fungsi untuk mereset error message
+  void resetErrors() {
+    roleIdError.value = '';
+    nameError.value = '';
+    usernameError.value = '';
+    emailError.value = '';
+    identityNumberError.value = '';
+    companyError.value = '';
+    positionError.value = '';
+    passwordError.value = '';
   }
 }

@@ -80,91 +80,113 @@ class _LoginState extends State<Login> {
                             ),
                             SizedBox(height: 30),
                             // Role Dropdown
-                            SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: DropdownButtonFormField<String>(
-                                dropdownColor: Colors.white,
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 20),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.black),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
-                                    ),
-                                  ),
-                                ),
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: '1',
-                                    child: Text(
-                                      'Internal',
-                                      style: GoogleFonts.inter(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
+                            Obx(() {
+                              return SizedBox(
+                                height: 50,
+                                width: double.infinity,
+                                child: DropdownButtonFormField<String>(
+                                  dropdownColor: Colors.white,
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
                                       ),
                                     ),
+                                    errorText: _authenticationController
+                                            .roleIdError.isNotEmpty
+                                        ? _authenticationController
+                                            .roleIdError.value
+                                        : null,
                                   ),
-                                  DropdownMenuItem<String>(
-                                    value: '2',
-                                    child: Text(
-                                      'Eksternal',
-                                      style: GoogleFonts.inter(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
+                                  items: [
+                                    DropdownMenuItem<String>(
+                                      value: '1',
+                                      child: Text(
+                                        'Internal',
+                                        style: GoogleFonts.inter(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
+                                    DropdownMenuItem<String>(
+                                      value: '2',
+                                      child: Text(
+                                        'Eksternal',
+                                        style: GoogleFonts.inter(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  hint: Text(
+                                    "Role",
+                                    style: GoogleFonts.inter(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ],
-                                hint: Text(
-                                  "Role",
-                                  style: GoogleFonts.inter(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedValue = newValue;
+                                      _roleId.text = newValue!;
+                                      _authenticationController
+                                          .roleIdError.value = '';
+                                    });
+                                  },
+                                  value: selectedValue,
                                 ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedValue = newValue;
-                                    _roleId.text = newValue!;
-                                  });
-                                },
-                                value: selectedValue,
-                              ),
-                            ),
+                              );
+                            }),
                             SizedBox(height: 15),
                             // Username Field
-                            SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: TextFormField(
-                                controller: _username,
-                                decoration: InputDecoration(
-                                  labelText: "Username",
-                                  labelStyle: GoogleFonts.inter(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 20),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
+                            Obx(() {
+                              return SizedBox(
+                                height: 50,
+                                width: double.infinity,
+                                child: TextFormField(
+                                  controller: _username,
+                                  decoration: InputDecoration(
+                                    labelText: "Username",
+                                    labelStyle: GoogleFonts.inter(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                     ),
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                    ),
+                                    errorText: _authenticationController
+                                            .usernameError.isNotEmpty
+                                        ? _authenticationController
+                                            .usernameError.value
+                                        : null,
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.black),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50)),
-                                  ),
+                                  onChanged: (value) {
+                                    _authenticationController
+                                        .usernameError.value = '';
+                                  },
                                 ),
-                              ),
-                            ),
+                              );
+                            }),
                             SizedBox(height: 15),
                             // Password Field
                             SizedBox(
@@ -173,31 +195,43 @@ class _LoginState extends State<Login> {
                               child: ShowHidePassword(
                                 hidePassword: true,
                                 passwordField: (hidePassword) {
-                                  return TextField(
-                                    controller: _password,
-                                    obscureText: hidePassword,
-                                    decoration: InputDecoration(
-                                      labelText: "Password",
-                                      labelStyle: GoogleFonts.inter(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      contentPadding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(50),
+                                  return Obx(() {
+                                    return TextField(
+                                      controller: _password,
+                                      obscureText: hidePassword,
+                                      decoration: InputDecoration(
+                                        labelText: "Password",
+                                        labelStyle: GoogleFonts.inter(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
                                         ),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(50),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.black),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50)),
+                                        ),
+                                        errorText: _authenticationController
+                                                .passwordError.isNotEmpty
+                                            ? _authenticationController
+                                                .passwordError.value
+                                            : null,
+                                        // errorMaxLines: 2,
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
-                                      ),
-                                    ),
-                                  );
+                                      onChanged: (value) {
+                                        _authenticationController
+                                            .passwordError.value = '';
+                                      },
+                                    );
+                                  });
                                 },
                                 iconSize: 20,
                                 visibleOffIcon: CupertinoIcons.eye_slash,
@@ -249,6 +283,7 @@ class _LoginState extends State<Login> {
                             ),
                             TextButton(
                               onPressed: () {
+                                _authenticationController.resetErrors();
                                 Navigator.pushNamed(context, '/register');
                               },
                               child: Text(

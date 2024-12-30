@@ -53,6 +53,12 @@ class _RegisterState extends State<Register> {
                   onPressed: () {
                     setState(() {
                       _selectedRole = 'internal';
+                      _name.clear();
+                      _username.clear();
+                      _identityNumber.clear();
+                      _email.clear();
+                      _password.clear();
+                      _authenticationController.resetErrors();
                     });
                   },
                   style: TextButton.styleFrom(
@@ -82,6 +88,14 @@ class _RegisterState extends State<Register> {
                   onPressed: () {
                     setState(() {
                       _selectedRole = 'eksternal';
+                      _name.clear();
+                      _username.clear();
+                      _identityNumber.clear();
+                      _company.clear();
+                      _position.clear();
+                      _email.clear();
+                      _password.clear();
+                      _authenticationController.resetErrors();
                     });
                   },
                   style: TextButton.styleFrom(
@@ -131,6 +145,9 @@ class _RegisterState extends State<Register> {
                         _identityNumber.clear();
                         _password.clear();
 
+                        // Reset errors
+                        _authenticationController.resetErrors();
+
                         // Memanggil success dialog
                         _showSuccessDialog();
                       });
@@ -155,6 +172,9 @@ class _RegisterState extends State<Register> {
                         _company.clear();
                         _position.clear();
                         _password.clear();
+
+                        // Reset errors
+                        _authenticationController.resetErrors();
 
                         // Memanggil success dialog
                         _showSuccessDialog();
@@ -188,6 +208,7 @@ class _RegisterState extends State<Register> {
           ),
           TextButton(
             onPressed: () {
+              _authenticationController.resetErrors();
               Navigator.pushNamed(context, '/login');
             },
             child: Text(
@@ -207,7 +228,7 @@ class _RegisterState extends State<Register> {
 
   // Text Form Field
   Widget _buildTextFormField(String label, TextEditingController controller,
-      TextInputType keyboardType) {
+      TextInputType keyboardType, String error) {
     return SizedBox(
       height: 50,
       width: double.infinity,
@@ -233,13 +254,20 @@ class _RegisterState extends State<Register> {
               Radius.circular(50),
             ),
           ),
+          errorText: error.isNotEmpty ? error : null,
         ),
+        onChanged: (value) {
+          if (error.isNotEmpty) {
+            _authenticationController.resetErrors();
+          }
+        },
       ),
     );
   }
 
   // Password Field
-  Widget _buildPasswordField(String label, TextEditingController controller) {
+  Widget _buildPasswordField(
+      String label, TextEditingController controller, String error) {
     return SizedBox(
       height: 50,
       width: double.infinity,
@@ -268,7 +296,13 @@ class _RegisterState extends State<Register> {
                   Radius.circular(50),
                 ),
               ),
+              errorText: error.isNotEmpty ? error : null,
             ),
+            onChanged: (value) {
+              if (error.isNotEmpty) {
+                _authenticationController.resetErrors();
+              }
+            },
           );
         },
         iconSize: 20,
@@ -281,46 +315,105 @@ class _RegisterState extends State<Register> {
   // Form Internal
   Widget _buildInternalForm() {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 25),
-          _buildTextFormField('Nama', _name, TextInputType.text),
-          SizedBox(height: 15),
-          _buildTextFormField('Username', _username, TextInputType.text),
-          SizedBox(height: 15),
-          _buildTextFormField(
-              'NIM/NIK/NIDN', _identityNumber, TextInputType.number),
-          SizedBox(height: 15),
-          _buildTextFormField('Email', _email, TextInputType.emailAddress),
-          SizedBox(height: 15),
-          _buildPasswordField('Password', _password),
-        ],
-      ),
+      child: Obx(() {
+        return Column(
+          children: [
+            SizedBox(height: 25),
+            _buildTextFormField(
+              'Nama',
+              _name,
+              TextInputType.text,
+              _authenticationController.nameError.value,
+            ),
+            SizedBox(height: 15),
+            _buildTextFormField(
+              'Username',
+              _username,
+              TextInputType.text,
+              _authenticationController.usernameError.value,
+            ),
+            SizedBox(height: 15),
+            _buildTextFormField(
+              'NIM/NIK/NIDN',
+              _identityNumber,
+              TextInputType.number,
+              _authenticationController.identityNumberError.value,
+            ),
+            SizedBox(height: 15),
+            _buildTextFormField(
+              'Email',
+              _email,
+              TextInputType.emailAddress,
+              _authenticationController.emailError.value,
+            ),
+            SizedBox(height: 15),
+            _buildPasswordField(
+              'Password',
+              _password,
+              _authenticationController.passwordError.value,
+            ),
+          ],
+        );
+      }),
     );
   }
 
   // Form Eksternal
   Widget _buildEksternalForm() {
-    return Column(
-      children: [
-        SizedBox(height: 25),
-        _buildTextFormField('Nama', _name, TextInputType.text),
-        SizedBox(height: 15),
-        _buildTextFormField('Username', _username, TextInputType.text),
-        SizedBox(height: 15),
-        _buildTextFormField(
-            'No KTP/NIK', _identityNumber, TextInputType.number),
-        SizedBox(height: 15),
-        _buildTextFormField(
-            'Instansi/Perusahaan', _company, TextInputType.text),
-        SizedBox(height: 15),
-        _buildTextFormField('Jabatan', _position, TextInputType.text),
-        SizedBox(height: 15),
-        _buildTextFormField('Email', _email, TextInputType.emailAddress),
-        SizedBox(height: 15),
-        _buildPasswordField('Password', _password),
-      ],
-    );
+    return Obx(() {
+      return Column(
+        children: [
+          SizedBox(height: 25),
+          _buildTextFormField(
+            'Nama',
+            _name,
+            TextInputType.text,
+            _authenticationController.nameError.value,
+          ),
+          SizedBox(height: 15),
+          _buildTextFormField(
+            'Username',
+            _username,
+            TextInputType.text,
+            _authenticationController.usernameError.value,
+          ),
+          SizedBox(height: 15),
+          _buildTextFormField(
+            'No KTP/NIK',
+            _identityNumber,
+            TextInputType.number,
+            _authenticationController.identityNumberError.value,
+          ),
+          SizedBox(height: 15),
+          _buildTextFormField(
+            'Instansi/Perusahaan',
+            _company,
+            TextInputType.text,
+            _authenticationController.companyError.value,
+          ),
+          SizedBox(height: 15),
+          _buildTextFormField(
+            'Jabatan',
+            _position,
+            TextInputType.text,
+            _authenticationController.positionError.value,
+          ),
+          SizedBox(height: 15),
+          _buildTextFormField(
+            'Email',
+            _email,
+            TextInputType.emailAddress,
+            _authenticationController.emailError.value,
+          ),
+          SizedBox(height: 15),
+          _buildPasswordField(
+            'Password',
+            _password,
+            _authenticationController.passwordError.value,
+          ),
+        ],
+      );
+    });
   }
 
   // Success Dialog
