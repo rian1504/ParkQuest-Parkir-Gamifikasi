@@ -16,6 +16,11 @@ class ParkRecommendationController extends GetxController {
   var selectedImagePath = ''.obs;
   var selectedImageBytes = Rxn<Uint8List>();
 
+  // State untuk error message
+  var capacityError = ''.obs;
+  // var imageError = ''.obs;
+  var descriptionError = ''.obs;
+
   // User
   final ProfileController _profilecontroller = Get.put(ProfileController());
 
@@ -116,13 +121,24 @@ class ParkRecommendationController extends GetxController {
       } else {
         isLoading.value = false;
 
-        Get.snackbar(
-          'Error',
-          content['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        // Tangkap pesan kesalahan dari backend
+        final errorMessage = content['message'];
+        final errors = content['errors'];
+
+        // Set error message untuk masing-masing field
+        if (errors != null) {
+          capacityError.value = errors['capacity']?[0] ?? '';
+          // imageError.value = errors['image']?[0] ?? '';
+          descriptionError.value = errors['description']?[0] ?? '';
+        } else {
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
 
         debugPrint(content.toString());
       }
@@ -131,5 +147,12 @@ class ParkRecommendationController extends GetxController {
 
       debugPrint(e.toString());
     }
+  }
+
+  // Fungsi untuk mereset error message
+  void resetErrors() {
+    capacityError.value = '';
+    // imageError.value = '';
+    descriptionError.value = '';
   }
 }

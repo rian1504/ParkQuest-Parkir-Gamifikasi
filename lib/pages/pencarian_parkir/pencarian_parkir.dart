@@ -172,7 +172,7 @@ class _PencarianParkir extends State<PencarianParkir> {
           children: [
             // Maps
             SizedBox(
-              height: 600,
+              height: 550,
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _initialCameraPosition,

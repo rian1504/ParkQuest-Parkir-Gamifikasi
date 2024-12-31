@@ -99,6 +99,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
                 icon: Icon(CupertinoIcons.chevron_right),
                 iconSize: 32,
                 onPressed: () {
+                  _parkrecommendationcontroller.resetErrors();
                   Navigator.pushNamed(
                     context,
                     '/form_rekomendasi',
@@ -174,7 +175,7 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
           children: [
             // Maps
             SizedBox(
-              height: 600,
+              height: 550,
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _initialCameraPosition,

@@ -180,23 +180,32 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 // Field Kapasitas
                 _buildFormLabel("Kapasitas"),
                 SizedBox(height: 5),
-                SizedBox(
-                  child: TextFormField(
-                    controller: _capacity,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                Obx(() {
+                  return SizedBox(
+                    child: TextFormField(
+                      controller: _capacity,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        errorText: _parkrecommendationcontroller
+                                .capacityError.isNotEmpty
+                            ? _parkrecommendationcontroller.capacityError.value
+                            : null,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
+                      onChanged: (value) {
+                        _parkrecommendationcontroller.capacityError.value = '';
+                      },
                     ),
-                  ),
-                ),
+                  );
+                }),
                 SizedBox(height: 20),
                 // Field Upload Gambar
                 _buildFormLabel("Upload Gambar"),
@@ -245,31 +254,53 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                 // Field Catatan
                 _buildFormLabel("Catatan"),
                 SizedBox(height: 5),
-                SizedBox(
-                  child: TextFormField(
-                    controller: _description,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 3,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(20),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                Obx(() {
+                  return SizedBox(
+                    child: TextFormField(
+                      controller: _description,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 3,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        errorText: _parkrecommendationcontroller
+                                .descriptionError.isNotEmpty
+                            ? _parkrecommendationcontroller
+                                .descriptionError.value
+                            : null,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
+                      onChanged: (value) {
+                        _parkrecommendationcontroller.descriptionError.value =
+                            '';
+                      },
                     ),
-                  ),
-                ),
+                  );
+                }),
                 SizedBox(height: 50),
                 // Submit Button
                 SizedBox(
                   width: 148,
                   child: TextButton(
                     onPressed: () async {
+                      if (_image == null) {
+                        Get.snackbar(
+                          'Error',
+                          'Pilih gambar terlebih dahulu',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                        return;
+                      }
+
                       await _parkrecommendationcontroller.storeRekomendasi(
                         parkAreaId: parkAreaId,
                         capacity: _capacity.text.trim(),
@@ -279,6 +310,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                           _showSuccessDialog();
                           _capacity.clear();
                           _description.clear();
+                          _parkrecommendationcontroller.resetErrors();
                           setState(() {
                             _image = null;
                             _imageName = null;
