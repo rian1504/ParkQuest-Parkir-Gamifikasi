@@ -18,7 +18,7 @@ class _LeaderboardState extends State<Leaderboard> {
   final LeaderboardController _leaderboardcontroller =
       Get.put(LeaderboardController());
 
-  // Leaderrboard Podium
+  // Leaderboard Podium
   Widget _buildPodium(
     Widget avatar,
     String image,
@@ -225,12 +225,6 @@ class _LeaderboardState extends State<Leaderboard> {
                               : Image.network(
                                   storageUrl + data.user.avatar,
                                 ),
-                          // child: IconButton(
-                          //   icon: Icon(Icons.person),
-                          //   onPressed: () {
-                          //     Navigator.pushNamed(context, '/profile');
-                          //   },
-                          // ),
                         ),
                       ],
                     ),
@@ -369,35 +363,39 @@ class _LeaderboardState extends State<Leaderboard> {
                 SizedBox(height: 20),
                 // Leaderboard List
                 SingleChildScrollView(
-                  child: Expanded(
-                    child: Obx(() {
-                      if (_leaderboardcontroller.isLoading.value) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+                  child: Obx(() {
+                    if (_leaderboardcontroller.isLoading.value) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _leaderboardcontroller
-                              .datasLeaderboard.value.length,
-                          itemBuilder: (context, index) {
-                            final LeaderboardModel data = _leaderboardcontroller
-                                .datasLeaderboard.value[index];
-                            return _buildCard(
-                              data.user.avatar == null
-                                  ? Icon(Icons.person)
-                                  : Image.network(
-                                      storageUrl + data.user.avatar,
-                                    ),
-                              data.user.username,
-                              'Mahasiswa',
-                              data.rank.rankName,
-                            );
-                          });
-                    }),
-                  ),
+                    if (_leaderboardcontroller.datasLeaderboard.value.isEmpty) {
+                      return Center(
+                        child: Text('No Data Available'),
+                      );
+                    }
+
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: _leaderboardcontroller
+                            .datasLeaderboard.value.length,
+                        itemBuilder: (context, index) {
+                          final LeaderboardModel data = _leaderboardcontroller
+                              .datasLeaderboard.value[index];
+                          return _buildCard(
+                            data.user.avatar == null
+                                ? Icon(Icons.person)
+                                : Image.network(
+                                    storageUrl + data.user.avatar,
+                                  ),
+                            data.user.username,
+                            'Mahasiswa',
+                            data.rank.rankName,
+                          );
+                        });
+                  }),
                 ),
               ],
             );
