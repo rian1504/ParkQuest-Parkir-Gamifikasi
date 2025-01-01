@@ -117,46 +117,55 @@ class _InventoryState extends State<Inventory> {
               ),
             ),
             // My Avatar
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: 12,
-                  left: 16,
-                  right: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 28),
-                      child: Text(
-                        'My Avatar',
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+            Obx(() {
+              if (_inventorycontroller.isLoading.value) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: 12,
+                    left: 16,
+                    right: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 28),
+                        child: Text(
+                          'My Avatar',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: _buildItemGrid(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: _buildItemGrid(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),
@@ -169,7 +178,7 @@ class _InventoryState extends State<Inventory> {
       return _inventorycontroller.isLoading.value
           ? CircularProgressIndicator()
           : dataAwal.value == null
-              ? Text('Data Tidak Tersedia')
+              ? SizedBox.shrink()
               : Column(
                   children: [
                     Text(
@@ -297,90 +306,104 @@ class _InventoryState extends State<Inventory> {
           currentData = _inventorycontroller.datasBasic.value;
       }
 
-      return _inventorycontroller.isLoading.value
-          ? CircularProgressIndicator()
-          : GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: 1.2,
-              ),
-              itemCount: currentData.length,
-              itemBuilder: (context, index) {
-                final UserAvatarModel data = currentData[index];
+      if (_inventorycontroller.isLoading.value) {
+        return SizedBox.shrink();
+      }
 
-                return GestureDetector(
-                  onTap: () {
-                    dataAwal.value = data;
-                  },
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      // Card
-                      Card(
-                        elevation: 2,
-                        color: selectedCategory == "Basic"
-                            ? const Color(0xFFD9D9D9)
-                            : selectedCategory == "Rare"
-                                ? const Color(0xFF176CC7)
-                                : const Color(0xFFF71010),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              RatingBar.builder(
-                                ignoreGestures: true,
-                                initialRating: selectedCategory == "Basic"
-                                    ? 1
-                                    : selectedCategory == "Rare"
-                                        ? 3
-                                        : 5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 16,
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  print(rating);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Avatar
-                      Positioned(
-                        bottom: 30,
-                        left: 0,
-                        right: 0,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.network(
-                              storageUrl + data.avatarImage,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+      if (currentData.isEmpty) {
+        return Center(
+          child: Text(
+            'Data Tidak Tersedia',
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        );
+      }
+
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 10.0,
+          childAspectRatio: 1.2,
+        ),
+        itemCount: currentData.length,
+        itemBuilder: (context, index) {
+          final UserAvatarModel data = currentData[index];
+
+          return GestureDetector(
+            onTap: () {
+              dataAwal.value = data;
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Card
+                Card(
+                  elevation: 2,
+                  color: selectedCategory == "Basic"
+                      ? const Color(0xFFD9D9D9)
+                      : selectedCategory == "Rare"
+                          ? const Color(0xFF176CC7)
+                          : const Color(0xFFF71010),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                );
-              },
-            );
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        RatingBar.builder(
+                          ignoreGestures: true,
+                          initialRating: selectedCategory == "Basic"
+                              ? 1
+                              : selectedCategory == "Rare"
+                                  ? 3
+                                  : 5,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 16,
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Avatar
+                Positioned(
+                  bottom: 30,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Image.network(
+                        storageUrl + data.avatarImage,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
     });
   }
 

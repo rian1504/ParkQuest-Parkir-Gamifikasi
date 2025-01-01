@@ -18,6 +18,79 @@ class _LeaderboardState extends State<Leaderboard> {
   final LeaderboardController _leaderboardcontroller =
       Get.put(LeaderboardController());
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _leaderboardcontroller.fetchDatas();
+    });
+  }
+
+  Widget _buildTopThreePodium() {
+    final order = [0, 1, 2];
+    final heights = [100.0, 120.0, 80.0];
+    final colors = [
+      Color(0xFFFECE2E),
+      Color(0xFFFFB636),
+      Color(0xFFFFEC4C),
+    ];
+    final medals = [
+      'assets/img/2_place_medal.png',
+      'assets/img/1_place_medal.png',
+      'assets/img/3_place_medal.png',
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: order.map((mappedIndex) {
+        if (mappedIndex >= _leaderboardcontroller.datasTopThree.value.length) {
+          return SizedBox.shrink();
+        }
+
+        final data = _leaderboardcontroller.datasTopThree.value[mappedIndex];
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
+          child: _buildPodium(
+            data.user.avatar == null
+                ? Icon(Icons.person, size: 40)
+                : Image.network(
+                    storageUrl + data.user.avatar,
+                  ),
+            medals[mappedIndex],
+            data.user.username,
+            heights[mappedIndex],
+            colors[mappedIndex],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildLeaderboardList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: _leaderboardcontroller.datasLeaderboard.value.length,
+      itemBuilder: (context, index) {
+        final LeaderboardModel data =
+            _leaderboardcontroller.datasLeaderboard.value[index];
+        return _buildCard(
+          data.user.avatar == null
+              ? Icon(Icons.person)
+              : Image.network(
+                  storageUrl + data.user.avatar,
+                ),
+          data.user.username,
+          'Mahasiswa',
+          data.rank.rankName,
+        );
+      },
+    );
+  }
+
   // Leaderboard Podium
   Widget _buildPodium(
     Widget avatar,
@@ -158,25 +231,19 @@ class _LeaderboardState extends State<Leaderboard> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Obx(() {
-            if (_leaderboardcontroller.isLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+      body: Obx(() {
+        if (_leaderboardcontroller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-            if (_leaderboardcontroller.dataUserLeaderboard.value == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        final data = _leaderboardcontroller.dataUserLeaderboard.value!;
 
-            final data = _leaderboardcontroller.dataUserLeaderboard.value!;
-
-            return Column(
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
               children: [
                 // Profile Greeting
                 Row(
@@ -307,101 +374,16 @@ class _LeaderboardState extends State<Leaderboard> {
                 // Top 3 Leaderboard Podium
                 Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child: Obx(() {
-                    if (_leaderboardcontroller.isLoading.value) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    final order = [0, 1, 2];
-                    final heights = [100.0, 120.0, 80.0];
-                    final colors = [
-                      Color(0xFFFECE2E),
-                      Color(0xFFFFB636),
-                      Color(0xFFFFEC4C),
-                    ];
-                    final medals = [
-                      'assets/img/2_place_medal.png',
-                      'assets/img/1_place_medal.png',
-                      'assets/img/3_place_medal.png',
-                    ];
-                    return _leaderboardcontroller.isLoading.value
-                        ? CircularProgressIndicator()
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: order.map((mappedIndex) {
-                              if (mappedIndex >=
-                                  _leaderboardcontroller
-                                      .datasTopThree.value.length) {
-                                return SizedBox.shrink();
-                              }
-
-                              final data = _leaderboardcontroller
-                                  .datasTopThree.value[mappedIndex];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                ),
-                                child: _buildPodium(
-                                  data.user.avatar == null
-                                      ? Icon(Icons.person, size: 40)
-                                      : Image.network(
-                                          storageUrl + data.user.avatar,
-                                        ),
-                                  medals[mappedIndex],
-                                  data.user.username,
-                                  heights[mappedIndex],
-                                  colors[mappedIndex],
-                                ),
-                              );
-                            }).toList(),
-                          );
-                  }),
+                  child: _buildTopThreePodium(),
                 ),
                 SizedBox(height: 20),
                 // Leaderboard List
-                SingleChildScrollView(
-                  child: Obx(() {
-                    if (_leaderboardcontroller.isLoading.value) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    if (_leaderboardcontroller.datasLeaderboard.value.isEmpty) {
-                      return Center(
-                        child: Text('No Data Available'),
-                      );
-                    }
-
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _leaderboardcontroller
-                            .datasLeaderboard.value.length,
-                        itemBuilder: (context, index) {
-                          final LeaderboardModel data = _leaderboardcontroller
-                              .datasLeaderboard.value[index];
-                          return _buildCard(
-                            data.user.avatar == null
-                                ? Icon(Icons.person)
-                                : Image.network(
-                                    storageUrl + data.user.avatar,
-                                  ),
-                            data.user.username,
-                            'Mahasiswa',
-                            data.rank.rankName,
-                          );
-                        });
-                  }),
-                ),
+                _buildLeaderboardList(),
               ],
-            );
-          }),
-        ),
-      ),
+            ),
+          ),
+        );
+      }),
     );
   }
 }

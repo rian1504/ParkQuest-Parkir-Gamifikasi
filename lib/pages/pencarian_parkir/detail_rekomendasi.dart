@@ -238,7 +238,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                               Text(
                                 parkRecommendationData.user.name,
                                 style: GoogleFonts.inter(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
                               )
@@ -250,7 +250,7 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                               Text(
                                 '${parkRecommendationData.createdAt.hour.toString().padLeft(2, '0')}:${parkRecommendationData.createdAt.minute.toString().padLeft(2, '0')} WIB',
                                 style: GoogleFonts.inter(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
                               )
@@ -267,10 +267,8 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                   SizedBox(
                     child: TextFormField(
                       readOnly: true,
+                      initialValue: parkRecommendationData.capacity.toString(),
                       decoration: InputDecoration(
-                        label: Text(
-                          parkRecommendationData.capacity.toString(),
-                        ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -312,10 +310,8 @@ class _DetailRekomendasi extends State<DetailRekomendasi> {
                       keyboardType: TextInputType.multiline,
                       minLines: 3,
                       maxLines: null,
+                      initialValue: parkRecommendationData.description,
                       decoration: InputDecoration(
-                        label: Text(
-                          parkRecommendationData.description,
-                        ),
                         contentPadding: EdgeInsets.all(20),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),

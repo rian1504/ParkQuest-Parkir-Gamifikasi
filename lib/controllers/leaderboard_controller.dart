@@ -17,6 +17,10 @@ class LeaderboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchDatas();
+  }
+
+  void fetchDatas() {
     topThree();
     leaderboard();
     userLeaderboard();

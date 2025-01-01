@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:show_hide_password/show_hide_password.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/authentication_controller.dart';
 
@@ -19,11 +18,19 @@ class _LoginState extends State<Login> {
   final AuthenticationController _authenticationController =
       Get.put(AuthenticationController());
   String? selectedValue;
+  bool _passwordVisible = false;
 
   @override
   void dispose() {
     _roleId.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+    _authenticationController.resetErrors();
   }
 
   @override
@@ -101,6 +108,9 @@ class _LoginState extends State<Login> {
                                         ? _authenticationController
                                             .roleIdError.value
                                         : null,
+                                    errorStyle: GoogleFonts.inter(
+                                      fontSize: 8,
+                                    ),
                                   ),
                                   items: [
                                     DropdownMenuItem<String>(
@@ -179,6 +189,9 @@ class _LoginState extends State<Login> {
                                         ? _authenticationController
                                             .usernameError.value
                                         : null,
+                                    errorStyle: GoogleFonts.inter(
+                                      fontSize: 8,
+                                    ),
                                   ),
                                   onChanged: (value) {
                                     _authenticationController
@@ -192,51 +205,59 @@ class _LoginState extends State<Login> {
                             SizedBox(
                               height: 50,
                               width: double.infinity,
-                              child: ShowHidePassword(
-                                hidePassword: true,
-                                passwordField: (hidePassword) {
-                                  return Obx(() {
-                                    return TextField(
-                                      controller: _password,
-                                      obscureText: hidePassword,
-                                      decoration: InputDecoration(
-                                        labelText: "Password",
-                                        labelStyle: GoogleFonts.inter(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(50),
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.black),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50)),
-                                        ),
-                                        errorText: _authenticationController
-                                                .passwordError.isNotEmpty
-                                            ? _authenticationController
-                                                .passwordError.value
-                                            : null,
-                                        // errorMaxLines: 2,
+                              child: Obx(() {
+                                return TextField(
+                                  controller: _password,
+                                  obscureText: !_passwordVisible,
+                                  decoration: InputDecoration(
+                                    labelText: "Password",
+                                    labelStyle: GoogleFonts.inter(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
                                       ),
-                                      onChanged: (value) {
-                                        _authenticationController
-                                            .passwordError.value = '';
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                    ),
+                                    errorText: _authenticationController
+                                            .passwordError.isNotEmpty
+                                        ? _authenticationController
+                                            .passwordError.value
+                                        : null,
+                                    errorStyle: GoogleFonts.inter(
+                                      fontSize: 8,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _passwordVisible
+                                            ? CupertinoIcons.eye
+                                            : CupertinoIcons.eye_slash,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _passwordVisible = !_passwordVisible;
+                                        });
                                       },
-                                    );
-                                  });
-                                },
-                                iconSize: 20,
-                                visibleOffIcon: CupertinoIcons.eye_slash,
-                                visibleOnIcon: CupertinoIcons.eye,
-                              ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    _authenticationController
+                                        .passwordError.value = '';
+                                  },
+                                );
+                              }),
                             ),
                             SizedBox(height: 25),
                             // Login Button

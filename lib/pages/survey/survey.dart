@@ -123,7 +123,6 @@ class _SurveyState extends State<Survey> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 8),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Image.network(

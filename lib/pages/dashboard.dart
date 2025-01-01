@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:parkquest_parkir_gamifikasi/Models/Leaderboard/Leaderboard.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/authentication_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/leaderboard_controller.dart';
-import 'package:parkquest_parkir_gamifikasi/Controllers/shop_controller.dart';
 import 'package:parkquest_parkir_gamifikasi/widgets/navigation_bar.dart';
-// import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
@@ -26,16 +23,12 @@ class _DashboardState extends State<Dashboard> {
   final AuthenticationController _authenticationcontroller =
       Get.put(AuthenticationController());
 
-  // Shop
-  final ShopController _shopcontroller = Get.put(ShopController());
-
   @override
   void initState() {
     super.initState();
-    _leaderboardcontroller.topThree();
-    _leaderboardcontroller.leaderboard();
-    _leaderboardcontroller.userLeaderboard();
-    _shopcontroller.shopBasic();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _leaderboardcontroller.topThree();
+    });
   }
 
   @override

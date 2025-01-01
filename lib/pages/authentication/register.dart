@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:show_hide_password/show_hide_password.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/authentication_controller.dart';
 
@@ -23,6 +22,15 @@ class _RegisterState extends State<Register> {
   final _position = TextEditingController();
   final _password = TextEditingController();
   final _authenticationController = Get.put(AuthenticationController());
+
+  bool _passwordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+    _authenticationController.resetErrors();
+  }
 
   // Card
   Widget _buildCard(double height) {
@@ -255,6 +263,9 @@ class _RegisterState extends State<Register> {
             ),
           ),
           errorText: error.isNotEmpty ? error : null,
+          errorStyle: GoogleFonts.inter(
+            fontSize: 8,
+          ),
         ),
         onChanged: (value) {
           if (error.isNotEmpty) {
@@ -271,43 +282,49 @@ class _RegisterState extends State<Register> {
     return SizedBox(
       height: 50,
       width: double.infinity,
-      child: ShowHidePassword(
-        hidePassword: true,
-        passwordField: (hidePassword) {
-          return TextField(
-            controller: controller,
-            obscureText: hidePassword,
-            decoration: InputDecoration(
-              labelText: label,
-              labelStyle: GoogleFonts.inter(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 20),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-              ),
-              errorText: error.isNotEmpty ? error : null,
+      child: TextField(
+        controller: controller,
+        obscureText: !_passwordVisible,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: GoogleFonts.inter(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(50),
             ),
-            onChanged: (value) {
-              if (error.isNotEmpty) {
-                _authenticationController.resetErrors();
-              }
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.all(
+              Radius.circular(50),
+            ),
+          ),
+          errorText: error.isNotEmpty ? error : null,
+          errorStyle: GoogleFonts.inter(
+            fontSize: 8,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passwordVisible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
             },
-          );
+          ),
+        ),
+        onChanged: (value) {
+          if (error.isNotEmpty) {
+            _authenticationController.resetErrors();
+          }
         },
-        iconSize: 20,
-        visibleOffIcon: CupertinoIcons.eye_slash,
-        visibleOnIcon: CupertinoIcons.eye,
       ),
     );
   }
@@ -451,6 +468,7 @@ class _RegisterState extends State<Register> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
+                        _authenticationController.resetErrors();
                         Navigator.pushNamed(context, '/login');
                       },
                       child: Container(

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkquest_parkir_gamifikasi/constants.dart';
-import 'package:show_hide_password/show_hide_password.dart';
 import 'package:get/get.dart';
 import 'package:parkquest_parkir_gamifikasi/Controllers/profile_controller.dart';
 
@@ -21,50 +20,67 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPassword = TextEditingController();
   final _newPasswordConfirmation = TextEditingController();
 
+  bool _oldPasswordVisible = false;
+  bool _newPasswordVisible = false;
+  bool _newPasswordConfirmationVisible = false;
+
   @override
   initState() {
     super.initState();
     _profilecontroller.profile();
+    _oldPasswordVisible = false;
+    _newPasswordVisible = false;
+    _newPasswordConfirmationVisible = false;
+    _profilecontroller.resetErrors();
   }
 
   // Password Field
-  Widget _buildPasswordField(String label, TextEditingController controller) {
+  Widget _buildPasswordField(
+    String label,
+    TextEditingController controller,
+    String error,
+    bool visible,
+    Function() onToggleVisibility,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
         height: 50,
         width: double.infinity,
-        child: ShowHidePassword(
-          hidePassword: true,
-          passwordField: (hidePassword) {
-            return TextField(
-              controller: controller,
-              obscureText: hidePassword,
-              decoration: InputDecoration(
-                labelText: label,
-                labelStyle: GoogleFonts.inter(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
+        child: TextField(
+          controller: controller,
+          obscureText: !visible,
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: GoogleFonts.inter(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
               ),
-            );
-          },
-          iconSize: 20,
-          visibleOffIcon: CupertinoIcons.eye_slash,
-          visibleOnIcon: CupertinoIcons.eye,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            errorText: error.isNotEmpty ? error : null,
+            errorStyle: GoogleFonts.inter(
+              fontSize: 8,
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+                color: Colors.black,
+              ),
+              onPressed: onToggleVisibility,
+            ),
+          ),
         ),
       ),
     );
@@ -124,6 +140,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           _oldPassword.clear();
                           _newPassword.clear();
                           _newPasswordConfirmation.clear();
+                          _profilecontroller.resetErrors();
                         });
                   },
                   style: TextButton.styleFrom(
@@ -330,10 +347,41 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ),
                             Divider(),
                             // Password Form Field
-                            _buildPasswordField('Password Lama', _oldPassword),
-                            _buildPasswordField('Password Baru', _newPassword),
-                            _buildPasswordField('Konfirmasi Password',
-                                _newPasswordConfirmation),
+                            _buildPasswordField(
+                              'Password Lama',
+                              _oldPassword,
+                              _profilecontroller.oldPasswordError.value,
+                              _oldPasswordVisible,
+                              () {
+                                setState(() {
+                                  _oldPasswordVisible = !_oldPasswordVisible;
+                                });
+                              },
+                            ),
+                            _buildPasswordField(
+                              'Password Baru',
+                              _newPassword,
+                              _profilecontroller.newPasswordError.value,
+                              _newPasswordVisible,
+                              () {
+                                setState(() {
+                                  _newPasswordVisible = !_newPasswordVisible;
+                                });
+                              },
+                            ),
+                            _buildPasswordField(
+                              'Konfirmasi Password',
+                              _newPasswordConfirmation,
+                              _profilecontroller
+                                  .newPasswordConfirmationError.value,
+                              _newPasswordConfirmationVisible,
+                              () {
+                                setState(() {
+                                  _newPasswordConfirmationVisible =
+                                      !_newPasswordConfirmationVisible;
+                                });
+                              },
+                            ),
                             SizedBox(height: 20),
                             // Save Button
                             SizedBox(

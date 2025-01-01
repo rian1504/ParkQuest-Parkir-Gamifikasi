@@ -16,6 +16,11 @@ class ProfileController extends GetxController {
   final AuthenticationController _authenticationcontroller =
       Get.put(AuthenticationController());
 
+  // State untuk error message
+  var oldPasswordError = ''.obs;
+  var newPasswordError = ''.obs;
+  var newPasswordConfirmationError = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -165,13 +170,25 @@ class ProfileController extends GetxController {
       } else {
         isLoading.value = false;
 
-        Get.snackbar(
-          'Error',
-          content['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        // Tangkap pesan kesalahan dari backend
+        final errorMessage = content['message'];
+        final errors = content['errors'];
+
+        // Set error message untuk masing-masing field
+        if (errors != null) {
+          oldPasswordError.value = errors['old_password']?[0] ?? '';
+          newPasswordError.value = errors['new_password']?[0] ?? '';
+          newPasswordConfirmationError.value =
+              errors['new_password_confirmation']?[0] ?? '';
+        } else {
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
 
         debugPrint(content.toString());
       }
@@ -180,5 +197,12 @@ class ProfileController extends GetxController {
 
       debugPrint(e.toString());
     }
+  }
+
+  // Fungsi untuk mereset error message
+  void resetErrors() {
+    oldPasswordError.value = '';
+    newPasswordError.value = '';
+    newPasswordConfirmationError.value = '';
   }
 }

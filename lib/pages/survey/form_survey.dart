@@ -217,6 +217,7 @@ class _FormSurveyState extends State<FormSurvey> {
       onSuccess: () {
         _showSuccessDialog();
         _answerControllers.clear();
+        _controller.pause();
       },
     );
   }

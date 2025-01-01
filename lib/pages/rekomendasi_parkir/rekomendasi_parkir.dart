@@ -37,79 +37,78 @@ class _RekomendasiParkir extends State<RekomendasiParkir> {
 
   // Card
   Widget _buildCard(String title, String status, int id) {
-    return Container(
-      width: 200,
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 1,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        _parkrecommendationcontroller.resetErrors();
+        Navigator.pushNamed(
+          context,
+          '/form_rekomendasi',
+          arguments: id,
+        );
+      },
+      child: Container(
+        width: 200,
+        height: 60,
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 1,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Nama Parkiran
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  // Status
+                  Text(
+                    status,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Vertical Rule
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: VerticalDivider(
+                  color: Colors.black,
+                  thickness: 1,
+                ),
+              ),
+            ),
+            // Arrow Icon
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Nama Parkiran
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                // Status
-                Text(
-                  status,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                Icon(CupertinoIcons.chevron_right, size: 32),
               ],
             ),
-          ),
-          // Vertical Rule
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: VerticalDivider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-            ),
-          ),
-          // Arrow Icon
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(CupertinoIcons.chevron_right),
-                iconSize: 32,
-                onPressed: () {
-                  _parkrecommendationcontroller.resetErrors();
-                  Navigator.pushNamed(
-                    context,
-                    '/form_rekomendasi',
-                    arguments: id,
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

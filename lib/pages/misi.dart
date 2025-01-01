@@ -311,9 +311,11 @@ class _MisiState extends State<Misi> {
                                         padding:
                                             EdgeInsets.symmetric(horizontal: 8),
                                         decoration: BoxDecoration(
-                                          color: isButtonDisabled
-                                              ? Colors.white
-                                              : Colors.blue,
+                                          color: streak >= index + 1
+                                              ? Colors.grey
+                                              : isButtonDisabled
+                                                  ? Colors.white
+                                                  : Colors.blue,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           boxShadow: [
@@ -380,9 +382,11 @@ class _MisiState extends State<Misi> {
                               width: 100,
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
-                                color: isTodayLogin || streak != 6
-                                    ? Colors.white
-                                    : Colors.blue,
+                                color: streak == 7
+                                    ? Colors.grey
+                                    : isTodayLogin || streak != 6
+                                        ? Colors.white
+                                        : Colors.blue,
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
