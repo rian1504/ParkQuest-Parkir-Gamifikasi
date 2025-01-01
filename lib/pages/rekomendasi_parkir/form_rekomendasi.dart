@@ -276,6 +276,7 @@ class _FormRekomendasiState extends State<FormRekomendasi> {
                             ? _parkrecommendationcontroller
                                 .descriptionError.value
                             : null,
+                        errorMaxLines: 2,
                       ),
                       onChanged: (value) {
                         _parkrecommendationcontroller.descriptionError.value =

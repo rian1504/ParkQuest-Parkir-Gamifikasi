@@ -11,6 +11,27 @@ String userLeaderboardModelToJson(UserLeaderboardModel data) =>
     json.encode(data.toJson());
 
 class UserLeaderboardModel {
+  UserData userData;
+  int position;
+
+  UserLeaderboardModel({
+    required this.userData,
+    required this.position,
+  });
+
+  factory UserLeaderboardModel.fromJson(Map<String, dynamic> json) =>
+      UserLeaderboardModel(
+        userData: UserData.fromJson(json["user_data"]),
+        position: json["position"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_data": userData.toJson(),
+        "position": position,
+      };
+}
+
+class UserData {
   int id;
   int userId;
   int rankId;
@@ -20,7 +41,7 @@ class UserLeaderboardModel {
   User user;
   Rank rank;
 
-  UserLeaderboardModel({
+  UserData({
     required this.id,
     required this.userId,
     required this.rankId,
@@ -31,8 +52,7 @@ class UserLeaderboardModel {
     required this.rank,
   });
 
-  factory UserLeaderboardModel.fromJson(Map<String, dynamic> json) =>
-      UserLeaderboardModel(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         id: json["id"],
         userId: json["user_id"],
         rankId: json["rank_id"],

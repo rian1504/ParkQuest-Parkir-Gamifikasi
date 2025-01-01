@@ -27,16 +27,16 @@ class _LeaderboardState extends State<Leaderboard> {
   }
 
   Widget _buildTopThreePodium() {
-    final order = [0, 1, 2];
-    final heights = [100.0, 120.0, 80.0];
+    final order = [1, 0, 2];
+    final heights = [120.0, 100.0, 80.0];
     final colors = [
-      Color(0xFFFECE2E),
       Color(0xFFFFB636),
+      Color(0xFFFECE2E),
       Color(0xFFFFEC4C),
     ];
     final medals = [
-      'assets/img/2_place_medal.png',
       'assets/img/1_place_medal.png',
+      'assets/img/2_place_medal.png',
       'assets/img/3_place_medal.png',
     ];
 
@@ -61,6 +61,8 @@ class _LeaderboardState extends State<Leaderboard> {
                   ),
             medals[mappedIndex],
             data.user.username,
+            data.rank.rankName,
+            data.user.totalExp.toString(),
             heights[mappedIndex],
             colors[mappedIndex],
           ),
@@ -86,6 +88,7 @@ class _LeaderboardState extends State<Leaderboard> {
           data.user.username,
           'Mahasiswa',
           data.rank.rankName,
+          data.user.totalExp.toString(),
         );
       },
     );
@@ -96,6 +99,8 @@ class _LeaderboardState extends State<Leaderboard> {
     Widget avatar,
     String image,
     String username,
+    String rank,
+    String exp,
     double height,
     Color color,
   ) {
@@ -121,6 +126,21 @@ class _LeaderboardState extends State<Leaderboard> {
           ),
         ),
         SizedBox(height: 10),
+        Text(
+          rank,
+          style: GoogleFonts.inter(
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          '$exp exp',
+          style: GoogleFonts.inter(
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 10),
         Container(
           height: height,
           width: 90,
@@ -134,7 +154,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
   // Card
   Widget _buildCard(
-      Widget avatar, String username, String status, String rank) {
+      Widget avatar, String username, String status, String rank, String exp) {
     return Container(
       width: double.infinity,
       height: 50,
@@ -201,8 +221,15 @@ class _LeaderboardState extends State<Leaderboard> {
                       fontSize: 10,
                       fontWeight: FontWeight.w300,
                     ),
-                  )
+                  ),
                 ],
+              ),
+              Text(
+                '$exp exp',
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
             ],
           ),
@@ -263,7 +290,7 @@ class _LeaderboardState extends State<Leaderboard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Hi ${data.user.name},',
+                                  'Hi ${data.userData.user.name},',
                                   style: GoogleFonts.inter(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
@@ -287,10 +314,10 @@ class _LeaderboardState extends State<Leaderboard> {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          child: data.user.avatar == null
+                          child: data.userData.user.avatar == null
                               ? Icon(Icons.person)
                               : Image.network(
-                                  storageUrl + data.user.avatar,
+                                  storageUrl + data.userData.user.avatar,
                                 ),
                         ),
                       ],
@@ -323,14 +350,14 @@ class _LeaderboardState extends State<Leaderboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  data.rank.rankName,
+                                  data.userData.rank.rankName,
                                   style: GoogleFonts.inter(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
-                                  '${data.user.totalExp} exp',
+                                  '${data.userData.user.totalExp} exp',
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w300,
@@ -348,7 +375,7 @@ class _LeaderboardState extends State<Leaderboard> {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              '#1',
+                              '#${data.position.toString()}',
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
