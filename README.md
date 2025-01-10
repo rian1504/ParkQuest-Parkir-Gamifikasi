@@ -1,16 +1,30 @@
-# parkquest_parkir_gamifikasi
+## Judul Proyek
 
-A new Flutter project.
+ParkQuest: Sistem Parkir Pintar dan Pendekatan Gamifikasi
 
-## Getting Started
+## Kelas
 
-This project is a starting point for a Flutter application.
+IF3B Pagi
 
-A few resources to get you started if this is your first Flutter project:
+## Kode Tim
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+PBL IF-11
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Pengusul dan Klien
+
+Mir'atul Khusna Mufida, S.ST, M.Sc
+
+## Manager Proyek
+
+Sartikha, S. ST., M.Eng
+
+## Ketua Tim
+
+3312301004 Rian Abdullah
+
+## Anggota Tim
+
+- 3312301009 Juan Jonathan Nainggolan
+- 3312301023 Elys Aulia Tanjung
+- 3312301065 Jihan Safinatunnaja
+- 3312301101 Steve Yosafat Marpaung
